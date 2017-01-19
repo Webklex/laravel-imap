@@ -15,10 +15,6 @@ sudo: false
 
 install: composer install --no-interaction
 
-script:
-  - mkdir -p build/logs
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-
 notifications:
   email:
     on_success: always
