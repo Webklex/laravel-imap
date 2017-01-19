@@ -1,0 +1,41 @@
+{
+    "name": "webklex/laravel-imap",
+    "type": "library",
+    "description": "Laravel IMAP client",
+    "keywords": [
+        "webklex",
+        "laravel",
+        "imap",
+        "laravel-imap",
+        "mail"
+    ],
+    "homepage": "https://github.com/webklex/laravel-imap",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Malte Goldenbaum",
+            "email": "info@webklex.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "laravel/framework": "~5.2.0",
+        "nesbot/carbon": "^1.22"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webklex\\IMAP\\": "src/IMAP"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
