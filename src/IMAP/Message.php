@@ -16,8 +16,20 @@ use Carbon\Carbon;
 
 class Message {
 
+
+    /**
+     * Client instance
+     *
+     * @var Client
+     */
     private $client = Client::class;
 
+
+    /**
+     * U ID
+     *
+     * @var string
+     */
     public $uid = '';
 
     /* HEADER */
