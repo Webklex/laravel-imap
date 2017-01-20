@@ -26,6 +26,26 @@ Add the service provider to the providers array in `config/app.php`.
 ];
 ```
 
+If you are planning to use a single account, you might want to add the following to
+your .env file.
+
+```
+IMAP_HOST=somehost.com
+IMAP_PORT=993
+IMAP_ENCRYPTION=ssl
+IMAP_VALIDATE_CERT=true
+IMAP_USERNAME=root@example.com
+IMAP_PASSWORD=secret
+```
+
+The following encryption methods are supported:
+```
+false   - Disable encryption 
+ssl     - Use SSL
+tls     - Use TLS
+
+```
+
 ## Publishing
 
 You can publish everything at once
@@ -40,10 +60,6 @@ or you can publish groups individually.
 php artisan vendor:publish --provider="Webklex\IMAP\Providers\LaravelServiceProvider" --tag="config"
 ```
 
-## Usage
-
-[...]
-
 Access the IMAP Client by its Facade (Webklex\IMAP\Facades\Client). 
 Therefor you might want to add an alias to the aliases array within the `config/app.php` file.
 
@@ -51,6 +67,50 @@ Therefor you might want to add an alias to the aliases array within the `config/
 'aliases' => [
     'Client' => Webklex\IMAP\Facades\Client::class
 ];
+```
+
+## Usage
+
+This library is designed to handle the native php imap functions more easily and to be 
+able to integrate this package within your current laravel installation.
+
+Here is a basic example, which will echo out all Mails within all imap folders
+and will move every message into INBOX.read. Please be aware that this should not ben
+tested in real live but it gives an impression on how things work.
+
+``` php
+use Webklex\IMAP\Client;
+
+//Connect to the IMAP Server
+$oClient = new Client([
+    'host'          => 'somehost.com',
+    'port'          => 993,
+    'encryption'    => 'ssl',
+    'validate_cert' => true,
+    'username'      => 'username',
+    'password'      => 'password',
+]);
+$oClient->connect();
+
+//Get all Mailboxes
+$aMailboxes = $oClient->getFolders();
+
+//Loop through every Mailbox
+foreach($aMailboxes as $oMailboxes){
+
+    //Get all Messages of the current Mailbox
+    foreach($oMailbox->getMessages() as $oMessage){
+        echo $oMessage->subject.'<br />';
+        echo $oMessage->getHTMLBody(true);
+        
+        //Move the current Message to 'INBOX.read'
+        if($oMessage->moveToFolder('INBOX.read') == true){
+            echo 'Message has ben moved';
+        }else{
+            echo 'Message could not be moved';
+        }
+    }
+}
 ```
 
 ## Change log
