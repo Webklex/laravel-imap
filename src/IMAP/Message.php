@@ -31,6 +31,7 @@ class Message {
      * @var string
      */
     public $uid = '';
+    public $msglist = 1;
 
     /* HEADER */
     public $subject = '';
@@ -69,9 +70,10 @@ class Message {
     const ENC_OTHER = 5;
 
 
-    public function __construct($uid, Client $client)
+    public function __construct($uid, $msglist, Client $client)
     {
         $this->uid = $uid;
+        $this->msglist = $msglist;
         $this->client = $client;
 
         $this->parseHeader();
@@ -343,5 +345,15 @@ class Message {
                 }
             }
         }
+        return null;
+    }
+
+    public function moveToFolder($mailbox = 'INBOX'){
+        $this->client->createFolder($mailbox);
+
+        if(imap_mail_move($this->client->connection, $this->msglist, $mailbox) == true){
+            return imap_expunge($this->client->connection);
+        }
+        return false;
     }
 }

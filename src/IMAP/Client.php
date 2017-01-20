@@ -242,6 +242,10 @@ class Client
         }
     }
 
+    public function createFolder($name){
+        return imap_createmailbox($this->connection, imap_utf7_encode($name));
+    }
+
     /**
      * Get messages from folder.
      *
@@ -261,10 +265,12 @@ class Client
             $availableMessages = imap_search($this->connection, $criteria, SE_UID);
 
             if ($availableMessages !== false) {
+                $msglist = 1;
                 foreach ($availableMessages as $msgno) {
-                    $message = new Message($msgno, $this);
+                    $message = new Message($msgno, $msglist, $this);
 
                     $messages[$message->message_id] = $message;
+                    $msglist++;
                 }
             }
             return $messages;
