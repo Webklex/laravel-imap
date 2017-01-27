@@ -108,7 +108,7 @@ class Message {
         $body = $this->bodies['html']->content;
         if ($replaceImages) {
             foreach ($this->attachments as $attachment) {
-                if ($attachment->id) {
+                if ($attachment->id && isset($attachment->img_src)){
                     $body = str_replace('cid:'.$attachment->id, $attachment->img_src, $body);
                 }
             }
