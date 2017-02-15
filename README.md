@@ -125,7 +125,7 @@ $ composer test
 
 ## Security
 
-If you discover any security related issues, please email info@webklex.com instead of using the issue tracker.
+If you discover any security related issues, please email github@webklex.com instead of using the issue tracker.
 
 ## Credits
 

@@ -14,13 +14,13 @@
     "authors": [
         {
             "name": "Malte Goldenbaum",
-            "email": "info@webklex.com",
+            "email": "github@webklex.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "~5.2.0",
+        "laravel/framework": ">=5.0.0",
         "nesbot/carbon": "^1.22"
     },
     "autoload": {
