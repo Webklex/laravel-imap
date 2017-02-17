@@ -5,9 +5,6 @@
 [![Build Status][ico-travis]][link-travis]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-
-[...]
-
 ## Install
 
 Via Composer
@@ -81,7 +78,6 @@ tested in real live but it gives an impression on how things work.
 ``` php
 use Webklex\IMAP\Client;
 
-//Connect to the IMAP Server
 $oClient = new Client([
     'host'          => 'somehost.com',
     'port'          => 993,
@@ -90,13 +86,15 @@ $oClient = new Client([
     'username'      => 'username',
     'password'      => 'password',
 ]);
+
+//Connect to the IMAP Server
 $oClient->connect();
 
 //Get all Mailboxes
 $aMailboxes = $oClient->getFolders();
 
 //Loop through every Mailbox
-foreach($aMailboxes as $oMailboxes){
+foreach($aMailboxes as $oMailbox){
 
     //Get all Messages of the current Mailbox
     foreach($oMailbox->getMessages() as $oMessage){
@@ -111,6 +109,30 @@ foreach($aMailboxes as $oMailboxes){
         }
     }
 }
+```
+
+If you use the Facade ('Webklex\IMAP\Facades\Client') please select an account first:
+
+``` php
+use Webklex\IMAP\Facades\Client;
+
+$oClient = Webklex\IMAP\Facades\Client::account('default');
+$oClient->connect();
+```
+
+You can define your accounts inside the config/imap.php file:
+```
+'accounts' => [ 
+                'default' => [
+                    'host'  => env('IMAP_HOST', 'localhost'),
+                    'port'  => env('IMAP_PORT', 993),
+                    'encryption'    => env('IMAP_ENCRYPTION', 'ssl'),
+                    'validate_cert' => env('IMAP_VALIDATE_CERT', true),
+                    'username' => env('IMAP_USERNAME', 'root@example.com'),
+                    'password' => env('IMAP_PASSWORD', ''),
+                ], 
+                'gmail' => [.. ]
+              ]
 ```
 
 ## Change log
