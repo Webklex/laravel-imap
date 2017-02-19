@@ -94,9 +94,11 @@ $oClient->connect();
 $aMailboxes = $oClient->getFolders();
 
 //Loop through every Mailbox
+/** @var \Webklex\IMAP\Folder $oMailbox */
 foreach($aMailboxes as $oMailbox){
 
     //Get all Messages of the current Mailbox
+    /** @var \Webklex\IMAP\Message $oMessage */
     foreach($oMailbox->getMessages() as $oMessage){
         echo $oMessage->subject.'<br />';
         echo $oMessage->getHTMLBody(true);
