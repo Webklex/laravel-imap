@@ -140,7 +140,7 @@ You can define your accounts inside the `config/imap.php` file:
 ## Documentation
 ### \Webklex\IMAP\Client
 | Method                | Arguments                                             | Return            | Description                                                                                                                   |
-| --------------------- | :---------------------------------------------------: | :---------------: | ----------------------------------------------------------------------------------------------------------------------------: |
+| --------------------- | ----------------------------------------------------- | :---------------: | ----------------------------------------------------------------------------------------------------------------------------  |
 | setConfig             | array $config                                         | self              | Set the Client configuration. Take a look at `config/imap.php` for more inspiration.                                          |
 | setReadOnly           | bool $readOnly                                        | self              | Set read only property and reconnect if it's necessary.                                                                       |
 | isReadOnly            |                                                       | bool              | Determine if connection is in read only mode.                                                                                 |
@@ -163,21 +163,21 @@ You can define your accounts inside the `config/imap.php` file:
 | checkCurrentMailbox   |                                                       | object            | Check current mailbox                                                                                                         |
 
 ### \Webklex\IMAP\Message
-| Method                | Arguments                                             | Return            | Description                              |
-| --------------------- | :---------------------------------------------------: | :---------------: | ---------------------------------------: |
-| delete                |                                                       |                   | Delete the current Message               |
-| restore               |                                                       |                   | Restore a deleted Message                |
-| copy                  | string $mailbox, int $options                         |                   | Copy the current Messages to a mailbox   |
-| move                  | string $mailbox, int $options                         |                   | Move the current Messages to a mailbox   |
-| moveToFolder          | string $mailbox                                       |                   | Move the Message into an other Folder    |
-| hasTextBody           |                                                       |                   | Check if the Message has a text body     |
-| hasHTMLBody           |                                                       |                   | Check if the Message has a html body     |
-| getTextBody           |                                                       |                   | Get the Message text body                |
-| getHTMLBody           |                                                       |                   | Get the Message html body                |
+| Method                | Arguments                     | Return  | Description                              |
+| --------------------- | ----------------------------- | :-----: | ---------------------------------------- |
+| delete                |                               |         | Delete the current Message               |
+| restore               |                               |         | Restore a deleted Message                |
+| copy                  | string $mailbox, int $options |         | Copy the current Messages to a mailbox   |
+| move                  | string $mailbox, int $options |         | Move the current Messages to a mailbox   |
+| moveToFolder          | string $mailbox               |         | Move the Message into an other Folder    |
+| hasTextBody           |                               |         | Check if the Message has a text body     |
+| hasHTMLBody           |                               |         | Check if the Message has a html body     |
+| getTextBody           |                               | string  | Get the Message text body                |
+| getHTMLBody           |                               | string  | Get the Message html body                |
 
 ### \Webklex\IMAP\Folder
 | Method                | Arguments                                                 | Return            | Description                                       |
-| --------------------- | :-------------------------------------------------------: | :---------------: | ------------------------------------------------: |
+| --------------------- | --------------------------------------------------------- | :---------------: | ------------------------------------------------- |
 | hasChildren           |                                                           | bool              | Determine if folder has children.                 |
 | setChildren           | array $children                                           | self              | Set children.                                     |
 | getMessages           | string $criteria                                          | array             | Get messages.                                     |
