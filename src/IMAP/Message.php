@@ -20,7 +20,7 @@ class Message {
     /**
      * Client instance
      *
-     * @var Client
+     * @var \Webklex\IMAP\Client
      */
     private $client = Client::class;
 
@@ -31,12 +31,30 @@ class Message {
      * @var string
      */
     public $uid = '';
+
+    /**
+     * @var int $msglist
+     */
     public $msglist = 1;
 
-    /* HEADER */
+    /**
+     * Message header components
+     *
+     * @var string  $message_id
+     * @var mixed   $message_no
+     * @var string  $subject
+     * @var mixed   $date
+     * @var array   $from
+     * @var array   $to
+     * @var array   $cc
+     * @var array   $bcc
+     * @var array   $reply_to
+     * @var array   $sender
+     */
+    public $message_id = '';
+    public $message_no = null;
     public $subject = '';
     public $date = null;
-
     public $from = [];
     public $to = [];
     public $cc = [];
@@ -44,14 +62,35 @@ class Message {
     public $reply_to = [];
     public $sender = [];
 
-    public $message_id = '';
-    public $message_no = null;
-
-    /* BODY */
+    /**
+     * Message body components
+     *
+     * @var array   $bodies
+     * @var array   $attachments
+     */
     public $bodies = [];
     public $attachments = [];
 
-    /* Consts */
+    /**
+     * Message const
+     *
+     * @const integer   TYPE_TEXT
+     * @const integer   TYPE_MULTIPART
+     * @const integer   TYPE_MESSAGE
+     * @const integer   TYPE_APPLICATION
+     * @const integer   TYPE_AUDIO
+     * @const integer   TYPE_IMAGE
+     * @const integer   TYPE_VIDEO
+     * @const integer   TYPE_MODEL
+     * @const integer   TYPE_OTHER
+     *
+     * @const integer   ENC_7BIT
+     * @const integer   ENC_8BIT
+     * @const integer   ENC_BINARY
+     * @const integer   ENC_BASE64
+     * @const integer   ENC_QUOTED_PRINTABLE
+     * @const integer   ENC_OTHER
+     */
     const TYPE_TEXT = 0;
     const TYPE_MULTIPART = 1;
     const TYPE_MESSAGE = 2;
@@ -69,9 +108,14 @@ class Message {
     const ENC_QUOTED_PRINTABLE = 4;
     const ENC_OTHER = 5;
 
-
-    public function __construct($uid, $msglist, Client $client)
-    {
+    /**
+     * Message constructor.
+     *
+     * @param $uid
+     * @param $msglist
+     * @param \Webklex\IMAP\Client $client
+     */
+    public function __construct($uid, $msglist, Client $client) {
         $this->uid = $uid;
         $this->msglist = $msglist;
         $this->client = $client;
@@ -80,13 +124,21 @@ class Message {
         $this->parseBody();
     }
 
-    public function hasTextBody()
-    {
+    /**
+     * Check if the Message has a text body
+     *
+     * @return bool
+     */
+    public function hasTextBody() {
         return isset($this->bodies['text']);
     }
 
-    public function getTextBody()
-    {
+    /**
+     * Get the Message text body
+     *
+     * @return mixed
+     */
+    public function getTextBody() {
         if (!isset($this->bodies['text'])) {
             return false;
         }
@@ -94,13 +146,23 @@ class Message {
         return $this->bodies['text']->content;
     }
 
-    public function hasHTMLBody()
-    {
+    /**
+     * Check if the Message has a html body
+     *
+     * @return bool
+     */
+    public function hasHTMLBody() {
         return isset($this->bodies['html']);
     }
 
-    public function getHTMLBody($replaceImages = false)
-    {
+    /**
+     * Get the Message html body
+     *
+     * @var bool $replaceImages
+     *
+     * @return mixed
+     */
+    public function getHTMLBody($replaceImages = false) {
         if (!isset($this->bodies['html'])) {
             return false;
         }
@@ -117,8 +179,12 @@ class Message {
         return $body;
     }
 
-    private function parseHeader()
-    {
+    /**
+     * Parse all defined headers
+     *
+     * @return void
+     */
+    private function parseHeader() {
         $header = imap_fetchheader($this->client->connection, $this->uid, FT_UID);
         if ($header) {
             $header = imap_rfc822_parse_headers($header);
@@ -159,8 +225,14 @@ class Message {
         }
     }
 
-    private function parseAddresses($list)
-    {
+    /**
+     * Parse Addresses
+     *
+     * @param $list
+     *
+     * @return array
+     */
+    private function parseAddresses($list) {
         $addresses = [];
 
         foreach ($list as $item) {
@@ -187,15 +259,25 @@ class Message {
         return $addresses;
     }
 
-    private function parseBody()
-    {
+    /**
+     * Parse the Message body
+     *
+     * @return void
+     */
+    private function parseBody() {
         $structure = imap_fetchstructure($this->client->connection, $this->uid, FT_UID);
 
         $this->fetchStructure($structure);
     }
 
-    private function fetchStructure($structure, $partNumber = null)
-    {
+    /**
+     * Fetch the Message structure
+     *
+     * @param $structure
+     *
+     * @param mixed $partNumber
+     */
+    private function fetchStructure($structure, $partNumber = null) {
         if ($structure->type == self::TYPE_TEXT) {
             if ($structure->subtype == "PLAIN") {
                 if (!$partNumber) {
@@ -308,8 +390,15 @@ class Message {
         }
     }
 
-    private function decodeString($string, $encoding)
-    {
+    /**
+     * Decode a given string
+     *
+     * @param $string
+     * @param $encoding
+     *
+     * @return string
+     */
+    private function decodeString($string, $encoding) {
         switch ($encoding) {
             case self::ENC_7BIT:
                 return $string;
@@ -328,16 +417,30 @@ class Message {
         }
     }
 
-    private function convertEncoding($str, $from = "ISO-8859-2", $to = "UTF-8")
-    {
+    /**
+     * Convert the encoding
+     *
+     * @param $str
+     * @param string $from
+     * @param string $to
+     *
+     * @return mixed|string
+     */
+    private function convertEncoding($str, $from = "ISO-8859-2", $to = "UTF-8") {
         if (!$from) {
             return mb_convert_encoding($str, $to);
         }
         return mb_convert_encoding($str, $to, $from);
     }
 
-    private function getEncoding($structure)
-    {
+    /**
+     * Get the encoding of a given abject
+     *
+     * @param object $structure
+     *
+     * @return null|string
+     */
+    private function getEncoding($structure) {
         if (property_exists($structure, 'parameters')) {
             foreach ($structure->parameters as $parameter) {
                 if ($parameter->attribute == "charset") {
@@ -348,6 +451,13 @@ class Message {
         return null;
     }
 
+    /**
+     * Move the Message into an other Folder
+     *
+     * @param string $mailbox
+     *
+     * @return bool
+     */
     public function moveToFolder($mailbox = 'INBOX'){
         $this->client->createFolder($mailbox);
 

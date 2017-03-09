@@ -17,8 +17,7 @@ use Illuminate\Support\Facades\Config;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 
-class Client
-{
+class Client {
     /**
      * @var bool|resource
      */
@@ -242,6 +241,12 @@ class Client
         }
     }
 
+    /**
+     * Create a new Folder
+     * @param $name
+     *
+     * @return bool
+     */
     public function createFolder($name){
         return imap_createmailbox($this->connection, imap_utf7_encode($name));
     }

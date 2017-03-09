@@ -12,8 +12,8 @@
 
 namespace Webklex\IMAP;
 
-class ClientManager
-{
+class ClientManager {
+
     /**
      * The application instance.
      *
@@ -21,6 +21,9 @@ class ClientManager
      */
     protected $app;
 
+    /**
+     * @var array $accounts
+     */
     protected $accounts = [];
 
     /**
@@ -28,8 +31,7 @@ class ClientManager
      *
      * @param  \Illuminate\Foundation\Application  $app
      */
-    public function __construct($app)
-    {
+    public function __construct($app) {
         $this->app = $app;
     }
 
@@ -37,10 +39,10 @@ class ClientManager
      * Resolve a account instance.
      *
      * @param  string  $name
+     *
      * @return \Webklex\IMAP\Client
      */
-    public function account($name = null)
-    {
+    public function account($name = null) {
         $name = $name ?: $this->getDefaultAccount();
 
         // If the connection has not been resolved yet we will resolve it now as all
@@ -57,10 +59,10 @@ class ClientManager
      * Resolve a account.
      *
      * @param  string  $name
+     *
      * @return \Webklex\IMAP\Client
      */
-    protected function resolve($name)
-    {
+    protected function resolve($name) {
         $config = $this->getConfig($name);
 
         return new Client($config);
@@ -70,10 +72,10 @@ class ClientManager
      * Get the account configuration.
      *
      * @param  string  $name
+     *
      * @return array
      */
-    protected function getConfig($name)
-    {
+    protected function getConfig($name) {
         if ($name === null || $name === 'null') {
             return ['driver' => 'null'];
         }
@@ -86,8 +88,7 @@ class ClientManager
      *
      * @return string
      */
-    public function getDefaultAccount()
-    {
+    public function getDefaultAccount() {
         return $this->app['config']['imap.default'];
     }
 
@@ -95,10 +96,10 @@ class ClientManager
      * Set the name of the default account.
      *
      * @param  string  $name
+     *
      * @return void
      */
-    public function setDefaultAccount($name)
-    {
+    public function setDefaultAccount($name) {
         $this->app['config']['imap.default'] = $name;
     }
 
@@ -107,10 +108,10 @@ class ClientManager
      *
      * @param  string  $method
      * @param  array   $parameters
+     *
      * @return mixed
      */
-    public function __call($method, $parameters)
-    {
+    public function __call($method, $parameters) {
         $callable = [$this->account(), $method];
 
         return call_user_func_array($callable, $parameters);

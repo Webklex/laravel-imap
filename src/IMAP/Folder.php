@@ -12,8 +12,7 @@
 
 namespace Webklex\IMAP;
 
-class Folder
-{
+class Folder {
     /**
      * Client instance
      *
@@ -99,16 +98,16 @@ class Folder
      * Folder constructor.
      *
      * @param \Webklex\IMAP\Client $client
+     *
      * @param $folder
      */
-    public function __construct(Client $client, $folder)
-    {
+    public function __construct(Client $client, $folder) {
         $this->client = $client;
 
         $this->delimiter = $folder->delimiter;
-        $this->path = $folder->name;
-        $this->fullName = $this->decodeName($folder->name);
-        $this->name = $this->getSimpleName($this->delimiter, $this->fullName);
+        $this->path      = $folder->name;
+        $this->fullName  = $this->decodeName($folder->name);
+        $this->name      = $this->getSimpleName($this->delimiter, $this->fullName);
 
         $this->parseAttributes($folder->attributes);
     }
@@ -118,8 +117,7 @@ class Folder
      *
      * @return bool
      */
-    public function hasChildren()
-    {
+    public function hasChildren() {
         return $this->has_children;
     }
 
@@ -128,8 +126,7 @@ class Folder
      *
      * @param array $children
      */
-    public function setChildren($children = [])
-    {
+    public function setChildren($children = []) {
         $this->children = $children;
     }
 
@@ -140,8 +137,7 @@ class Folder
      *
      * @return array
      */
-    public function getMessages($criteria = 'ALL')
-    {
+    public function getMessages($criteria = 'ALL') {
         return $this->client->getMessages($this, $criteria);
     }
 
@@ -153,8 +149,7 @@ class Folder
      *
      * @return mixed|string
      */
-    protected function decodeName($name)
-    {
+    protected function decodeName($name) {
         preg_match('#\{(.*)\}(.*)#', $name, $preg);
         return mb_convert_encoding($preg[2], "UTF-8", "UTF7-IMAP");
     }
@@ -167,8 +162,7 @@ class Folder
      *
      * @return mixed
      */
-    protected function getSimpleName($delimiter, $fullName)
-    {
+    protected function getSimpleName($delimiter, $fullName) {
         $arr = explode($delimiter, $fullName);
 
         return end($arr);
@@ -179,8 +173,7 @@ class Folder
      *
      * @param $attributes
      */
-    protected function parseAttributes($attributes)
-    {
+    protected function parseAttributes($attributes) {
         $this->no_inferiors = ($attributes & LATT_NOINFERIORS)  ? true : false;
         $this->no_select    = ($attributes & LATT_NOSELECT)     ? true : false;
         $this->marked       = ($attributes & LATT_MARKED)       ? true : false;
