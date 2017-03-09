@@ -94,6 +94,8 @@ class Client {
      * Set the Client configuration
      *
      * @param array $config
+     *
+     * @return self
      */
     public function setConfig(array $config) {
         $defaultAccount = config('imap.default');
@@ -102,16 +104,22 @@ class Client {
         foreach($defaultConfig as $key => $default){
             $this->$key = isset($config[$key]) ? $config[$key] : $default;
         }
+
+        return $this;
     }
 
     /**
      * Set read only property and reconnect if it's necessary.
      *
      * @param bool $readOnly
+     *
+     * @return self
      */
     public function setReadOnly($readOnly = true)
     {
         $this->read_only = $readOnly;
+
+        return $this;
     }
 
     /**
@@ -243,6 +251,7 @@ class Client {
 
     /**
      * Create a new Folder
+     *
      * @param $name
      *
      * @return bool
@@ -315,4 +324,94 @@ class Client {
 
         return $address;
     }
+
+    /**
+     * Retrieve the quota level settings, and usage statics per mailbox
+     *
+     * @return array
+     */
+    public function getQuota(){
+        return imap_get_quota($this->connection, 'user.'.$this->username);
+    }
+
+    /**
+     * Retrieve the quota settings per user
+     *
+     * @param string $quota_root
+     *
+     * @return array
+     */
+    public function getQuotaRoot($quota_root = 'INBOX'){
+        return imap_get_quotaroot($this->connection, $quota_root);
+    }
+
+    /**
+     * Gets the number of messages in the current mailbox
+     *
+     * @return int
+     */
+    public function countMessages(){
+        return imap_num_msg($this->connection);
+    }
+
+    /**
+     * Gets the number of recent messages in current mailbox
+     *
+     * @return int
+     */
+    public function countRecentMessages(){
+        return imap_num_recent($this->connection);
+    }
+
+    /**
+     * Returns all IMAP alert messages that have occurred
+     *
+     * @return array
+     */
+    public function getAlerts(){
+        return imap_alerts();
+    }
+
+    /**
+     * Returns all of the IMAP errors that have occurred
+     *
+     * @return array
+     */
+    public function getErrors(){
+        return imap_errors();
+    }
+
+    /**
+     * Gets the last IMAP error that occurred during this page request
+     *
+     * @return string
+     */
+    public function getLastError(){
+        return imap_last_error();
+    }
+
+    /**
+     * Delete all messages marked for deletion
+     *
+     * @return bool
+     */
+    public function expunge(){
+        return imap_expunge($this->connection);
+    }
+
+    /**
+     * Check current mailbox
+     *
+     * @return object {
+     *      Date    [string(37) "Wed, 8 Mar 2017 22:17:54 +0100 (CET)"]             current system time formatted according to » RFC2822
+     *      Driver  [string(4) "imap"]                                              protocol used to access this mailbox: POP3, IMAP, NNTP
+     *      Mailbox ["{root@example.com:993/imap/user="root@example.com"}INBOX"]    the mailbox name
+     *      Nmsgs   [int(1)]                                                        number of messages in the mailbox
+     *      Recent  [int(0)]                                                        number of recent messages in the mailbox
+     * }
+     */
+    public function checkCurrentMailbox(){
+        return imap_check($this->connection);
+    }
+
 }
