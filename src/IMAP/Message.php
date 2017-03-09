@@ -90,6 +90,8 @@ class Message {
      * @const integer   ENC_BASE64
      * @const integer   ENC_QUOTED_PRINTABLE
      * @const integer   ENC_OTHER
+     *
+     * @const integer   FT_UID
      */
     const TYPE_TEXT = 0;
     const TYPE_MULTIPART = 1;
@@ -108,6 +110,8 @@ class Message {
     const ENC_QUOTED_PRINTABLE = 4;
     const ENC_OTHER = 5;
 
+    const FT_UID = 1;
+
     /**
      * Message constructor.
      *
@@ -122,6 +126,30 @@ class Message {
 
         $this->parseHeader();
         $this->parseBody();
+    }
+
+    /**
+     * Copy the current Messages to a mailbox
+     *
+     * @param $mailbox
+     * @param int $options
+     *
+     * @return bool
+     */
+    public function copy($mailbox, $options = 0){
+        return imap_mail_copy($this->client->connection, $this->msglist, $mailbox, $options);
+    }
+
+    /**
+     * Move the current Messages to a mailbox
+     *
+     * @param $mailbox
+     * @param int $options
+     *
+     * @return bool
+     */
+    public function move($mailbox, $options = 0){
+        return imap_mail_move($this->client->connection, $this->msglist, $mailbox, $options);
     }
 
     /**
@@ -465,5 +493,29 @@ class Message {
             return imap_expunge($this->client->connection);
         }
         return false;
+    }
+
+    /**
+     * Delete the current Message
+     *
+     * @return bool
+     */
+    public function delete(){
+        $status = imap_delete($this->client->connection, $this->uid, self::FT_UID);
+        $this->client->expunge();
+
+        $this->parseHeader();
+        $this->parseBody();
+
+        return $status;
+    }
+
+    /**
+     * Restore a deleted Message
+     *
+     * @return bool
+     */
+    public function restore(){
+        return imap_undelete($this->client->connection, $this->message_no);
     }
 }

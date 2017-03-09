@@ -57,7 +57,7 @@ or you can publish groups individually.
 php artisan vendor:publish --provider="Webklex\IMAP\Providers\LaravelServiceProvider" --tag="config"
 ```
 
-Access the IMAP Client by its Facade (Webklex\IMAP\Facades\Client). 
+Access the IMAP Client by its Facade `\Webklex\IMAP\Facades\Client`. 
 Therefor you might want to add an alias to the aliases array within the `config/app.php` file.
 
 ``` php
@@ -113,7 +113,7 @@ foreach($aMailboxes as $oMailbox){
 }
 ```
 
-If you use the Facade ('Webklex\IMAP\Facades\Client') please select an account first:
+If you use the Facade `\Webklex\IMAP\Facades\Client` please select an account first:
 
 ``` php
 use Webklex\IMAP\Facades\Client;
@@ -122,7 +122,7 @@ $oClient = Webklex\IMAP\Facades\Client::account('default');
 $oClient->connect();
 ```
 
-You can define your accounts inside the config/imap.php file:
+You can define your accounts inside the `config/imap.php` file:
 ```
 'accounts' => [ 
                 'default' => [
@@ -136,6 +136,57 @@ You can define your accounts inside the config/imap.php file:
                 'gmail' => [.. ]
               ]
 ```
+
+## Documentation
+### \Webklex\IMAP\Client
+| Method                | Arguments                                             | Return            | Description                                                                                                                   |
+| --------------------- | :---------------------------------------------------: | :---------------: | ----------------------------------------------------------------------------------------------------------------------------: |
+| setConfig             | array $config                                         | self              | Set the Client configuration. Take a look at `config/imap.php` for more inspiration.                                          |
+| setReadOnly           | bool $readOnly                                        | self              | Set read only property and reconnect if it's necessary.                                                                       |
+| isReadOnly            |                                                       | bool              | Determine if connection is in read only mode.                                                                                 |
+| isConnected           |                                                       | bool              | Determine if connection was established.                                                                                      |
+| checkConnection       |                                                       |                   | Determine if connection was established and connect if not.                                                                   |
+| connect               | int $attempts                                         |                   | Connect to server.                                                                                                            |
+| disconnect            |                                                       |                   | Disconnect from server.                                                                                                       |
+| getFolders            | bool $hierarchical, string or null $parent_folder     | array             | Get folders list. If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.  |
+| openFolder            | \Webklex\IMAP\Folder $folder                          |                   | Open a given folder.                                                                                                          |
+| createFolder          | string $name                                          |                   | Create a new folder.                                                                                                          |
+| getMessages           | \Webklex\IMAP\Folder $folder, string $criteria        | array             | Get messages from folder.                                                                                                     |
+| getQuota              |                                                       | array             | Retrieve the quota level settings, and usage statics per mailbox                                                              |
+| getQuotaRoot          | string $quota_root                                    | array             | Retrieve the quota settings per user                                                                                          |
+| countMessages         |                                                       | int               | Gets the number of messages in the current mailbox                                                                            |
+| countRecentMessages   |                                                       | int               | Gets the number of recent messages in current mailbox                                                                         |
+| getAlerts             |                                                       | array             | Returns all IMAP alert messages that have occurred                                                                            |
+| getErrors             |                                                       | array             | Returns all of the IMAP errors that have occurred                                                                             |
+| getLastError          |                                                       | string            | Gets the last IMAP error that occurred during this page request                                                               |
+| expunge               |                                                       | bool              | Delete all messages marked for deletion                                                                                       |
+| checkCurrentMailbox   |                                                       | object            | Check current mailbox                                                                                                         |
+
+### \Webklex\IMAP\Message
+| Method                | Arguments                                             | Return            | Description                              |
+| --------------------- | :---------------------------------------------------: | :---------------: | ---------------------------------------: |
+| delete                |                                                       |                   | Delete the current Message               |
+| restore               |                                                       |                   | Restore a deleted Message                |
+| copy                  | string $mailbox, int $options                         |                   | Copy the current Messages to a mailbox   |
+| move                  | string $mailbox, int $options                         |                   | Move the current Messages to a mailbox   |
+| moveToFolder          | string $mailbox                                       |                   | Move the Message into an other Folder    |
+| hasTextBody           |                                                       |                   | Check if the Message has a text body     |
+| hasHTMLBody           |                                                       |                   | Check if the Message has a html body     |
+| getTextBody           |                                                       |                   | Get the Message text body                |
+| getHTMLBody           |                                                       |                   | Get the Message html body                |
+
+### \Webklex\IMAP\Folder
+| Method                | Arguments                                                 | Return            | Description                                       |
+| --------------------- | :-------------------------------------------------------: | :---------------: | ------------------------------------------------: |
+| hasChildren           |                                                           | bool              | Determine if folder has children.                 |
+| setChildren           | array $children                                           | self              | Set children.                                     |
+| getMessages           | string $criteria                                          | array             | Get messages.                                     |
+| delete                |                                                           |                   | Delete the current Mailbox                        |
+| move                  | string $mailbox                                           |                   | Move or Rename the current Mailbox                |
+| getStatus             | integer $options                                          | object            | Returns status information on a mailbox           |
+| appendMessage         | string $message, string $options, string $internal_date   | bool              | Append a string message to the current mailbox    |
+
+
 
 ## Change log
 

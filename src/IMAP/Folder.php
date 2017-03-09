@@ -99,7 +99,7 @@ class Folder {
      *
      * @param \Webklex\IMAP\Client $client
      *
-     * @param $folder
+     * @param object $folder
      */
     public function __construct(Client $client, $folder) {
         $this->client = $client;
@@ -125,9 +125,13 @@ class Folder {
      * Set children.
      *
      * @param array $children
+     *
+     * @return self
      */
     public function setChildren($children = []) {
         $this->children = $children;
+
+        return $this;
     }
 
     /**
@@ -179,5 +183,63 @@ class Folder {
         $this->marked       = ($attributes & LATT_MARKED)       ? true : false;
         $this->referal      = ($attributes & LATT_REFERRAL)     ? true : false;
         $this->has_children = ($attributes & LATT_HASCHILDREN)  ? true : false;
+    }
+
+    /**
+     * Delete the current Mailbox
+     *
+     * @return bool
+     */
+    public function delete(){
+        $status = imap_deletemailbox($this->client->connection, $this->path);
+        $this->client->expunge();
+
+        return $status;
+    }
+
+    /**
+     * Move or Rename the current Mailbox
+     *
+     * @param string $target_mailbox
+     *
+     * @return bool
+     */
+    public function move($target_mailbox){
+        $status = imap_renamemailbox($this->client->connection, $this->path, $target_mailbox);
+        $this->client->expunge();
+
+        return $status;
+    }
+
+    /**
+     * Returns status information on a mailbox
+     *
+     * @param string    $options
+     *                  SA_MESSAGES     - set $status->messages to the number of messages in the mailbox
+     *                  SA_RECENT       - set $status->recent to the number of recent messages in the mailbox
+     *                  SA_UNSEEN       - set $status->unseen to the number of unseen (new) messages in the mailbox
+     *                  SA_UIDNEXT      - set $status->uidnext to the next uid to be used in the mailbox
+     *                  SA_UIDVALIDITY  - set $status->uidvalidity to a constant that changes when uids for the mailbox may no longer be valid
+     *                  SA_ALL          - set all of the above
+     *
+     * @return object
+     */
+    public function getStatus($options){
+        return imap_status($this->client->connection, $this->path, $options);
+    }
+
+
+
+    /**
+     * Append a string message to the current mailbox
+     *
+     * @param string $message
+     * @param string $options
+     * @param string $internal_date
+     *
+     * @return bool
+     */
+    public function appendMessage($message, $options = null, $internal_date = null){
+        return imap_append($this->client->connection, $this->path, $message, $options, $internal_date);
     }
 }
