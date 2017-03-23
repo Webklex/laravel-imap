@@ -504,9 +504,6 @@ class Message {
         $status = imap_delete($this->client->connection, $this->uid, self::FT_UID);
         $this->client->expunge();
 
-        $this->parseHeader();
-        $this->parseBody();
-
         return $status;
     }
 
