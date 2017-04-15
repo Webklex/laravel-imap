@@ -306,7 +306,7 @@ class Message {
      * @param mixed $partNumber
      */
     private function fetchStructure($structure, $partNumber = null) {
-        if ($structure->type == self::TYPE_TEXT) {
+        if ($structure->type == self::TYPE_TEXT && $partNumber == null) {
             if ($structure->subtype == "PLAIN") {
                 if (!$partNumber) {
                     $partNumber = 1;
@@ -347,7 +347,7 @@ class Message {
                 if ($partNumber) {
                     $prefix = $partNumber . ".";
                 }
-
+                var_dump($structure);
                 $this->fetchStructure($subStruct, $prefix . ($index + 1));
             }
         } else {
@@ -410,10 +410,14 @@ class Message {
                 $attachment->img_src = 'data:'.$attachment->content_type.';base64,'.base64_encode($attachment->content);
             }
 
-            if ($attachment->id) {
-                $this->attachments[$attachment->id] = $attachment;
-            } else {
-                $this->attachments[] = $attachment;
+            if(property_exists($attachment, 'name')){
+                if($attachment->name != false){
+                    if ($attachment->id) {
+                        $this->attachments[$attachment->id] = $attachment;
+                    } else {
+                        $this->attachments[] = $attachment;
+                    }
+                }
             }
         }
     }
@@ -514,5 +518,14 @@ class Message {
      */
     public function restore(){
         return imap_undelete($this->client->connection, $this->message_no);
+    }
+
+    /**
+     * Get all message attachments.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAttachments(){
+        return collect($this->attachments);
     }
 }

@@ -12,6 +12,8 @@
 
 namespace Webklex\IMAP;
 
+use Guzzle\Common\Collection;
+
 class Folder {
     /**
      * Client instance
@@ -139,10 +141,10 @@ class Folder {
      *
      * @param string $criteria
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getMessages($criteria = 'ALL') {
-        return $this->client->getMessages($this, $criteria);
+        return collect($this->client->getMessages($this, $criteria));
     }
 
     /**

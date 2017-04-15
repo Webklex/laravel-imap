@@ -95,6 +95,7 @@ foreach($aMailboxes as $oMailbox){
     /** @var \Webklex\IMAP\Message $oMessage */
     foreach($oMailbox->getMessages() as $oMessage){
         echo $oMessage->subject.'<br />';
+        echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
         echo $oMessage->getHTMLBody(true);
         
         //Move the current Message to 'INBOX.read'
@@ -157,17 +158,18 @@ You can define your accounts inside the `config/imap.php` file:
 | checkCurrentMailbox   |                                                   | object  | Check current mailbox                                                                                                         |
 
 ### \Webklex\IMAP\Message
-| Method       | Arguments                     | Return  | Description                            |
-| ------------ | ----------------------------- | :-----: | -------------------------------------- |
-| delete       |                               |         | Delete the current Message             |
-| restore      |                               |         | Restore a deleted Message              |
-| copy         | string $mailbox, int $options |         | Copy the current Messages to a mailbox |
-| move         | string $mailbox, int $options |         | Move the current Messages to a mailbox |
-| moveToFolder | string $mailbox               |         | Move the Message into an other Folder  |
-| hasTextBody  |                               |         | Check if the Message has a text body   |
-| hasHTMLBody  |                               |         | Check if the Message has a html body   |
-| getTextBody  |                               | string  | Get the Message text body              |
-| getHTMLBody  |                               | string  | Get the Message html body              |
+| Method         | Arguments                     | Return      | Description                            |
+| -------------- | ----------------------------- | :---------: | -------------------------------------- |
+| delete         |                               |             | Delete the current Message             |
+| restore        |                               |             | Restore a deleted Message              |
+| copy           | string $mailbox, int $options |             | Copy the current Messages to a mailbox |
+| move           | string $mailbox, int $options |             | Move the current Messages to a mailbox |
+| moveToFolder   | string $mailbox               |             | Move the Message into an other Folder  |
+| hasTextBody    |                               |             | Check if the Message has a text body   |
+| hasHTMLBody    |                               |             | Check if the Message has a html body   |
+| getTextBody    |                               | string      | Get the Message text body              |
+| getHTMLBody    |                               | string      | Get the Message html body              |
+| getAttachments |                               | collection  | Get all message attachments            |
 
 ### \Webklex\IMAP\Folder
 | Method        | Arguments                                               | Return  | Description                                    |
