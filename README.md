@@ -107,7 +107,7 @@ foreach($aMailboxes as $oMailbox){
     }
 }
 ```
-Attachment handling fixed (Plain files were ignored)
+
 If you use the Facade `\Webklex\IMAP\Facades\Client` please select an account first:
 
 ``` php
