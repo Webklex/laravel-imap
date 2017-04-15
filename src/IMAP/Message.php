@@ -347,7 +347,6 @@ class Message {
                 if ($partNumber) {
                     $prefix = $partNumber . ".";
                 }
-                var_dump($structure);
                 $this->fetchStructure($subStruct, $prefix . ($index + 1));
             }
         } else {
