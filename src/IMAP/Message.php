@@ -33,6 +33,13 @@ class Message {
     public $uid = '';
 
     /**
+     * Fetch body options
+     *
+     * @var string
+     */
+    public $fetch_options = null;
+
+    /**
      * @var int $msglist
      */
     public $msglist = 1;
@@ -118,11 +125,13 @@ class Message {
      * @param $uid
      * @param $msglist
      * @param \Webklex\IMAP\Client $client
+     * @param $fetch_options
      */
-    public function __construct($uid, $msglist, Client $client) {
+    public function __construct($uid, $msglist, Client $client, $fetch_options = null) {
         $this->uid = $uid;
         $this->msglist = $msglist;
         $this->client = $client;
+        $this->fetch_options = ($fetch_options) ? $fetch_options : FT_UID;
 
         $this->parseHeader();
         $this->parseBody();
@@ -314,7 +323,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, FT_PEEK);
+                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, $this->fetch_options);
                 $content = $this->decodeString($content, $structure->encoding);
                 $content = $this->convertEncoding($content, $encoding);
 
@@ -331,7 +340,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, FT_PEEK);
+                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, $this->fetch_options);
                 $content = $this->decodeString($content, $structure->encoding);
                 $content = $this->convertEncoding($content, $encoding);
 
@@ -374,7 +383,7 @@ class Message {
                     break;
             }
 
-            $content = imap_fetchbody($this->client->connection, $this->uid, ($partNumber) ? $partNumber : 1, FT_PEEK);
+            $content = imap_fetchbody($this->client->connection, $this->uid, ($partNumber) ? $partNumber : 1, $this->fetch_options);
 
             $attachment = new \stdClass;
             $attachment->type = $type;

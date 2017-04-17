@@ -143,8 +143,8 @@ class Folder {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getMessages($criteria = 'ALL') {
-        return collect($this->client->getMessages($this, $criteria));
+    public function getMessages($criteria = 'ALL', $fetch_options = null) {
+        return collect($this->client->getMessages($this, $criteria, $fetch_options));
     }
 
     /**
