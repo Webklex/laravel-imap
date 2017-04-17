@@ -314,7 +314,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, FT_UID);
+                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, FT_PEEK);
                 $content = $this->decodeString($content, $structure->encoding);
                 $content = $this->convertEncoding($content, $encoding);
 
@@ -331,7 +331,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, FT_UID);
+                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, FT_PEEK);
                 $content = $this->decodeString($content, $structure->encoding);
                 $content = $this->convertEncoding($content, $encoding);
 
@@ -374,7 +374,7 @@ class Message {
                     break;
             }
 
-            $content = imap_fetchbody($this->client->connection, $this->uid, ($partNumber) ? $partNumber : 1, FT_UID);
+            $content = imap_fetchbody($this->client->connection, $this->uid, ($partNumber) ? $partNumber : 1, FT_PEEK);
 
             $attachment = new \stdClass;
             $attachment->type = $type;
