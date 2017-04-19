@@ -62,4 +62,16 @@ return [
         ]
         */
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available IMAP options
+    |--------------------------------------------------------------------------
+    |
+    | Available php imap config parameters are listed below
+    |
+    */
+    'options' => [
+        'fetch' => FT_UID,
+    ]
 ];

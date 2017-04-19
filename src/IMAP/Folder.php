@@ -140,6 +140,7 @@ class Folder {
      * Get messages.
      *
      * @param string $criteria
+     * @param null   $fetch_options
      *
      * @return \Illuminate\Support\Collection
      */

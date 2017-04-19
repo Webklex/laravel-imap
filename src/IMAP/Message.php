@@ -131,7 +131,7 @@ class Message {
         $this->uid = $uid;
         $this->msglist = $msglist;
         $this->client = $client;
-        $this->fetch_options = ($fetch_options) ? $fetch_options : FT_UID;
+        $this->fetch_options = ($fetch_options) ? $fetch_options : config('imap.options.fetch', FT_UID);
 
         $this->parseHeader();
         $this->parseBody();
