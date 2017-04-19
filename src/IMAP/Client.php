@@ -265,11 +265,12 @@ class Client {
      *
      * @param Folder $folder
      * @param string $criteria
+     * @param integer $fetch_options
      *
      * @return array
      * @throws GetMessagesFailedException
      */
-    public function getMessages(Folder $folder, $criteria = 'ALL')
+    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null)
     {
         $this->checkConnection();
 
@@ -281,7 +282,7 @@ class Client {
             if ($availableMessages !== false) {
                 $msglist = 1;
                 foreach ($availableMessages as $msgno) {
-                    $message = new Message($msgno, $msglist, $this);
+                    $message = new Message($msgno, $msglist, $this, $fetch_options);
 
                     $messages[$message->message_id] = $message;
                     $msglist++;
