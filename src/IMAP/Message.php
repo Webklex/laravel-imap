@@ -311,11 +311,10 @@ class Message {
      * Fetch the Message structure
      *
      * @param $structure
-     *
      * @param mixed $partNumber
      */
     private function fetchStructure($structure, $partNumber = null) {
-        if ($structure->type == self::TYPE_TEXT && $partNumber == null) {
+        if ($structure->type == self::TYPE_TEXT) {
             if ($structure->subtype == "PLAIN") {
                 if (!$partNumber) {
                     $partNumber = 1;
@@ -332,6 +331,8 @@ class Message {
                 $body->content = $content;
 
                 $this->bodies['text'] = $body;
+
+                $this->fetchAttachment($structure, $partNumber);
 
             } elseif ($structure->subtype == "HTML") {
                 if (!$partNumber) {
@@ -359,72 +360,83 @@ class Message {
                 $this->fetchStructure($subStruct, $prefix . ($index + 1));
             }
         } else {
-            switch ($structure->type) {
-                case self::TYPE_APPLICATION:
-                    $type = 'application';
-                    break;
-                case self::TYPE_AUDIO:
-                    $type = 'audio';
-                    break;
-                case self::TYPE_IMAGE:
-                    $type = 'image';
-                    break;
-                case self::TYPE_VIDEO:
-                    $type = 'video';
-                    break;
-                case self::TYPE_MODEL:
-                    $type = 'model';
-                    break;
-                case self::TYPE_OTHER:
-                    $type = 'other';
-                    break;
-                default:
-                    $type = 'other';
-                    break;
-            }
+            $this->fetchAttachment($structure, $partNumber);
+        }
+    }
 
-            $content = imap_fetchbody($this->client->connection, $this->uid, ($partNumber) ? $partNumber : 1, $this->fetch_options);
 
-            $attachment = new \stdClass;
-            $attachment->type = $type;
-            $attachment->content_type = $type.'/'.strtolower($structure->subtype);
-            $attachment->content = $this->decodeString($content, $structure->encoding);
+    /**
+     * Fetch the Message attachment
+     *
+     * @param object $structure
+     * @param mixed  $partNumber
+     */
+    protected function fetchAttachment($structure, $partNumber){
+        switch ($structure->type) {
+            case self::TYPE_APPLICATION:
+                $type = 'application';
+                break;
+            case self::TYPE_AUDIO:
+                $type = 'audio';
+                break;
+            case self::TYPE_IMAGE:
+                $type = 'image';
+                break;
+            case self::TYPE_VIDEO:
+                $type = 'video';
+                break;
+            case self::TYPE_MODEL:
+                $type = 'model';
+                break;
+            case self::TYPE_OTHER:
+                $type = 'other';
+                break;
+            default:
+                $type = 'other';
+                break;
+        }
 
-            $attachment->id = false;
-            if (property_exists($structure, 'id')) {
-                $attachment->id = str_replace(['<', '>'], '', $structure->id);
-            }
+        $content = imap_fetchbody($this->client->connection, $this->uid, ($partNumber) ? $partNumber : 1, $this->fetch_options);
 
-            $attachment->name = false;
-            if (property_exists($structure, 'dparameters')) {
-                foreach ($structure->dparameters as $parameter) {
-                    if ($parameter->attribute == "filename") {
-                        $attachment->name = $parameter->value;
-                        break;
-                    }
+        $attachment = new \stdClass;
+        $attachment->type = $type;
+        $attachment->content_type = $type.'/'.strtolower($structure->subtype);
+        $attachment->content = $this->decodeString($content, $structure->encoding);
+
+        $attachment->id = false;
+        if (property_exists($structure, 'id')) {
+            $attachment->id = str_replace(['<', '>'], '', $structure->id);
+        }
+
+        $attachment->name = false;
+        if (property_exists($structure, 'dparameters')) {
+            foreach ($structure->dparameters as $parameter) {
+                if ($parameter->attribute == "filename") {
+                    $attachment->name = $parameter->value;
+                    break;
                 }
             }
+        }
 
-            if (!$attachment->name && property_exists($structure, 'parameters')) {
-                foreach ($structure->parameters as $parameter) {
-                    if ($parameter->attribute == "name") {
-                        $attachment->name = $parameter->value;
-                        break;
-                    }
+        if (!$attachment->name && property_exists($structure, 'parameters')) {
+            foreach ($structure->parameters as $parameter) {
+                if ($parameter->attribute == "name") {
+                    $attachment->name = $parameter->value;
+                    break;
                 }
             }
+        }
 
-            if ($attachment->type == 'image') {
-                $attachment->img_src = 'data:'.$attachment->content_type.';base64,'.base64_encode($attachment->content);
-            }
+        if ($attachment->type == 'image') {
+            $attachment->img_src = 'data:'.$attachment->content_type.';base64,'.base64_encode($attachment->content);
+        }
 
-            if(property_exists($attachment, 'name')){
-                if($attachment->name != false){
-                    if ($attachment->id) {
-                        $this->attachments[$attachment->id] = $attachment;
-                    } else {
-                        $this->attachments[] = $attachment;
-                    }
+        if(property_exists($attachment, 'name')){
+            if($attachment->name != false){
+                if ($attachment->id) {
+                    $this->attachments[$attachment->id] = $attachment;
+                } else {
+                    $this->attachments[] = $attachment;
                 }
             }
         }
