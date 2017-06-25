@@ -411,7 +411,7 @@ class Message {
         $attachment->name = false;
         if (property_exists($structure, 'dparameters')) {
             foreach ($structure->dparameters as $parameter) {
-                if ($parameter->attribute == "filename") {
+                if (strtolower($parameter->attribute) == "filename") {
                     $attachment->name = $parameter->value;
                     break;
                 }
@@ -420,7 +420,7 @@ class Message {
 
         if (!$attachment->name && property_exists($structure, 'parameters')) {
             foreach ($structure->parameters as $parameter) {
-                if ($parameter->attribute == "name") {
+                if (strtolower($parameter->attribute) == "name") {
                     $attachment->name = $parameter->value;
                     break;
                 }
@@ -495,7 +495,7 @@ class Message {
     private function getEncoding($structure) {
         if (property_exists($structure, 'parameters')) {
             foreach ($structure->parameters as $parameter) {
-                if ($parameter->attribute == "charset") {
+                if (strtolower($parameter->attribute) == "charset") {
                     return strtoupper($parameter->value);
                 }
             }
