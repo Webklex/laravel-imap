@@ -69,6 +69,9 @@ return [
     |--------------------------------------------------------------------------
     |
     | Available php imap config parameters are listed below
+    |   -Fetch option:
+    |       FT_UID  => Message marked as read by fetching the message
+    |       FT_PEEK => Fetch the message without setting the "read" flag
     |
     */
     'options' => [

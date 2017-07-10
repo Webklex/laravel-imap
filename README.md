@@ -133,7 +133,7 @@ You can define your accounts inside the `config/imap.php` file:
 ```
 
 ## Documentation
-### \Webklex\IMAP\Client
+### [Client::class](src/IMAP/Client.php)
 | Method                | Arguments                                         | Return  | Description                                                                                                                   |
 | --------------------- | ------------------------------------------------- | :-----: | ----------------------------------------------------------------------------------------------------------------------------  |
 | setConfig             | array $config                                     | self    | Set the Client configuration. Take a look at `config/imap.php` for more inspiration.                                          |
@@ -157,7 +157,7 @@ You can define your accounts inside the `config/imap.php` file:
 | expunge               |                                                   | bool    | Delete all messages marked for deletion                                                                                       |
 | checkCurrentMailbox   |                                                   | object  | Check current mailbox                                                                                                         |
 
-### \Webklex\IMAP\Message
+### [Message::class](src/IMAP/Message.php)
 | Method         | Arguments                     | Return      | Description                            |
 | -------------- | ----------------------------- | :---------: | -------------------------------------- |
 | delete         |                               |             | Delete the current Message             |
@@ -171,7 +171,7 @@ You can define your accounts inside the `config/imap.php` file:
 | getHTMLBody    |                               | string      | Get the Message html body              |
 | getAttachments |                               | collection  | Get all message attachments            |
 
-### \Webklex\IMAP\Folder
+### [Folder::class](src/IMAP/Folder.php)
 | Method        | Arguments                                               | Return  | Description                                    |
 | ------------- | ------------------------------------------------------- | :-----: | ---------------------------------------------- |
 | hasChildren   |                                                         | bool    | Determine if folder has children.              |

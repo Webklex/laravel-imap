@@ -18,6 +18,7 @@ use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 
 class Client {
+
     /**
      * @var bool|resource
      */
