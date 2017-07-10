@@ -172,7 +172,8 @@ class Client {
                 $this->username,
                 $this->password,
                 $this->getOptions(),
-                $attempts
+                $attempts,
+                config('imap.options.open')
             );
         } catch (\ErrorException $e) {
             $message = $e->getMessage().'. '.implode("; ", imap_errors());

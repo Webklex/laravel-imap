@@ -6,12 +6,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 -Wrong documentation removed
+-New config parameter added
+-Typo fixed
 
 ## [1.0.2.3] - 2017-03-09
 ### Added
 -Code commented
 -A whole bunch of functions and features added. To many to mention all of them ;)
--Readme file extened
+-Readme file extended
 
 ### Changes 
 \Webklex\IMAP\Client
