@@ -5,11 +5,21 @@ All notable changes to `webklex/laravel-imap` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## [UNRELEASED]
+-NaN-
+
+### Affected Classes
+-NaN-
+
+## [1.0.2.9] - 2017-07-12
+### Added
+-Merged configuration
 -New config parameter added
+-"Known issues" added to README.md
 -Typo fixed
 
 ### Affected Classes
 \Webklex\IMAP\Client
+\Webklex\IMAP\Providers\LaravelServiceProvider
 
 ## [1.0.2.8] - 2017-06-25
 ### Added
