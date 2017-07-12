@@ -45,5 +45,7 @@ class LaravelServiceProvider extends ServiceProvider
             return $app[ClientManager::class]->account();
         });
 
+        $this->mergeConfigFrom(__DIR__.'/../../config/imap.php', 'imap');
+
     }
 }
