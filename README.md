@@ -182,6 +182,10 @@ You can define your accounts inside the `config/imap.php` file:
 | getStatus     | integer $options                                        | object  | Returns status information on a mailbox        |
 | appendMessage | string $message, string $options, string $internal_date | bool    | Append a string message to the current mailbox |
 
+### Known issues
+| Error                                                                     | Solution                                                   |
+| ------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Kerberos error: No credentials cache file found (try running kinit) (...) | Uncomment "DISABLE_AUTHENTICATOR" inside `config/imap.php` | 
 
 
 ## Change log
