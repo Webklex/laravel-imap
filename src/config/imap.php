@@ -70,8 +70,13 @@ return [
     |
     | Available php imap config parameters are listed below
     |   -Fetch option:
-    |       FT_UID  => Message marked as read by fetching the message
-    |       FT_PEEK => Fetch the message without setting the "read" flag
+    |       FT_UID  - Message marked as read by fetching the message
+    |       FT_PEEK - Fetch the message without setting the "read" flag
+    |   -Open IMAP options:
+    |       DISABLE_AUTHENTICATOR - Disable authentication properties.
+    |                               Use 'GSSAPI' if you encounter the following
+    |                               error: "Kerberos error: No credentials cache
+    |                               file found (try running kinit) (...)"
     |
     */
     'options' => [
