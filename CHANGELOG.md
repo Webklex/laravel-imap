@@ -44,8 +44,6 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 \Webklex\IMAP\Message
 \Webklex\IMAP\Folder
 
->>>>>>> add1a03fed0574f7a738b049b19e329896020c24
-
 ## [1.0.2.3] - 2017-03-09
 ### Added
 -Code commented
