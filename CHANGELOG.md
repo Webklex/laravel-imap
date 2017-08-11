@@ -10,6 +10,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 -NaN-
 
+## [1.0.2.10] - 2017-08-11
+### Added
+-$fetch_option setter added
+
+### Affected Classes
+\Webklex\IMAP\Message
+
 ## [1.0.2.9] - 2017-07-12
 ### Added
 -Merged configuration
