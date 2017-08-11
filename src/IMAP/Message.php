@@ -131,8 +131,8 @@ class Message {
         $this->uid = $uid;
         $this->msglist = $msglist;
         $this->client = $client;
-        $this->fetch_options = ($fetch_options) ? $fetch_options : config('imap.options.fetch', FT_UID);
 
+        $this->setFetchOption($fetch_options);
         $this->parseHeader();
         $this->parseBody();
     }
@@ -440,6 +440,24 @@ class Message {
                 }
             }
         }
+    }
+
+    /**
+     * Fail proof setter for $fetch_option
+     *
+     * @param $option
+     *
+     * @return $this
+     */
+    public function setFetchOption($option){
+        if(is_long($option) == true){
+            $this->fetch_options = $option;
+        }elseif(is_null($option) == true){
+            $config = config('imap.options.fetch', FT_UID);
+            $this->fetch_options = is_long($config) ? $config : 1;
+        }
+
+        return $this;
     }
 
     /**
