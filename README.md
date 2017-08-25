@@ -11,7 +11,7 @@
 Via Composer
 
 ``` bash
-$ composer require radicalloop/laravel-imap
+$ composer require webklex/laravel-imap
 ```
 
 ## Setup
