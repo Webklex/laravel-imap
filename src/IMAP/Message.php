@@ -413,6 +413,7 @@ class Message {
             foreach ($structure->dparameters as $parameter) {
                 if (strtolower($parameter->attribute) == "filename") {
                     $attachment->name = $parameter->value;
+                    $attachment->disposition = $structure->disposition;
                     break;
                 }
             }
@@ -422,6 +423,7 @@ class Message {
             foreach ($structure->parameters as $parameter) {
                 if (strtolower($parameter->attribute) == "name") {
                     $attachment->name = $parameter->value;
+                    $attachment->disposition = $structure->disposition;
                     break;
                 }
             }
