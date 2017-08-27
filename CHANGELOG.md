@@ -10,6 +10,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 -NaN-
 
+## [1.0.2.12] - 2017-08-27
+### Added
+-Fixing text attachment issue - overwrite mail body (thx to radicalloop)
+
+### Affected Classes
+\Webklex\IMAP\Message
+
 ## [1.0.2.11] - 2017-08-25
 ### Added
 -Attachment disposition (special thanks to radicalloop)
