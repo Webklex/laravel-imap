@@ -10,6 +10,19 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 -NaN-
 
+## [1.0.3.1] - 2017-09-05
+### Added
+-getConnection method added
+-Using a bit more fail save uid / msgNo by calling imap_msgno()
+
+### Affected Classes
+\Webklex\IMAP\Client
+\Webklex\IMAP\Message
+
+## [1.0.3.0] - 2017-09-01
+### Changes
+-Carbon dependency removed
+
 ## [1.0.2.12] - 2017-08-27
 ### Added
 -Fixing text attachment issue - overwrite mail body (thx to radicalloop)
