@@ -110,6 +110,15 @@ class Client {
     }
 
     /**
+     * Get the current imap resource
+     *
+     * @return resource
+     */
+    public function getConnection(){
+        return $this->connection;
+    }
+
+    /**
      * Set read only property and reconnect if it's necessary.
      *
      * @param bool $readOnly

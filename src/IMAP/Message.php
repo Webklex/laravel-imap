@@ -128,9 +128,9 @@ class Message {
      * @param $fetch_options
      */
     public function __construct($uid, $msglist, Client $client, $fetch_options = null) {
-        $this->uid = $uid;
         $this->msglist = $msglist;
         $this->client = $client;
+        $this->uid = imap_msgno($this->client->getConnection(), $uid);
 
         $this->setFetchOption($fetch_options);
         $this->parseHeader();
@@ -258,7 +258,7 @@ class Message {
             $this->message_id = str_replace(['<', '>'], '', $header->message_id);
         }
         if (property_exists($header, 'Msgno')) {
-            $this->message_no = trim($header->Msgno);
+            $this->message_no = imap_msgno($this->client->getConnection(), trim($header->Msgno));
         }
     }
 
