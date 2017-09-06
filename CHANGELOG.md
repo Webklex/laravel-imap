@@ -23,8 +23,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - FT_UID changed to $this->options which references to `imap.options.fetch`
 
 ### Affected Classes
-\Webklex\IMAP\Message
-\Webklex\IMAP\Client
+- [Message::class](src/IMAP/Message.php)
+- [Client::class](src/IMAP/Client.php)
 
 ## [1.0.3.1] - 2017-09-05
 ### Added
@@ -32,8 +32,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Using a bit more fail save uid / msgNo by calling imap_msgno()
 
 ### Affected Classes
-\Webklex\IMAP\Client
-\Webklex\IMAP\Message
+- [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
 
 ## [1.0.3.0] - 2017-09-01
 ### Changes
@@ -44,7 +44,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Fixing text attachment issue - overwrite mail body (thx to radicalloop)
 
 ### Affected Classes
-\Webklex\IMAP\Message
+- [Message::class](src/IMAP/Message.php)
 
 ## [1.0.2.11] - 2017-08-25
 ### Added
@@ -52,14 +52,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Missing method added to README.md
 
 ### Affected Classes
-\Webklex\IMAP\Message
+- [Message::class](src/IMAP/Message.php)
 
 ## [1.0.2.10] - 2017-08-11
 ### Added
 - $fetch_option setter added
 
 ### Affected Classes
-\Webklex\IMAP\Message
+- [Message::class](src/IMAP/Message.php)
 
 ## [1.0.2.9] - 2017-07-12
 ### Added
@@ -69,8 +69,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Typo fixed
 
 ### Affected Classes
-\Webklex\IMAP\Client
-\Webklex\IMAP\Providers\LaravelServiceProvider
+- [Client::class](src/IMAP/Client.php)
+- [LaravelServiceProvider::class](src/IMAP/Providers/LaravelServiceProvider.php)
 
 ## [1.0.2.8] - 2017-06-25
 ### Added
@@ -79,7 +79,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Changelog typo fixed
 
 ### Affected Classes
-\Webklex\IMAP\Message
+- [Message::class](src/IMAP/Message.php)
 
 
 ## [1.0.2.7] - 2017-04-23
@@ -91,9 +91,9 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Readme file extended
 
 ### Changes 
-\Webklex\IMAP\Client
-\Webklex\IMAP\Message
-\Webklex\IMAP\Folder
+- [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
+- [Folder::class](src/IMAP/Folder.php)
 
 ## [1.0.2.3] - 2017-03-09
 ### Added
@@ -102,9 +102,9 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Readme file extended
 
 ### Changes 
-\Webklex\IMAP\Client
-\Webklex\IMAP\Message
-\Webklex\IMAP\Folder
+- [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
+- [Folder::class](src/IMAP/Folder.php)
 
 ## 0.0.1 - 2017-03-04
 ### Added
