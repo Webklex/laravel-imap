@@ -97,8 +97,6 @@ class Message {
      * @const integer   ENC_BASE64
      * @const integer   ENC_QUOTED_PRINTABLE
      * @const integer   ENC_OTHER
-     *
-     * @const integer   FT_UID
      */
     const TYPE_TEXT = 0;
     const TYPE_MULTIPART = 1;
@@ -116,8 +114,6 @@ class Message {
     const ENC_BASE64 = 3;
     const ENC_QUOTED_PRINTABLE = 4;
     const ENC_OTHER = 5;
-
-    const FT_UID = 1;
 
     /**
      * Message constructor.
@@ -222,7 +218,7 @@ class Message {
      * @return void
      */
     private function parseHeader() {
-        $header = imap_fetchheader($this->client->connection, $this->uid, FT_UID);
+        $header = imap_fetchheader($this->client->connection, $this->uid, $this->fetch_options);
         if ($header) {
             $header = imap_rfc822_parse_headers($header);
         }
@@ -302,7 +298,7 @@ class Message {
      * @return void
      */
     private function parseBody() {
-        $structure = imap_fetchstructure($this->client->connection, $this->uid, FT_UID);
+        $structure = imap_fetchstructure($this->client->connection, $this->uid, $this->fetch_options);
 
         $this->fetchStructure($structure);
     }
@@ -546,7 +542,7 @@ class Message {
      * @return bool
      */
     public function delete(){
-        $status = imap_delete($this->client->connection, $this->uid, self::FT_UID);
+        $status = imap_delete($this->client->connection, $this->uid, $this->fetch_options);
         $this->client->expunge();
 
         return $status;
