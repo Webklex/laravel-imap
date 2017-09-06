@@ -186,7 +186,8 @@ class Client {
                 config('imap.options.open')
             );
         } catch (\ErrorException $e) {
-            $message = $e->getMessage().'. '.implode("; ", imap_errors());
+            $errors = imap_errors();
+            $message = $e->getMessage().'. '.implode("; ", (is_array($errors) ? $errors : array()));
 
             throw new ConnectionFailedException($message);
         }
