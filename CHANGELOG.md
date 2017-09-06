@@ -6,6 +6,17 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
+- NaN
+
+### Added
+- NaN
+
+### Affected Classes
+- NaN
+
+
+## [1.0.3.2] - 2017-09-07
+### Fixed
 - Fix implode error in Client.php, beacause imap_errors() can return FALSE instand of array
 
 ### Added
@@ -13,6 +24,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ### Affected Classes
 \Webklex\IMAP\Message
+\Webklex\IMAP\Client
 
 ## [1.0.3.1] - 2017-09-05
 ### Added
