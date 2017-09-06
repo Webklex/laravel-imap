@@ -16,7 +16,7 @@ $ composer require webklex/laravel-imap
 
 ## Setup
 
-Add the service provider to the providers array in `config/app.php`.
+Add the service provider to the providers array in [config/imap.php](src/config/imap.php).
 
 ``` php
 'providers' => [
@@ -52,8 +52,8 @@ You can publish everything at once
 php artisan vendor:publish --provider="Webklex\IMAP\Providers\LaravelServiceProvider"
 ```
 
-Access the IMAP Client by its Facade `\Webklex\IMAP\Facades\Client`. 
-Therefor you might want to add an alias to the aliases array within the `config/app.php` file.
+Access the IMAP Client by its Facade [\Webklex\IMAP\Facades\Client::class](src/IMAP/Facades/Client.php). 
+Therefor you might want to add an alias to the aliases array within the [config/imap.php](src/config/imap.php) file.
 
 ``` php
 'aliases' => [
@@ -109,7 +109,7 @@ foreach($aMailboxes as $oMailbox){
 }
 ```
 
-If you use the Facade `\Webklex\IMAP\Facades\Client` please select an account first:
+If you use the Facade [\Webklex\IMAP\Facades\Client::class](src/IMAP/Facades/Client.php) please select an account first:
 
 ``` php
 use Webklex\IMAP\Facades\Client;
@@ -118,7 +118,7 @@ $oClient = Webklex\IMAP\Facades\Client::account('default');
 $oClient->connect();
 ```
 
-You can define your accounts inside the `config/imap.php` file:
+You can define your accounts inside the [config/imap.php](src/config/imap.php) file:
 ```
 'accounts' => [ 
     'default' => [
