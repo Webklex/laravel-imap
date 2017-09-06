@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Config;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 
+/**
+ * Class Client
+ *
+ * @package Webklex\IMAP
+ */
 class Client {
 
     /**
@@ -86,8 +91,7 @@ class Client {
      *
      * @param array $config
      */
-    public function __construct($config = [])
-    {
+    public function __construct($config = []) {
         $this->setConfig($config);
     }
 
@@ -125,8 +129,7 @@ class Client {
      *
      * @return self
      */
-    public function setReadOnly($readOnly = true)
-    {
+    public function setReadOnly($readOnly = true) {
         $this->read_only = $readOnly;
 
         return $this;
@@ -137,8 +140,7 @@ class Client {
      *
      * @return bool
      */
-    public function isConnected()
-    {
+    public function isConnected() {
         return ($this->connection) ? true : false;
     }
 
@@ -147,16 +149,14 @@ class Client {
      *
      * @return bool
      */
-    public function isReadOnly()
-    {
+    public function isReadOnly() {
         return $this->read_only;
     }
 
     /**
      * Determine if connection was established and connect if not.
      */
-    public function checkConnection()
-    {
+    public function checkConnection() {
         if (!$this->isConnected()) {
             $this->connect();
         }
@@ -170,8 +170,7 @@ class Client {
      * @return $this
      * @throws ConnectionFailedException
      */
-    public function connect($attempts = 3)
-    {
+    public function connect($attempts = 3) {
         if ($this->isConnected()) {
             $this->disconnect();
         }
@@ -200,8 +199,7 @@ class Client {
      *
      * @return $this
      */
-    public function disconnect()
-    {
+    public function disconnect() {
         if ($this->isConnected()) {
             imap_close($this->connection);
         }
@@ -218,8 +216,7 @@ class Client {
      *
      * @return array
      */
-    public function getFolders($hierarchical = true, $parent_folder = null)
-    {
+    public function getFolders($hierarchical = true, $parent_folder = null) {
         $this->checkConnection();
         $folders = [];
 
@@ -250,8 +247,7 @@ class Client {
      *
      * @param Folder $folder
      */
-    public function openFolder(Folder $folder)
-    {
+    public function openFolder(Folder $folder) {
         $this->checkConnection();
 
         if ($this->activeFolder != $folder) {
@@ -282,8 +278,7 @@ class Client {
      * @return array
      * @throws GetMessagesFailedException
      */
-    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null)
-    {
+    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null) {
         $this->checkConnection();
 
         try {
@@ -314,8 +309,7 @@ class Client {
      *
      * @return int
      */
-    protected function getOptions()
-    {
+    protected function getOptions() {
         return ($this->isReadOnly()) ? OP_READONLY : 0;
     }
 
@@ -324,8 +318,7 @@ class Client {
      *
      * @return string
      */
-    protected function getAddress()
-    {
+    protected function getAddress() {
         $address = "{".$this->host.":".$this->port."/imap";
         if (!$this->validate_cert) {
             $address .= '/novalidate-cert';

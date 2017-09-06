@@ -14,6 +14,11 @@ namespace Webklex\IMAP\Exceptions;
 
 use \Exception;
 
+/**
+ * Class ConnectionFailedException
+ *
+ * @package Webklex\IMAP\Exceptions
+ */
 class ConnectionFailedException extends Exception {
 
 }

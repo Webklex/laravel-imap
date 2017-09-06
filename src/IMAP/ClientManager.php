@@ -12,6 +12,11 @@
 
 namespace Webklex\IMAP;
 
+/**
+ * Class ClientManager
+ *
+ * @package Webklex\IMAP
+ */
 class ClientManager {
 
     /**

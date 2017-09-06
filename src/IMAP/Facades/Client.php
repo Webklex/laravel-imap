@@ -15,15 +15,19 @@ namespace Webklex\IMAP\Facades;
 use Illuminate\Support\Facades\Facade;
 use Webklex\IMAP\ClientManager;
 
-class Client extends Facade
-{
+/**
+ * Class Client
+ *
+ * @package Webklex\IMAP\Facades
+ */
+class Client extends Facade {
+
     /**
      * Get the registered name of the component.
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
-    {
+    protected static function getFacadeAccessor() {
         return ClientManager::class;
     }
 }

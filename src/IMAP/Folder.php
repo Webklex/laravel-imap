@@ -12,9 +12,13 @@
 
 namespace Webklex\IMAP;
 
-use Guzzle\Common\Collection;
-
+/**
+ * Class Folder
+ *
+ * @package Webklex\IMAP
+ */
 class Folder {
+
     /**
      * Client instance
      *
@@ -230,8 +234,6 @@ class Folder {
     public function getStatus($options){
         return imap_status($this->client->connection, $this->path, $options);
     }
-
-
 
     /**
      * Append a string message to the current mailbox

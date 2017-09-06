@@ -14,8 +14,12 @@ namespace Webklex\IMAP;
 
 use Carbon\Carbon;
 
+/**
+ * Class Message
+ *
+ * @package Webklex\IMAP
+ */
 class Message {
-
 
     /**
      * Client instance
@@ -23,7 +27,6 @@ class Message {
      * @var \Webklex\IMAP\Client
      */
     private $client = Client::class;
-
 
     /**
      * U ID
@@ -359,7 +362,6 @@ class Message {
             $this->fetchAttachment($structure, $partNumber);
         }
     }
-
 
     /**
      * Fetch the Message attachment

@@ -6,13 +6,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- General code style and documentation
 
 ### Added
 - NaN
 
 ### Affected Classes
-- NaN
+- All
 
 
 ## [1.0.3.2] - 2017-09-07

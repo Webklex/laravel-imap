@@ -16,15 +16,19 @@ use Illuminate\Support\ServiceProvider;
 use Webklex\IMAP\Client;
 use Webklex\IMAP\ClientManager;
 
-class LaravelServiceProvider extends ServiceProvider
-{
+/**
+ * Class LaravelServiceProvider
+ *
+ * @package Webklex\IMAP\Providers
+ */
+class LaravelServiceProvider extends ServiceProvider {
+
     /**
      * Perform post-registration booting of services.
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         $this->publishes([
             __DIR__.'/../../config/imap.php' => config_path('imap.php'),
         ]);
@@ -35,8 +39,7 @@ class LaravelServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
+    public function register() {
         $this->app->singleton(ClientManager::class, function ($app) {
             return new ClientManager($app);
         });
