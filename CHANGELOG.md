@@ -5,7 +5,9 @@ All notable changes to `webklex/laravel-imap` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## [UNRELEASED]
--NaN-
+
+### Fixed
+- Fix implode error in Client.php, beacause imap_errors() can return FALSE instand of array
 
 ### Affected Classes
 -NaN-
