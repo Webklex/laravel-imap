@@ -161,18 +161,33 @@ You can define your accounts inside the [config/imap.php](src/config/imap.php) f
 | checkCurrentMailbox   |                                                   | object   | Check current mailbox                                                                                                         |
 
 ### [Message::class](src/IMAP/Message.php)
-| Method         | Arguments                     | Return      | Description                            |
-| -------------- | ----------------------------- | :---------: | -------------------------------------- |
-| delete         |                               |             | Delete the current Message             |
-| restore        |                               |             | Restore a deleted Message              |
-| copy           | string $mailbox, int $options |             | Copy the current Messages to a mailbox |
-| move           | string $mailbox, int $options |             | Move the current Messages to a mailbox |
-| moveToFolder   | string $mailbox               |             | Move the Message into an other Folder  |
-| hasTextBody    |                               |             | Check if the Message has a text body   |
-| hasHTMLBody    |                               |             | Check if the Message has a html body   |
-| getTextBody    |                               | string      | Get the Message text body              |
-| getHTMLBody    |                               | string      | Get the Message html body              |
-| getAttachments |                               | collection  | Get all message attachments            |
+| Method          | Arguments                     | Return      | Description                            |
+| --------------- | ----------------------------- | :---------: | -------------------------------------- |
+| delete          |                               |             | Delete the current Message             |
+| restore         |                               |             | Restore a deleted Message              |
+| copy            | string $mailbox, int $options |             | Copy the current Messages to a mailbox |
+| move            | string $mailbox, int $options |             | Move the current Messages to a mailbox |
+| moveToFolder    | string $mailbox               |             | Move the Message into an other Folder  |
+| hasTextBody     |                               |             | Check if the Message has a text body   |
+| hasHTMLBody     |                               |             | Check if the Message has a html body   |
+| getTextBody     |                               | string      | Get the Message text body              |
+| getHTMLBody     |                               | string      | Get the Message html body              |
+| getAttachments  |                               | collection  | Get all message attachments            |
+| getClient       |                               | Client      | Get the current Client instance        |
+| getUid          |                               | string      | Get the current UID                    |
+| getFetchOptions |                               | string      | Get the current fetch option           |
+| getMsglist      |                               | integer     | Get the current message list           |
+| getMessageId    |                               | integer     | Get the current message ID             |
+| getMessageNo    |                               | integer     | Get the current message number         |
+| getSubject      |                               | string      | Get the current subject                |
+| getDate         |                               | Carbon      | Get the current date object            |
+| getFrom         |                               | array       | Get the current from information       |
+| getTo           |                               | array       | Get the current to information         |
+| getCc           |                               | array       | Get the current cc information         |
+| getBcc          |                               | array       | Get the current bcc information        |
+| getReplyTo      |                               | array       | Get the current reply to information   |
+| getSender       |                               | array       | Get the current sender information     |
+| getBodies       |                               | mixed       | Get the current bodies                 |
 
 ### [Folder::class](src/IMAP/Folder.php)
 | Method        | Arguments                                               | Return  | Description                                    |
