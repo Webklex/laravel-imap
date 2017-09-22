@@ -567,4 +567,109 @@ class Message {
     public function getAttachments(){
         return collect($this->attachments);
     }
+
+    /**
+     * @return Client
+     */
+    public function getClient() {
+        return $this->client;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUid() {
+        return $this->uid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFetchOptions() {
+        return $this->fetch_options;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMsglist() {
+        return $this->msglist;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMessageId() {
+        return $this->message_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMessageNo() {
+        return $this->message_no;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject() {
+        return $this->subject;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDate() {
+        return $this->date;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFrom() {
+        return $this->from;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTo() {
+        return $this->to;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCc() {
+        return $this->cc;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBcc() {
+        return $this->bcc;
+    }
+
+    /**
+     * @return array
+     */
+    public function getReplyTo() {
+        return $this->reply_to;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSender() {
+        return $this->sender;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBodies() {
+        return $this->bodies;
+    }
 }
