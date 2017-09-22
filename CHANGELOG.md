@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- General code style and documentation
+- NaN
 
 ### Added
 - NaN
@@ -14,6 +14,16 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - All
 
+
+## [1.0.3.3] - 2017-09-22
+### Fixed
+- General code style and documentation
+
+### Added
+- several getter methods added to [Message::class](src/IMAP/Message.php)
+
+### Affected Classes
+- All
 
 ## [1.0.3.2] - 2017-09-07
 ### Fixed
