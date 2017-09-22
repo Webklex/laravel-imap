@@ -27,7 +27,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [1.0.3.2] - 2017-09-07
 ### Fixed
-- Fix implode error in Client.php, beacause imap_errors() can return FALSE instand of array
+- Fix implode error in Client.php, beacause imap_errors() can return FALSE instead of an array
 
 ### Added
 - FT_UID changed to $this->options which references to `imap.options.fetch`
