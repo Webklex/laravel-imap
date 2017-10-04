@@ -313,7 +313,11 @@ class Message {
      * @param mixed $partNumber
      */
     private function fetchStructure($structure, $partNumber = null) {
-        if ($structure->type == self::TYPE_TEXT && $structure->ifdisposition == 0) {
+        if ($structure->type == self::TYPE_TEXT && 
+            ($structure->ifdisposition == 0 || 
+                ($structure->ifdisposition == 1 && !isset($structure->parts) && $partNumber == null)
+            )
+        ) {
             if ($structure->subtype == "PLAIN") {
                 if (!$partNumber) {
                     $partNumber = 1;
