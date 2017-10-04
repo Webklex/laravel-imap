@@ -15,6 +15,15 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - All
 
 
+## [1.0.3.4] - 2017-10-04
+### Fixed
+- E-mails parsed without a content type of multipart present no body [#27](https://github.com/Webklex/laravel-imap/pull/27)
+- Do not resolve uid to msgno if using FT_UID [#25](https://github.com/Webklex/laravel-imap/pull/25)
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
+
 ## [1.0.3.3] - 2017-09-22
 ### Fixed
 - General code style and documentation
