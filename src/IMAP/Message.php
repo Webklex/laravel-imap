@@ -129,7 +129,7 @@ class Message {
     public function __construct($uid, $msglist, Client $client, $fetch_options = null) {
         $this->msglist = $msglist;
         $this->client = $client;
-        $this->uid = imap_msgno($this->client->getConnection(), $uid);
+        $this->uid = ($fetch_options == FT_UID) ? $uid : imap_msgno($this->client->getConnection(), $uid);
 
         $this->setFetchOption($fetch_options);
         $this->parseHeader();
