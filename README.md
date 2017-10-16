@@ -16,7 +16,7 @@ $ composer require webklex/laravel-imap
 
 ## Setup
 
-Add the service provider to the providers array in [config/imap.php](src/config/imap.php).
+Add the service provider to the providers array in config/app.php.
 
 ``` php
 'providers' => [
