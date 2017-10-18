@@ -96,6 +96,13 @@ class Client {
     }
 
     /**
+     * Client destructor
+     */
+    public function __destruct() {
+        $this->disconnect();
+    }
+
+    /**
      * Set the Client configuration
      *
      * @param array $config
@@ -201,6 +208,7 @@ class Client {
      */
     public function disconnect() {
         if ($this->isConnected()) {
+            $this->expunge();
             imap_close($this->connection);
         }
 
@@ -419,5 +427,4 @@ class Client {
     public function checkCurrentMailbox(){
         return imap_check($this->connection);
     }
-
 }
