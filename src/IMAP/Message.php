@@ -536,8 +536,8 @@ class Message {
     public function moveToFolder($mailbox = 'INBOX'){
         $this->client->createFolder($mailbox);
 
-        if(imap_mail_move($this->client->connection, $this->msglist, $mailbox) == true){
-            return imap_expunge($this->client->connection);
+        if(imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox) == true){
+            return true;
         }
         return false;
     }
