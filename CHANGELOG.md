@@ -15,6 +15,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - All
 
 
+## [1.0.3.5] - 2017-10-18
+### Fixed
+- Messageset issue resolved [#31](https://github.com/Webklex/laravel-imap/issues/31)
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+- [Client::class](src/IMAP/Client.php)
+
 ## [1.0.3.4] - 2017-10-04
 ### Fixed
 - E-mails parsed without a content type of multipart present no body [#27](https://github.com/Webklex/laravel-imap/pull/27)
