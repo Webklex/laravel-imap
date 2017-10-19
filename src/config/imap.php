@@ -80,7 +80,7 @@ return [
     |
     */
     'options' => [
-        'fetch' => FT_UID,
+        'fetch' => 'FT_UID',
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ]
