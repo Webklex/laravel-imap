@@ -312,6 +312,41 @@ class Client {
     }
 
     /**
+     * Get all unseen messages from folder
+     *
+     * @param Folder $folder
+     * @param string $criteria
+     * @param integer $fetch_options
+     *
+     * @return array
+     * @throws GetMessagesFailedException
+     */
+    public function getUnseenMessages(Folder $folder, $criteria = 'UNSEEN', $fetch_options = null) {
+        $this->checkConnection();
+
+        try {
+            $this->openFolder($folder);
+            $messages = [];
+            $availableMessages = imap_search($this->connection, $criteria, SE_UID);
+
+            if ($availableMessages !== false) {
+                $msglist = 1;
+                foreach ($availableMessages as $msgno) {
+                    $message = new Message($msgno, $msglist, $this, $fetch_options);
+
+                    $messages[$message->message_id] = $message;
+                    $msglist++;
+                }
+            }
+            return $messages;
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+
+            throw new GetMessagesFailedException($message);
+        }
+    }
+
+    /**
      * Get option for imap_open and imap_reopen.
      * It supports only isReadOnly feature.
      *
