@@ -14,6 +14,9 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - All
 
+## [1.0.3.6] - 2017-10-24
+### Added
+- A method to get only unread messages from email folders to [Client::class](src/IMAP/client.php)
 
 ## [1.0.3.5] - 2017-10-18
 ### Fixed
