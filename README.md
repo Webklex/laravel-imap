@@ -150,6 +150,7 @@ You can define your accounts inside the [config/imap.php](src/config/imap.php) f
 | openFolder            | \Webklex\IMAP\Folder $folder                      |          | Open a given folder.                                                                                                          |
 | createFolder          | string $name                                      |          | Create a new folder.                                                                                                          |
 | getMessages           | \Webklex\IMAP\Folder $folder, string $criteria    | array    | Get messages from folder.                                                                                                     |
+| getUnseenMessages     | \Webklex\IMAP\Folder $folder, string $criteria    | array    | Get Unseen messages from folder. |
 | getQuota              |                                                   | array    | Retrieve the quota level settings, and usage statics per mailbox                                                              |
 | getQuotaRoot          | string $quota_root                                | array    | Retrieve the quota settings per user                                                                                          |
 | countMessages         |                                                   | int      | Gets the number of messages in the current mailbox                                                                            |
