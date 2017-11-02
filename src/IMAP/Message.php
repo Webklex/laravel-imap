@@ -455,7 +455,6 @@ class Message {
      * @return $this
      */
     public function setFetchOption($option){
-        $option = (integer)$option;
         if(is_long($option) == true){
             $this->fetch_options = $option;
         }elseif(is_null($option) == true){
