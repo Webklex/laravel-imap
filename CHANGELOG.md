@@ -14,6 +14,15 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - [Message::class](src/IMAP/Message.php)
 
+
+## [1.0.3.7] - 2017-11-05
+### Fixed
+- Fix assignment ```msgno``` to ```uid``` regardless of ```fetch_options``` is set in config 
+- Disposition is checked in case of malformed mail attachments
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
 ## [1.0.3.6] - 2017-10-24
 ### Added
 - A method to get only unread messages from email folders to [Client::class](src/IMAP/client.php)
