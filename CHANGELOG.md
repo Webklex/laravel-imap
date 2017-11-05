@@ -6,13 +6,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Fix assignment ```msgno``` to ```uid``` regardless of ```fetch_options``` is set in config 
+- NaN
 
 ### Added
 - NaN
 
 ### Affected Classes
-- [Message::class](src/IMAP/Message.php)
+- NaN
 
 
 ## [1.0.3.7] - 2017-11-05
