@@ -258,7 +258,7 @@ class Message {
             $this->message_id = str_replace(['<', '>'], '', $header->message_id);
         }
         if (property_exists($header, 'Msgno')) {
-            $this->message_no = imap_msgno($this->client->getConnection(), trim($header->Msgno));
+            $this->message_no = ($this->fetch_options == FT_UID) ? trim($header->Msgno) : imap_msgno($this->client->getConnection(), trim($header->Msgno));
         }
     }
 
