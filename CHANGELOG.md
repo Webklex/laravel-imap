@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- #41 imap_expunge(): supplied resource is not a valid imap resource
 
 ### Added
 - NaN
