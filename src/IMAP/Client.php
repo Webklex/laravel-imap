@@ -87,6 +87,12 @@ class Client {
     protected $activeFolder = false;
 
     /**
+     * Connected parameter
+     * @var bool
+     */
+    protected $connected = false;
+
+    /**
      * Client constructor.
      *
      * @param array $config
@@ -148,7 +154,7 @@ class Client {
      * @return bool
      */
     public function isConnected() {
-        return ($this->connection) ? true : false;
+        return $this->connected;
     }
 
     /**
@@ -191,6 +197,7 @@ class Client {
                 $attempts,
                 config('imap.options.open')
             );
+            $this->connected = !! $this->connection;
         } catch (\ErrorException $e) {
             $errors = imap_errors();
             $message = $e->getMessage().'. '.implode("; ", (is_array($errors) ? $errors : array()));
@@ -208,8 +215,7 @@ class Client {
      */
     public function disconnect() {
         if ($this->isConnected()) {
-            $this->expunge();
-            imap_close($this->connection);
+            $this->connected = ! imap_close($this->connection, CL_EXPUNGE);
         }
 
         return $this;
