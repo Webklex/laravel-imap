@@ -501,11 +501,15 @@ class Message {
      *
      * @return mixed|string
      */
-    private function convertEncoding($str, $from = "ISO-8859-2", $to = "UTF-8") {
-        if (!$from) {
-            return mb_convert_encoding($str, $to);
+    private function convertEncoding($str, $from = 'ISO-8859-2', $to = 'UTF-8') {
+        if (function_exists('iconv') && $from != 'UTF-7' && $to != 'UTF-7') {
+            return iconv($from, $to, $str);
+        } else {
+            if (!$from) {
+                return mb_convert_encoding($str, $to);
+            }
+            return mb_convert_encoding($str, $to, $from);
         }
-        return mb_convert_encoding($str, $to, $from);
     }
 
     /**
