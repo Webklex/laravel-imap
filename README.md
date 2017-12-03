@@ -207,6 +207,7 @@ You can define your accounts inside the [config/imap.php](src/config/imap.php) f
 | Kerberos error: No credentials cache file found (try running kinit) (...) | Uncomment "DISABLE_AUTHENTICATOR" inside `config/imap.php` | 
 | imap_fetchbody() expects parameter 4 to be long, string given (...)       | Make sure that `imap.options.fetch` is a valid integer     | 
 | Use of undefined constant FT_UID - assumed 'FT_UID' (...)                 | Please take a look at [#14](https://github.com/Webklex/laravel-imap/issues/14) [#30](https://github.com/Webklex/laravel-imap/issues/30)     | 
+| DateTime::__construct(): Failed to parse time string (...)                | Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)  | 
 
 
 ## Change log
