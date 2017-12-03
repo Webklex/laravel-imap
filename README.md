@@ -53,7 +53,7 @@ php artisan vendor:publish --provider="Webklex\IMAP\Providers\LaravelServiceProv
 ```
 
 Access the IMAP Client by its Facade [\Webklex\IMAP\Facades\Client::class](src/IMAP/Facades/Client.php). 
-Therefor you might want to add an alias to the aliases array within the [config/imap.php](src/config/imap.php) file.
+Therefor you might want to add an alias to the aliases array within the config/app.php file.
 
 ``` php
 'aliases' => [
