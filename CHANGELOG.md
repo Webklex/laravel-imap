@@ -14,6 +14,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.3.9] - 2017-12-3
+### Fixed
+- #45 DateTime::__construct(): Failed to parse time string (...)
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
 ## [1.0.3.8] - 2017-11-24
 ### Fixed
 - #41 imap_expunge(): supplied resource is not a valid imap resource
