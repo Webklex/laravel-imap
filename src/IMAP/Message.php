@@ -231,7 +231,31 @@ class Message {
             $this->subject = imap_utf8($header->subject);
         }
         if (property_exists($header, 'date')) {
-            $this->date = Carbon::parse($header->date);
+            $date = $header->date;
+
+            /**
+             * Exception handling for invalid dates
+             * Will be extended in the future
+             *
+             * Currently known invalid formats:
+             * ^ Datetime                                   ^ Problem                           ^ Cause                 ^
+             * | Mon, 20 Nov 2017 20:31:31 +0800 (GMT+8:00) | Double timezone specification     | A Windows feature     |
+             * |                                            | and invalid timezone (max 6 char) |                       |
+             *
+             * Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)
+             */
+            try{
+                $this->date = Carbon::parse($date);
+            }catch(\Exception $e){
+                switch(true){
+                    case preg_match('/([A-Z]{2,3}\,\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ \+[0-9]{4}\ \([A-Z]{2,3}\+[0-9]{1,2}\:[0-9]{1,2})\)+$/i', $date):
+                        $array = explode('(', $date);
+                        $array = array_reverse($array);
+                        $date = trim(array_pop($array));
+                        break;
+                }
+                $this->date = Carbon::parse($date);
+            }
         }
 
         if (property_exists($header, 'from')) {
