@@ -400,6 +400,9 @@ class Message {
      */
     protected function fetchAttachment($structure, $partNumber){
         switch ($structure->type) {
+            case self::TYPE_MESSAGE:
+                $type = 'message';
+                break;
             case self::TYPE_APPLICATION:
                 $type = 'application';
                 break;
@@ -443,6 +446,13 @@ class Message {
                     $attachment->disposition = property_exists($structure, 'disposition') ? $structure->disposition : null;
                     break;
                 }
+            }
+        }
+        if(self::TYPE_MESSAGE == $structure->type) {
+            if($structure->ifdescription) {
+                $attachment->name = $structure->description;
+            } else {
+                $attachment->name = $structure->subtype;
             }
         }
 
