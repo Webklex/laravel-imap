@@ -14,6 +14,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.3.11] - 2018-01-01
+### Added
+- New experimental function added [#48 How can I specify a single folder?](https://github.com/Webklex/laravel-imap/issues/48)
+
+### Affected Classes
+- [Client::class](src/IMAP/Client.php)
+
 ## [1.0.3.10] - 2018-01-01
 ### Fixed
 - Ignore inconvertible chars in order to prevent sudden code exists
