@@ -4,7 +4,6 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
 [![Total Downloads][ico-downloads]][link-downloads]
-[![Gittip][ico-gittip]][link-gittip]
 
 ## Install
 
@@ -247,4 +246,3 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-code-quality]: https://scrutinizer-ci.com/g/Webklex/laravel-imap
 [link-downloads]: https://packagist.org/packages/Webklex/laravel-imap
 [link-author]: https://github.com/webklex
-[link-gittip]: https://www.gittip.com/webklex
