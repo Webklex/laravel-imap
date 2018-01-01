@@ -14,7 +14,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
-## [1.0.3.9] - 2017-12-3
+## [1.0.3.10] - 2018-01-01
+### Fixed
+- Ignore inconvertible chars in order to prevent sudden code exists
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
+## [1.0.3.9] - 2017-12-03
 ### Fixed
 - #45 DateTime::__construct(): Failed to parse time string (...)
 
