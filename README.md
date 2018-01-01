@@ -207,7 +207,7 @@ You can define your accounts inside the [config/imap.php](src/config/imap.php) f
 | imap_fetchbody() expects parameter 4 to be long, string given (...)       | Make sure that `imap.options.fetch` is a valid integer     | 
 | Use of undefined constant FT_UID - assumed 'FT_UID' (...)                 | Please take a look at [#14](https://github.com/Webklex/laravel-imap/issues/14) [#30](https://github.com/Webklex/laravel-imap/issues/30)     | 
 | DateTime::__construct(): Failed to parse time string (...)                | Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)  | 
-| imap_open():: Couldn't open (..) Please log in your web browser: (..)     | In order to use IMAP on some services such as Gmail you need to enable st first. [Google help page]( https://support.google.com/mail/answer/7126229?hl=en) |
+| imap_open(): Couldn't open (...) Please log in your web browser: (...)    | In order to use IMAP on some services (such as Gmail) you need to enable it first. [Google help page]( https://support.google.com/mail/answer/7126229?hl=en) |
 
 ## Change log
 
