@@ -117,6 +117,30 @@ $oClient = Webklex\IMAP\Facades\Client::account('default');
 $oClient->connect();
 ```
 
+There is an experimental function available to get a Folder instance by name. 
+For an easier access please take a look at the new config option `imap.options.delimiter` however the `getFolder` 
+method takes three options: the required (string) $folder_name and two optional variables. An integer $attributes which 
+seems to be sometimes 32 or 64 (I honestly have no clue what this number does, so feel free to enlighten me and anyone 
+else) and a delimiter which if it isn't set will use the default option configured inside the [config](src/config/imap.php) file.
+``` php
+use Webklex\IMAP\Facades\Client;
+
+/** @var \Webklex\IMAP\Client $oClient */
+$oClient = Client::account('default');
+$oClient->connect();
+
+/** @var \Webklex\IMAP\Folder $oFolder */
+$oFolder = $oClient->getFolder('INBOX.name');
+
+//Get all Messages
+/** @var \Webklex\IMAP\Message $oMessage */
+foreach($oFolder->getMessages() as $oMessage){
+    echo $oMessage->subject.'<br />';
+    echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
+    echo $oMessage->getHTMLBody(true);
+}
+```
+
 You can define your accounts inside the [config/imap.php](src/config/imap.php) file:
 ```
 'accounts' => [ 
