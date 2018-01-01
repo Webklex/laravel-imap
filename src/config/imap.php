@@ -69,6 +69,9 @@ return [
     |--------------------------------------------------------------------------
     |
     | Available php imap config parameters are listed below
+    |   -Delimiter (optional):
+    |       This option is only used wehen calling $oClient->
+    |       You can use any supported char such as ".", "/", (...)
     |   -Fetch option:
     |       FT_UID  - Message marked as read by fetching the message
     |       FT_PEEK - Fetch the message without setting the "read" flag
@@ -80,6 +83,7 @@ return [
     |
     */
     'options' => [
+        'delimiter' => '/',
         'fetch' => FT_UID,
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'

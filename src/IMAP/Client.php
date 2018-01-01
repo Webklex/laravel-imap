@@ -222,6 +222,30 @@ class Client {
     }
 
     /**
+     * Get a folder instance by a folder name
+     * -------------------------------------------------------
+     * PLEASE NOTE: This is a completely experimental function
+     * -------------------------------------------------------
+     * @param string        $folder_name
+     * @param int           $attributes
+     * @param null|string   $delimiter
+     *
+     * @return Folder
+     */
+    public function getFolder($folder_name, $attributes = 32, $delimiter = null){
+
+        $delimiter = $delimiter == null ? config('imap.options.delimiter', '/') : $delimiter;
+
+        $oFolder = new Folder($this, (object)[
+            'name'       => $this->getAddress().$folder_name,
+            'attributes' => $attributes,
+            'delimiter'  => $delimiter
+        ]);
+
+        return $oFolder;
+    }
+
+    /**
      * Get folders list.
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
