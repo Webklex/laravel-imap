@@ -226,7 +226,7 @@ If you discover any security related issues, please email github@webklex.com ins
 ## Credits
 
 - [Webklex][link-author]
-- All Contributors
+- [All Contributors][link-contributors]
 
 ## License
 
@@ -246,3 +246,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-code-quality]: https://scrutinizer-ci.com/g/Webklex/laravel-imap
 [link-downloads]: https://packagist.org/packages/Webklex/laravel-imap
 [link-author]: https://github.com/webklex
+[link-contributors]: https://github.com/Webklex/laravel-imap/graphs/contributors
