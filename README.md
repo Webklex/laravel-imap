@@ -193,6 +193,8 @@ You can define your accounts inside the [config/imap.php](src/config/imap.php) f
 | copy            | string $mailbox, int $options |             | Copy the current Messages to a mailbox |
 | move            | string $mailbox, int $options |             | Move the current Messages to a mailbox |
 | moveToFolder    | string $mailbox               |             | Move the Message into an other Folder  |
+| setFlag         | string or array $flag         | boolean     | Set one or many flags                  |
+| unsetFlag       | string or array $flag         | boolean     | Unset one or many flags                |
 | hasTextBody     |                               |             | Check if the Message has a text body   |
 | hasHTMLBody     |                               |             | Check if the Message has a html body   |
 | getTextBody     |                               | string      | Get the Message text body              |
@@ -202,6 +204,8 @@ You can define your accounts inside the [config/imap.php](src/config/imap.php) f
 | getUid          |                               | string      | Get the current UID                    |
 | getFetchOptions |                               | string      | Get the current fetch option           |
 | getMsglist      |                               | integer     | Get the current message list           |
+| getHeaderInfo   |                               | object      | Get the current header_info object     |
+| getHeader       |                               | string      | Get the current raw header             |
 | getMessageId    |                               | integer     | Get the current message ID             |
 | getMessageNo    |                               | integer     | Get the current message number         |
 | getSubject      |                               | string      | Get the current subject                |
@@ -233,6 +237,11 @@ You can define your accounts inside the [config/imap.php](src/config/imap.php) f
 | Use of undefined constant FT_UID - assumed 'FT_UID' (...)                 | Please take a look at [#14](https://github.com/Webklex/laravel-imap/issues/14) [#30](https://github.com/Webklex/laravel-imap/issues/30)     | 
 | DateTime::__construct(): Failed to parse time string (...)                | Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)  | 
 | imap_open(): Couldn't open (...) Please log in your web browser: (...)    | In order to use IMAP on some services (such as Gmail) you need to enable it first. [Google help page]( https://support.google.com/mail/answer/7126229?hl=en) |
+| imap_headerinfo(): Bad message number                                     | This happens if no Message number is available. Please make sure Message::parseHeader() has run before |
+
+## Milestones & upcoming features
+* Integrate a search functionality base on [imap_search()](http://php.net/manual/en/function.imap-search.php) but a bit easier..
+* Message pagination and limited message fetching (thanks to @RhRU for the suggestion and first mockup)
 
 ## Change log
 
