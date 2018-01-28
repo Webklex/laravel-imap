@@ -14,6 +14,15 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.4.0] - 2018-01-28
+### Added
+- Set and unset flags added `$oMessage->setFlag(['Seen', 'Spam']) or $oMessage->unsetFlag('Spam')`
+- Get raw header string `$oMessage->getHeader()`
+- Get additional header information `$oMessage->getHeaderInfo()`
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
 ## [1.0.3.11] - 2018-01-01
 ### Added
 - New experimental function added [#48 How can I specify a single folder?](https://github.com/Webklex/laravel-imap/issues/48)
