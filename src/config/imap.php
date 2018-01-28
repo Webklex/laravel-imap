@@ -80,6 +80,7 @@ return [
     |                               Use 'GSSAPI' if you encounter the following
     |                               error: "Kerberos error: No credentials cache
     |                               file found (try running kinit) (...)"
+    |                               or ['GSSAPI','PLAIN'] if you are using outlook mail
     |
     */
     'options' => [
