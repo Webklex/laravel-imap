@@ -53,6 +53,11 @@ class Message {
     public $header = null;
 
     /**
+     * @var null|object $header_info
+     */
+    public $header_info = null;
+
+    /**
      * Message header components
      *
      * @var string  $message_id
@@ -288,7 +293,23 @@ class Message {
         }
         if (property_exists($header, 'Msgno')) {
             $this->message_no = ($this->fetch_options == FT_UID) ? trim($header->Msgno) : imap_msgno($this->client->getConnection(), trim($header->Msgno));
+        }else{
+            $this->message_no = imap_msgno($this->client->getConnection(), $this->getUid());
         }
+    }
+
+    /**
+     * Get the current Message header info
+     *
+     * @return object
+     */
+    public function getHeaderInfo(){
+        if($this->header_info == null){
+            $this->header_info =
+            $this->header_info = imap_headerinfo($this->client->getConnection(), $this->getMessageNo());;
+        }
+
+        return $this->header_info;
     }
 
     /**
