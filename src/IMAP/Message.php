@@ -605,6 +605,31 @@ class Message {
         return collect($this->attachments);
     }
 
+    /**
+     * Set a given flag
+     * @param string|array $flag
+     *
+     * @return bool
+     */
+    public function setFlag($flag){
+        $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
+        return imap_setflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
+    }
+
+    /**
+     * Unset a given flag
+     * @param string|array $flag
+     *
+     * @return bool
+     */
+    public function unsetFlag($flag){
+        $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
+        return imap_clearflag_full($this->client->getConnection(), $this->getUid(), "\\$flag", SE_UID);
+    }
+
+    /**
+     * @return string
+     */
     public function getHeader(){
         return $this->header;
     }
