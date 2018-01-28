@@ -48,6 +48,11 @@ class Message {
     public $msglist = 1;
 
     /**
+     * @var string $header
+     */
+    public $header = null;
+
+    /**
      * Message header components
      *
      * @var string  $message_id
@@ -146,7 +151,7 @@ class Message {
      * @return bool
      */
     public function copy($mailbox, $options = 0){
-        return imap_mail_copy($this->client->connection, $this->msglist, $mailbox, $options);
+        return imap_mail_copy($this->client->getConnection(), $this->msglist, $mailbox, $options);
     }
 
     /**
@@ -158,7 +163,7 @@ class Message {
      * @return bool
      */
     public function move($mailbox, $options = 0){
-        return imap_mail_move($this->client->connection, $this->msglist, $mailbox, $options);
+        return imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox, $options);
     }
 
     /**
@@ -222,9 +227,9 @@ class Message {
      * @return void
      */
     private function parseHeader() {
-        $header = imap_fetchheader($this->client->connection, $this->uid, $this->fetch_options);
-        if ($header) {
-            $header = imap_rfc822_parse_headers($header);
+        $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, $this->fetch_options);
+        if ($this->header) {
+            $header = imap_rfc822_parse_headers($this->header);
         }
 
         if (property_exists($header, 'subject')) {
@@ -326,7 +331,7 @@ class Message {
      * @return void
      */
     private function parseBody() {
-        $structure = imap_fetchstructure($this->client->connection, $this->uid, $this->fetch_options);
+        $structure = imap_fetchstructure($this->client->getConnection(), $this->uid, $this->fetch_options);
 
         $this->fetchStructure($structure);
     }
@@ -350,7 +355,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, $this->fetch_options);
+                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options);
                 $content = $this->decodeString($content, $structure->encoding);
                 $content = $this->convertEncoding($content, $encoding);
 
@@ -369,7 +374,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->connection, $this->uid, $partNumber, $this->fetch_options);
+                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options);
                 $content = $this->decodeString($content, $structure->encoding);
                 $content = $this->convertEncoding($content, $encoding);
 
@@ -423,7 +428,7 @@ class Message {
                 break;
         }
 
-        $content = imap_fetchbody($this->client->connection, $this->uid, ($partNumber) ? $partNumber : 1, $this->fetch_options);
+        $content = imap_fetchbody($this->client->getConnection(), $this->uid, ($partNumber) ? $partNumber : 1, $this->fetch_options);
 
         $attachment = new \stdClass;
         $attachment->type = $type;
@@ -576,7 +581,7 @@ class Message {
      * @return bool
      */
     public function delete(){
-        $status = imap_delete($this->client->connection, $this->uid, $this->fetch_options);
+        $status = imap_delete($this->client->getConnection(), $this->uid, $this->fetch_options);
         $this->client->expunge();
 
         return $status;
@@ -588,7 +593,7 @@ class Message {
      * @return bool
      */
     public function restore(){
-        return imap_undelete($this->client->connection, $this->message_no);
+        return imap_undelete($this->client->getConnection(), $this->message_no);
     }
 
     /**
@@ -598,6 +603,10 @@ class Message {
      */
     public function getAttachments(){
         return collect($this->attachments);
+    }
+
+    public function getHeader(){
+        return $this->header;
     }
 
     /**
