@@ -14,6 +14,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.4.1] - 2018-02-14
+### Added
+- Enable support to get In-Reply-To property from Message header. [#56](https://github.com/Webklex/laravel-imap/pull/56)
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
 ## [1.0.4.0] - 2018-01-28
 ### Added
 - Set and unset flags added `$oMessage->setFlag(['Seen', 'Spam']) or $oMessage->unsetFlag('Spam')`
