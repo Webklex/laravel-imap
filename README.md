@@ -215,6 +215,7 @@ You can define your accounts inside the [config/imap.php](src/config/imap.php) f
 | getCc           |                               | array       | Get the current cc information         |
 | getBcc          |                               | array       | Get the current bcc information        |
 | getReplyTo      |                               | array       | Get the current reply to information   |
+| getInReplyTo    |                               | string      | Get the current In-Reply-To            |
 | getSender       |                               | array       | Get the current sender information     |
 | getBodies       |                               | mixed       | Get the current bodies                 |
 
