@@ -69,6 +69,7 @@ class Message {
      * @var array   $cc
      * @var array   $bcc
      * @var array   $reply_to
+     * @var string  $in_reply_to
      * @var array   $sender
      */
     public $message_id = '';
@@ -80,6 +81,7 @@ class Message {
     public $cc = [];
     public $bcc = [];
     public $reply_to = [];
+    public $in_reply_to = '';
     public $sender = [];
 
     /**
@@ -283,6 +285,9 @@ class Message {
 
         if (property_exists($header, 'reply_to')) {
             $this->reply_to = $this->parseAddresses($header->reply_to);
+        }
+        if (property_exists($header, 'in_reply_to')) {
+            $this->in_reply_to = str_replace(['<', '>'], '', $header->in_reply_to);
         }
         if (property_exists($header, 'sender')) {
             $this->sender = $this->parseAddresses($header->sender);
@@ -744,6 +749,13 @@ class Message {
      */
     public function getReplyTo() {
         return $this->reply_to;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getInReplyTo() {
+        return $this->in_reply_to;
     }
 
     /**
