@@ -318,6 +318,15 @@ class Message {
     }
 
     /**
+     * Get the raw Message
+     *
+     * @return object
+     */
+    public function getRaw(){
+        return imap_fetchbody($this->client->getConnection(), $this->uid, '');
+    }
+
+    /**
      * Parse Addresses
      *
      * @param $list
