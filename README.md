@@ -263,6 +263,11 @@ If you discover any security related issues, please email github@webklex.com ins
 - [Webklex][link-author]
 - [All Contributors][link-contributors]
 
+## Supporters
+
+A special thanks to Jetbrains for providing me free software.
+[![Jetbrains][png-jetbrains]][link-jetbrains]
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
@@ -274,6 +279,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/Webklex/laravel-imap.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/Webklex/laravel-imap.svg?style=flat-square
 [ico-gittip]: http://img.shields.io/gittip/webklex.svg
+[png-jetbrains]: https://www.webklex.com/jetbrains.png
 
 [link-packagist]: https://packagist.org/packages/Webklex/laravel-imap
 [link-travis]: https://travis-ci.org/Webklex/laravel-imap
@@ -282,3 +288,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-downloads]: https://packagist.org/packages/Webklex/laravel-imap
 [link-author]: https://github.com/webklex
 [link-contributors]: https://github.com/Webklex/laravel-imap/graphs/contributors
+[link-jetbrains]: https://www.jetbrains.com
