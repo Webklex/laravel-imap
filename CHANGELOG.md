@@ -14,6 +14,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.4.2] - 2018-03-15
+### Added
+- Support message delivery status [#47](https://github.com/Webklex/laravel-imap/pull/47)
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
 ## [1.0.4.1] - 2018-02-14
 ### Added
 - Enable support to get In-Reply-To property from Message header. [#56](https://github.com/Webklex/laravel-imap/pull/56)
