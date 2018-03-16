@@ -1,7 +1,7 @@
 <?php
 /*
 * File:     Folder.php
-* Category: Helper
+* Category: -
 * Author:   M. Goldenbaum
 * Created:  19.01.17 22:21
 * Updated:  -
@@ -11,6 +11,8 @@
 */
 
 namespace Webklex\IMAP;
+use Webklex\IMAP\Exceptions\GetMessagesFailedException;
+use Webklex\IMAP\Exceptions\MessageSearchValidationException;
 
 /**
  * Class Folder
@@ -141,15 +143,176 @@ class Folder {
     }
 
     /**
-     * Get messages.
+     * Get a specific message by UID
+     *
+     * @param integer      $uid     Please note that the uid is not unique and can change
+     * @param integer|null $msglist
+     *
+     * @return Message|null
+     */
+    public function getMessage($uid, $msglist = null){
+        if(imap_msgno($this->getClient()->getConnection(), $uid) > 0){
+            return new Message($uid, $msglist, $this->getClient());
+        }
+
+        return null;
+    }
+
+    /**
+     * Get all messages
      *
      * @param string $criteria
-     * @param null   $fetch_options
+     * @param null $fetch_options
+     * @param bool $parse_body
      *
-     * @return \Illuminate\Support\Collection
+     * @return MessageCollection
+     * @throws GetMessagesFailedException
+     * @throws MessageSearchValidationException
      */
-    public function getMessages($criteria = 'ALL', $fetch_options = null) {
-        return collect($this->client->getMessages($this, $criteria, $fetch_options));
+    public function getMessages($criteria = 'ALL', $fetch_options = null, $parse_body = true) {
+        return $this->searchMessages([[$criteria]], $fetch_options, $parse_body);
+    }
+
+    /**
+     * Get all unseen messages
+     *
+     * @param string $criteria
+     * @param null $fetch_options
+     * @param bool $parse_body
+     *
+     * @return MessageCollection
+     * @throws GetMessagesFailedException
+     * @throws MessageSearchValidationException
+     */
+    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $parse_body = true) {
+        return $this->searchMessages([[$criteria]], $fetch_options, $parse_body);
+    }
+
+    /**
+     * Search messages by a given search criteria
+     *
+     * @param array   $where  Is a two dimensional array where each array represents a criteria set:
+     *                        ---------------------------------------------------------------------------------------
+     *                        The following sample would search for all messages received from someone@example.com or
+     *                        contain the text "Hello world!":
+     *                        [['FROM' => 'someone@example.com'],[' TEXT' => 'Hello world!']]
+     *                        ---------------------------------------------------------------------------------------
+     *                        The following sample would search for all messages received since march 15 2018:
+     *                        [['SINCE' => Carbon::parse('15.03.2018')->format('d M y')]]
+     *                        ---------------------------------------------------------------------------------------
+     *                        The following sample would search for all flagged messages:
+     *                        [['FLAGGED']]
+     *                        ---------------------------------------------------------------------------------------
+     * @param Folder  $folder
+     * @param null    $fetch_options
+     * @param boolean $parse_body
+     * @param string  $charset
+     *
+     * @return MessageCollection
+     * @throws GetMessagesFailedException
+     * @throws MessageSearchValidationException
+     *
+     * @doc http://php.net/manual/en/function.imap-search.php
+     *      imap_search() only supports IMAP2 search criterias, because the function mail_criteria() (from c-client lib)
+     *      is used in ext/imap/php_imap.c for parsing the search string.
+     *      IMAP2 search criteria is defined in RFC 1176, section "tag SEARCH search_criteria".
+     *
+     *      https://tools.ietf.org/html/rfc1176 - INTERACTIVE MAIL ACCESS PROTOCOL - VERSION 2
+     *      https://tools.ietf.org/html/rfc1064 - INTERACTIVE MAIL ACCESS PROTOCOL - VERSION 2
+     *      https://tools.ietf.org/html/rfc822  - STANDARD FOR THE FORMAT OF ARPA INTERNET TEXT MESSAGES
+     *      Date and time example from RFC822:
+     *      date-time   =  [ day "," ] date time        ; dd mm yy
+     *                                                  ;  hh:mm:ss zzz
+     *
+     *      day         =  "Mon"  / "Tue" /  "Wed"  / "Thu" /  "Fri"  / "Sat" /  "Sun"
+     *
+     *      date        =  1*2DIGIT month 2DIGIT        ; day month year
+     *                                                  ;  e.g. 20 Jun 82
+     *
+     *      month       =  "Jan"  /  "Feb" /  "Mar"  /  "Apr" /  "May"  /  "Jun" /  "Jul"  /  "Aug" /  "Sep"  /  "Oct" /  "Nov"  /  "Dec"
+     *
+     *      time        =  hour zone                    ; ANSI and Military
+     *
+     *      hour        =  2DIGIT ":" 2DIGIT [":" 2DIGIT] ; 00:00:00 - 23:59:59
+     *
+     *      zone        =  "UT"  / "GMT"         ; Universal Time
+     *                                           ; North American : UT
+     *                  =  "EST" / "EDT"         ;  Eastern:  - 5/ - 4
+     *                  =  "CST" / "CDT"         ;  Central:  - 6/ - 5
+     *                  =  "MST" / "MDT"         ;  Mountain: - 7/ - 6
+     *                  =  "PST" / "PDT"         ;  Pacific:  - 8/ - 7
+     *                  =  1ALPHA                ; Military: Z = UT;
+     *                                           ;  A:-1; (J not used)
+     *                                           ;  M:-12; N:+1; Y:+12
+     *                  / ( ("+" / "-") 4DIGIT ) ; Local differential
+     *                                           ;  hours+min. (HHMM)
+     *
+     */
+    public function searchMessages(array $where, $fetch_options = null, $parse_body = true, $charset = "UTF-8") {
+
+        $this->getClient()->checkConnection();
+
+        if($this->validateWhereStatements($where)){
+            throw new MessageSearchValidationException('Invalid imap search criteria provided');
+        }
+
+        try {
+            $this->getClient()->openFolder($this);
+            $messages = MessageCollection::make([]);
+
+            $query = '';
+            foreach($where as $statement){
+                if(count($statement) == 1){
+                    $query .= $statement[0];
+                }else{
+                    $query .= $statement[0].' "'.$statement[1].'"';
+                }
+            }
+
+            $availableMessages = imap_search($this->getClient()->getConnection(), $query, SE_UID, $charset);
+
+            if ($availableMessages !== false) {
+                $msglist = 1;
+                foreach ($availableMessages as $msgno) {
+                    $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $parse_body);
+
+                    $messages->put($message->getMessageId(), $message);
+                    $msglist++;
+                }
+            }
+
+            return $messages;
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+
+            throw new GetMessagesFailedException($message);
+        }
+    }
+
+    /**
+     * Validate a given statement array
+     *
+     * @param array $statements
+     *
+     * @return bool
+     *
+     * @doc http://php.net/manual/en/function.imap-search.php
+     *      https://tools.ietf.org/html/rfc1064
+     *      https://tools.ietf.org/html/rfc822
+     */
+    protected function validateWhereStatements($statements){
+        foreach($statements as $statement){
+            $criteria = $statement[0];
+            if(in_array(explode($criteria, ' '), [
+                    'OR', 'AND',
+                    'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
+                    'NEW', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
+                    'UNANSWERED', 'UNDELETED', 'UNFLAGGED', 'UNKEYWORD', 'UNSEEN']) == false){
+                return false;
+            }
+        }
+
+        return empty($statements) == false;
     }
 
     /**
@@ -246,5 +409,14 @@ class Folder {
      */
     public function appendMessage($message, $options = null, $internal_date = null){
         return imap_append($this->client->connection, $this->path, $message, $options, $internal_date);
+    }
+
+    /**
+     * Get the current Client instance
+     *
+     * @return Client
+     */
+    public function getClient(){
+        return $this->client;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /*
 * File:     Client.php
-* Category: Helper
+* Category: -
 * Author:   M. Goldenbaum
 * Created:  19.01.17 22:21
 * Updated:  -
@@ -12,10 +12,9 @@
 
 namespace Webklex\IMAP;
 
-use Illuminate\Support\Facades\Config;
-
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
+use Webklex\IMAP\Exceptions\MessageSearchValidationException;
 
 /**
  * Class Client
@@ -223,9 +222,9 @@ class Client {
 
     /**
      * Get a folder instance by a folder name
-     * -------------------------------------------------------
-     * PLEASE NOTE: This is a completely experimental function
-     * -------------------------------------------------------
+     * ---------------------------------------------
+     * PLEASE NOTE: This is an experimental function
+     * ---------------------------------------------
      * @param string        $folder_name
      * @param int           $attributes
      * @param null|string   $delimiter
@@ -258,11 +257,7 @@ class Client {
         $this->checkConnection();
         $folders = [];
 
-        if ($hierarchical) {
-            $pattern = $parent_folder.'%';
-        } else {
-            $pattern = $parent_folder.'*';
-        }
+        $pattern = $parent_folder.($hierarchical ? '%' : '*');
 
         $items = imap_getmailboxes($this->connection, $this->getAddress(), $pattern);
         foreach ($items as $item) {
@@ -283,15 +278,16 @@ class Client {
     /**
      * Open folder.
      *
-     * @param Folder $folder
+     * @param Folder  $folder
+     * @param integer $attempts
      */
-    public function openFolder(Folder $folder) {
+    public function openFolder(Folder $folder, $attempts = 3) {
         $this->checkConnection();
 
-        if ($this->activeFolder != $folder) {
+        if ($this->activeFolder !== $folder) {
             $this->activeFolder = $folder;
 
-            imap_reopen($this->connection, $folder->path, $this->getOptions(), 3);
+            imap_reopen($this->connection, $folder->path, $this->getOptions(), $attempts);
         }
     }
 
@@ -309,36 +305,17 @@ class Client {
     /**
      * Get messages from folder.
      *
-     * @param Folder $folder
-     * @param string $criteria
+     * @param Folder  $folder
+     * @param string  $criteria
      * @param integer $fetch_options
+     * @param boolean $parse_body
      *
-     * @return array
+     * @return MessageCollection
      * @throws GetMessagesFailedException
+     * @throws MessageSearchValidationException
      */
-    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null) {
-        $this->checkConnection();
-
-        try {
-            $this->openFolder($folder);
-            $messages = [];
-            $availableMessages = imap_search($this->connection, $criteria, SE_UID);
-
-            if ($availableMessages !== false) {
-                $msglist = 1;
-                foreach ($availableMessages as $msgno) {
-                    $message = new Message($msgno, $msglist, $this, $fetch_options);
-
-                    $messages[$message->message_id] = $message;
-                    $msglist++;
-                }
-            }
-            return $messages;
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
-
-            throw new GetMessagesFailedException($message);
-        }
+    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null, $parse_body = true) {
+        return $folder->getMessages($criteria, $fetch_options, $parse_body);
     }
 
     /**
@@ -346,34 +323,33 @@ class Client {
      *
      * @param Folder $folder
      * @param string $criteria
-     * @param integer $fetch_options
+     * @param null   $fetch_options
+     * @param bool   $parse_body
      *
-     * @return array
+     * @return MessageCollection
      * @throws GetMessagesFailedException
+     * @throws MessageSearchValidationException
      */
-    public function getUnseenMessages(Folder $folder, $criteria = 'UNSEEN', $fetch_options = null) {
-        $this->checkConnection();
+    public function getUnseenMessages(Folder $folder, $criteria = 'UNSEEN', $fetch_options = null, $parse_body = true) {
+        return $folder->getUnseenMessages($criteria, $fetch_options, $parse_body);
+    }
 
-        try {
-            $this->openFolder($folder);
-            $messages = [];
-            $availableMessages = imap_search($this->connection, $criteria, SE_UID);
-
-            if ($availableMessages !== false) {
-                $msglist = 1;
-                foreach ($availableMessages as $msgno) {
-                    $message = new Message($msgno, $msglist, $this, $fetch_options);
-
-                    $messages[$message->message_id] = $message;
-                    $msglist++;
-                }
-            }
-            return $messages;
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
-
-            throw new GetMessagesFailedException($message);
-        }
+    /**
+     * Search messages by a given search criteria
+     *
+     * @param array   $where
+     * @param Folder  $folder
+     * @param null    $fetch_options
+     * @param boolean $parse_body
+     * @param string  $charset
+     *
+     * @return MessageCollection
+     * @throws GetMessagesFailedException
+     * @throws MessageSearchValidationException
+     *
+     */
+    public function searchMessages(array $where, Folder $folder, $fetch_options = null, $parse_body = true, $charset = "UTF-8") {
+        return $folder->searchMessages($where, $fetch_options, $parse_body, $charset);
     }
 
     /**

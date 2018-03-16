@@ -1,7 +1,7 @@
 <?php
 /*
 * File:     Message.php
-* Category: Helper
+* Category: -
 * Author:   M. Goldenbaum
 * Created:  19.01.17 22:21
 * Updated:  -
@@ -56,6 +56,9 @@ class Message {
      * @var null|object $header_info
      */
     public $header_info = null;
+
+    /** @var null|object $raw_body */
+    public $raw_body = null;
 
     /**
      * Message header components
@@ -133,12 +136,13 @@ class Message {
     /**
      * Message constructor.
      *
-     * @param $uid
-     * @param $msglist
-     * @param \Webklex\IMAP\Client $client
-     * @param $fetch_options
+     * @param integer       $uid
+     * @param integer|null  $msglist
+     * @param Client        $client
+     * @param integer|null  $fetch_options
+     * @param boolean       $parse_body
      */
-    public function __construct($uid, $msglist, Client $client, $fetch_options = null) {
+    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $parse_body = false) {
         $this->setFetchOption($fetch_options);
         
         $this->msglist = $msglist;
@@ -146,7 +150,10 @@ class Message {
         $this->uid = ($this->fetch_options == FT_UID) ? $uid : imap_msgno($this->client->getConnection(), $uid);
         
         $this->parseHeader();
-        $this->parseBody();
+
+        if($parse_body !== false){
+            $this->parseBody();
+        }
     }
 
     /**
@@ -354,12 +361,14 @@ class Message {
     /**
      * Parse the Message body
      *
-     * @return void
+     * @return $this
      */
-    private function parseBody() {
+    public function parseBody() {
         $structure = imap_fetchstructure($this->client->getConnection(), $this->uid, $this->fetch_options);
 
         $this->fetchStructure($structure);
+
+        return $this;
     }
 
     /**
@@ -661,6 +670,17 @@ class Message {
     public function unsetFlag($flag){
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
         return imap_clearflag_full($this->client->getConnection(), $this->getUid(), "\\$flag", SE_UID);
+    }
+
+    /**
+     * @return null|object|string
+     */
+    public function getRawBody(){
+        if($this->raw_body == null){
+            $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '');
+        }
+
+        return $this->raw_body;
     }
 
     /**
