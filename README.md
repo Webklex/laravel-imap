@@ -18,7 +18,9 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
   - [Client::class](#clientclass)
   - [Message::class](#messageclass)
   - [Folder::class](#folderclass)
+  - [Attachment::class](#attachmentclass) 
   - [MessageCollection::class](#messagecollectionclass) 
+  - [AttachmentCollection::class](#attachmentcollectionclass) 
 - [Known issues](#known-issues)
 - [Milestones & upcoming features](#milestones--upcoming-features)
 - [Security](#security)
@@ -164,7 +166,7 @@ $oClient->connect();
 /** @var \Webklex\IMAP\Folder $oFolder */
 $oFolder = $oClient->getFolder('INBOX.name');
 
-/** @var \Webklex\IMAP\MessageCollection $aMessage */
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->getMessages();
 
 /** @var \Webklex\IMAP\Message $oMessage */
@@ -187,7 +189,7 @@ $oClient->connect();
 $oFolder = $oClient->getFolder('INBOX.name');
 
 //Get all messages since march 15 2018
-/** @var \Webklex\IMAP\MessageCollection $aMessage */
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->searchMessages([['SINCE', Carbon::parse('15.03.2018')->format('d M y')]]);
 
 /** @var \Webklex\IMAP\Message $oMessage */
@@ -210,7 +212,7 @@ $oClient->connect();
 $oFolder = $oClient->getFolder('INBOX.name');
 
 //Get all messages since march 15 2018
-/** @var \Webklex\IMAP\MessageCollection $aMessage */
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->searchMessages([['TEXT', 'hello world']]);
 
 /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
@@ -243,7 +245,8 @@ Save message attachments:
 ``` php
 /** @var \Webklex\IMAP\Message $oMessage */
 $oMessage->getAttachments()->each(function ($oAttachment) use ($oMessage) {
-   file_put_contents($oAttachment->name, $oAttachment->content);
+    /** @var \Webklex\IMAP\Attachment $oAttachment */
+   file_put_contents($oAttachment->getName(), $oAttachment->getContent());
 });
 ```
 
@@ -258,10 +261,10 @@ $oClient->connect();
 /** @var \Webklex\IMAP\Folder $oFolder */
 $oFolder = $oClient->getFolder('INBOX.name');
 
-/** @var \Webklex\IMAP\MessageCollection $aMessage */
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->searchMessages([['TEXT', 'Hello world']], null, false);
 
-/** @var \Webklex\IMAP\MessageCollection $aMessage */
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->getMessages('ALL', null, false);
 ```
 
@@ -296,40 +299,40 @@ $aMessage = $oFolder->getMessages('ALL', null, false);
 | checkCurrentMailbox |                                                                                 | object            | Check current mailbox                                                                                                         |
 
 ### [Message::class](src/IMAP/Message.php)
-| Method          | Arguments                     | Return      | Description                            |
-| --------------- | ----------------------------- | :---------: | -------------------------------------- |
-| parseBody       |                               | Message     | Parse the Message body                 |
-| delete          |                               |             | Delete the current Message             |
-| restore         |                               |             | Restore a deleted Message              |
-| copy            | string $mailbox, int $options |             | Copy the current Messages to a mailbox |
-| move            | string $mailbox, int $options |             | Move the current Messages to a mailbox |
-| moveToFolder    | string $mailbox               |             | Move the Message into an other Folder  |
-| setFlag         | string or array $flag         | boolean     | Set one or many flags                  |
-| unsetFlag       | string or array $flag         | boolean     | Unset one or many flags                |
-| hasTextBody     |                               |             | Check if the Message has a text body   |
-| hasHTMLBody     |                               |             | Check if the Message has a html body   |
-| getTextBody     |                               | string      | Get the Message text body              |
-| getHTMLBody     |                               | string      | Get the Message html body              |
-| getAttachments  |                               | collection  | Get all message attachments            |
-| getClient       |                               | Client      | Get the current Client instance        |
-| getUid          |                               | string      | Get the current UID                    |
-| getFetchOptions |                               | string      | Get the current fetch option           |
-| getMsglist      |                               | integer     | Get the current message list           |
-| getHeaderInfo   |                               | object      | Get the current header_info object     |
-| getHeader       |                               | string      | Get the current raw header             |
-| getMessageId    |                               | integer     | Get the current message ID             |
-| getMessageNo    |                               | integer     | Get the current message number         |
-| getSubject      |                               | string      | Get the current subject                |
-| getDate         |                               | Carbon      | Get the current date object            |
-| getFrom         |                               | array       | Get the current from information       |
-| getTo           |                               | array       | Get the current to information         |
-| getCc           |                               | array       | Get the current cc information         |
-| getBcc          |                               | array       | Get the current bcc information        |
-| getReplyTo      |                               | array       | Get the current reply to information   |
-| getInReplyTo    |                               | string      | Get the current In-Reply-To            |
-| getSender       |                               | array       | Get the current sender information     |
-| getBodies       |                               | mixed       | Get the current bodies                 |
-| getRawBody      |                               | mixed       | Get the current raw message body       |
+| Method          | Arguments                     | Return               | Description                            |
+| --------------- | ----------------------------- | :------------------: | -------------------------------------- |
+| parseBody       |                               | Message              | Parse the Message body                 |
+| delete          |                               |                      | Delete the current Message             |
+| restore         |                               |                      | Restore a deleted Message              |
+| copy            | string $mailbox, int $options |                      | Copy the current Messages to a mailbox |
+| move            | string $mailbox, int $options |                      | Move the current Messages to a mailbox |
+| moveToFolder    | string $mailbox               |                      | Move the Message into an other Folder  |
+| setFlag         | string or array $flag         | boolean              | Set one or many flags                  |
+| unsetFlag       | string or array $flag         | boolean              | Unset one or many flags                |
+| hasTextBody     |                               |                      | Check if the Message has a text body   |
+| hasHTMLBody     |                               |                      | Check if the Message has a html body   |
+| getTextBody     |                               | string               | Get the Message text body              |
+| getHTMLBody     |                               | string               | Get the Message html body              |
+| getAttachments  |                               | AttachmentCollection | Get all message attachments            |
+| getClient       |                               | Client               | Get the current Client instance        |
+| getUid          |                               | string               | Get the current UID                    |
+| getFetchOptions |                               | string               | Get the current fetch option           |
+| getMsglist      |                               | integer              | Get the current message list           |
+| getHeaderInfo   |                               | object               | Get the current header_info object     |
+| getHeader       |                               | string               | Get the current raw header             |
+| getMessageId    |                               | integer              | Get the current message ID             |
+| getMessageNo    |                               | integer              | Get the current message number         |
+| getSubject      |                               | string               | Get the current subject                |
+| getDate         |                               | Carbon               | Get the current date object            |
+| getFrom         |                               | array                | Get the current from information       |
+| getTo           |                               | array                | Get the current to information         |
+| getCc           |                               | array                | Get the current cc information         |
+| getBcc          |                               | array                | Get the current bcc information        |
+| getReplyTo      |                               | array                | Get the current reply to information   |
+| getInReplyTo    |                               | string               | Get the current In-Reply-To            |
+| getSender       |                               | array                | Get the current sender information     |
+| getBodies       |                               | mixed                | Get the current bodies                 |
+| getRawBody      |                               | mixed                | Get the current raw message body       |
 
 ### [Folder::class](src/IMAP/Folder.php)
 | Method            | Arguments                                                       | Return            | Description                                    |
@@ -346,7 +349,24 @@ $aMessage = $oFolder->getMessages('ALL', null, false);
 | appendMessage     | string $message, string $options, string $internal_date         | bool              | Append a string message to the current mailbox |
 | getClient         |                                                                 | Client            | Get the current Client instance                |
 
-### [MessageCollection::class](src/IMAP/MessageCollection.php)
+### [Attachment::class](src/IMAP/Attachment.php)
+| Method         | Arguments  | Return         | Description                                            |
+| -------------- | ---------- | :------------: | ------------------------------------------------------ |
+| getContent     |            | string or null | Get attachment content                                 |     
+| getName        |            | string or null | Get attachment name                                    |        
+| getType        |            | string or null | Get attachment type                                    |        
+| getDisposition |            | string or null | Get attachment disposition                             | 
+| getContentType |            | string or null | Get attachment content type                            | 
+| getImgSrc      |            | string or null | Get attachment image source as base64 encoded data url |      
+
+### [MessageCollection::class](src/IMAP/Support/MessageCollection.php)
+Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illuminate/Support/Collection.html)
+
+| Method   | Arguments                                           | Return               | Description                      |
+| -------- | --------------------------------------------------- | :------------------: | -------------------------------- |
+| paginate | int $perPage = 15, $page = null, $pageName = 'page' | LengthAwarePaginator | Paginate the current collection. |
+
+### [AttachmentCollection::class](src/IMAP/Support/AttachmentCollection.php)
 Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illuminate/Support/Collection.html)
 
 | Method   | Arguments                                           | Return               | Description                      |
