@@ -11,8 +11,10 @@
 */
 
 namespace Webklex\IMAP;
+
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
+use Webklex\IMAP\Support\MessageCollection;
 
 /**
  * Class Folder

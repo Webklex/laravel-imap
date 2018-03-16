@@ -13,6 +13,7 @@
 namespace Webklex\IMAP;
 
 use Carbon\Carbon;
+use Webklex\IMAP\Support\AttachmentCollection;
 
 /**
  * Class Message
@@ -91,7 +92,7 @@ class Message {
      * Message body components
      *
      * @var array   $bodies
-     * @var array   $attachments
+     * @var AttachmentCollection|array  $attachments
      */
     public $bodies = [];
     public $attachments = [];
@@ -144,6 +145,8 @@ class Message {
      */
     public function __construct($uid, $msglist, Client $client, $fetch_options = null, $parse_body = false) {
         $this->setFetchOption($fetch_options);
+
+        $this->attachments = AttachmentCollection::make([]);
         
         $this->msglist = $msglist;
         $this->client = $client;
@@ -225,11 +228,11 @@ class Message {
 
         $body = $this->bodies['html']->content;
         if ($replaceImages) {
-            foreach ($this->attachments as $attachment) {
-                if ($attachment->id && isset($attachment->img_src)){
-                    $body = str_replace('cid:'.$attachment->id, $attachment->img_src, $body);
+            $this->attachments->each(function($oAttachment) use(&$body){
+                if ($oAttachment->id && isset($oAttachment->img_src)){
+                    $body = str_replace('cid:'.$oAttachment->id, $oAttachment->img_src, $body);
                 }
-            }
+            });
         }
 
         return $body;
@@ -439,84 +442,14 @@ class Message {
      * @param mixed  $partNumber
      */
     protected function fetchAttachment($structure, $partNumber){
-        switch ($structure->type) {
-            case self::TYPE_MESSAGE:
-                $type = 'message';
-                break;
-            case self::TYPE_APPLICATION:
-                $type = 'application';
-                break;
-            case self::TYPE_AUDIO:
-                $type = 'audio';
-                break;
-            case self::TYPE_IMAGE:
-                $type = 'image';
-                break;
-            case self::TYPE_VIDEO:
-                $type = 'video';
-                break;
-            case self::TYPE_MODEL:
-                $type = 'model';
-                break;
-            case self::TYPE_OTHER:
-                $type = 'other';
-                break;
-            default:
-                $type = 'other';
-                break;
-        }
 
-        $content = imap_fetchbody($this->client->getConnection(), $this->uid, ($partNumber) ? $partNumber : 1, $this->fetch_options);
+        $oAttachment = new Attachment($this, $structure, $partNumber);
 
-        $attachment = new \stdClass;
-        $attachment->type = $type;
-        $attachment->content_type = $type.'/'.strtolower($structure->subtype);
-        $attachment->content = $this->decodeString($content, $structure->encoding);
-
-        $attachment->id = false;
-        if (property_exists($structure, 'id')) {
-            $attachment->id = str_replace(['<', '>'], '', $structure->id);
-        }
-
-        $attachment->name = false;
-        if (property_exists($structure, 'dparameters')) {
-            foreach ($structure->dparameters as $parameter) {
-                if (strtolower($parameter->attribute) == "filename") {
-                    $attachment->name = $parameter->value;
-                    $attachment->disposition = property_exists($structure, 'disposition') ? $structure->disposition : null;
-                    break;
-                }
-            }
-        }
-        if(self::TYPE_MESSAGE == $structure->type) {
-            if($structure->ifdescription) {
-                $attachment->name = $structure->description;
+        if($oAttachment->getName() != null){
+            if ($oAttachment->getId() != null) {
+                $this->attachments->put($oAttachment->getId(), $oAttachment);
             } else {
-                $attachment->name = $structure->subtype;
-            }
-        }
-
-        if (!$attachment->name && property_exists($structure, 'parameters')) {
-            foreach ($structure->parameters as $parameter) {
-                if (strtolower($parameter->attribute) == "name") {
-                    $attachment->name = $parameter->value;
-                    $attachment->disposition = property_exists($structure, 'disposition') ? $structure->disposition : null;
-                    break;
-                }
-            }
-        }
-
-        if ($attachment->type == 'image') {
-            $attachment->img_src = 'data:'.$attachment->content_type.';base64,'.base64_encode($attachment->content);
-        }
-
-        if(property_exists($attachment, 'name')){
-            if($attachment->name != false){
-                if ($attachment->id) {
-                    $this->attachments[$attachment->id] = $attachment;
-                } else {
-                    $this->attachments[] = $attachment;
-                }
+                $this->attachments->push($oAttachment);
             }
         }
     }
@@ -547,7 +480,7 @@ class Message {
      *
      * @return string
      */
-    private function decodeString($string, $encoding) {
+    public function decodeString($string, $encoding) {
         switch ($encoding) {
             case self::ENC_7BIT:
                 return $string;
@@ -644,10 +577,10 @@ class Message {
     /**
      * Get all message attachments.
      *
-     * @return \Illuminate\Support\Collection
+     * @return AttachmentCollection|array
      */
     public function getAttachments(){
-        return collect($this->attachments);
+        return $this->attachments;
     }
 
     /**

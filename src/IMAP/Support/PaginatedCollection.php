@@ -1,6 +1,6 @@
 <?php
 /*
-* File:     ClientManager.php
+* File:     PaginatedCollection.php
 * Category: Collection
 * Author:   M. Goldenbaum
 * Created:  16.03.18 03:13
@@ -10,18 +10,18 @@
 *  -
 */
 
-namespace Webklex\IMAP;
+namespace Webklex\IMAP\Support;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\Paginator;
 
 /**
- * Class MessageCollection
+ * Class PaginatedCollection
  *
- * @package Webklex\IMAP
+ * @package Webklex\IMAP\Support
  */
-class MessageCollection extends Collection {
+class PaginatedCollection extends Collection {
 
     /**
      * Paginate the current collection.
