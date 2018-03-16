@@ -14,6 +14,19 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.1] - 2018-03-16
+### Added
+- Message collection moved to Support
+- Attachment collection added
+- Attachment class added
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+- [Folder::class](src/IMAP/Folder.php)
+- [Attachment::class](src/IMAP/Attachment.php)
+- [MessageCollection::class](src/IMAP/Support/MessageCollection.php)
+- [AttachmentCollection::class](src/IMAP/Support/AttachmentCollection.php)
+
 ## [1.0.5.0] - 2018-03-16
 ### Added
 - Message search method added
@@ -28,7 +41,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - [Message::class](src/IMAP/Message.php)
 - [Client::class](src/IMAP/Client.php)
 - [Folder::class](src/IMAP/Folder.php)
-- [MessageCollection::class](src/IMAP/MessageCollection.php)
+- [MessageCollection::class](src/IMAP/Support/MessageCollection.php)
 - [MessageSearchValidationException::class](src/IMAP/Exceptions/MessageSearchValidationException.php)
 
 ## [1.0.4.2] - 2018-03-15
