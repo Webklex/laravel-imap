@@ -92,7 +92,7 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
   - `options` &mdash; additional fetch options
     - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
     - `fetch` &mdash; `FT_UID` (message marked as read by fetching the message) or `FT_PEEK` (fetch the message without setting the "read" flag)
-    - `open` &mdash; => [
+    - `open` &mdash; special configuration for imap_open()
       - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
 
 ## Usage
