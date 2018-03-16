@@ -14,6 +14,23 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.0] - 2018-03-16
+### Added
+- Message search method added
+- Basic pagination added
+- Prevent automatic body parsing (will be default within the next major version (2.x))
+- Unified MessageCollection::class added
+- Several small improvements and docs added
+- Implementation of the "get raw body" pull request [#59](https://github.com/Webklex/laravel-imap/pull/59)
+- Get a single message by uid
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+- [Client::class](src/IMAP/Client.php)
+- [Folder::class](src/IMAP/Folder.php)
+- [MessageCollection::class](src/IMAP/MessageCollection.php)
+- [MessageSearchValidationException::class](src/IMAP/Exceptions/MessageSearchValidationException.php)
+
 ## [1.0.4.2] - 2018-03-15
 ### Added
 - Support message delivery status [#47](https://github.com/Webklex/laravel-imap/pull/47)
