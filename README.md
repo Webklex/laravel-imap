@@ -228,6 +228,7 @@ Available search criteria:
 
 Further information:
 - http://php.net/manual/en/function.imap-search.php
+- https://tools.ietf.org/html/rfc1176
 - https://tools.ietf.org/html/rfc1064
 - https://tools.ietf.org/html/rfc822
      
