@@ -243,7 +243,7 @@ $oClient->connect();
 /** @var \Webklex\IMAP\Folder $oFolder */
 $oFolder = $oClient->getFolder('INBOX.name');
 
-//Get all messages since march 15 2018
+//Get all messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->searchMessages([['TEXT', 'hello world']]);
 
