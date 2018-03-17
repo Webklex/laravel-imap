@@ -30,7 +30,7 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
 
 ## Installation
 
-1) Install the php-imap library if it isn't already installed:
+1. Install the php-imap library if it isn't already installed:
 
 ``` shell
 sudo apt-get install php*-imap && sudo apache2ctl graceful
@@ -38,25 +38,25 @@ sudo apt-get install php*-imap && sudo apache2ctl graceful
 
 You might also want to check `phpinfo()` if the extension is enabled.
 
-2) Now install the Laravel IMAP package by running the following command:
+2. Now install the Laravel IMAP package by running the following command:
 
 ``` shell
 composer require webklex/laravel-imap
 ```
 
-3) Open your `config/app.php` file and add the following to the `providers` array:
+3. Open your `config/app.php` file and add the following to the `providers` array:
 
 ``` php
 Webklex\IMAP\Providers\LaravelServiceProvider::class,
 ```
 
-4) In the same `config/app.php` file add the following to the `aliases ` array: 
+4. In the same `config/app.php` file add the following to the `aliases ` array: 
 
 ``` php
 'Client' => Webklex\IMAP\Facades\Client::class,
 ```
 
-5) Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
+5. Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
 
 ``` shell
 php artisan vendor:publish
@@ -84,18 +84,18 @@ The following encryption methods are supported:
 Detailed [config/imap.php](src/config/imap.php) configuration:
  - `default` &mdash; by default this the imap handler will use this given account.
  - `accounts` &mdash; all available accounts
-  - `default` &mdash; account identifier
-    - `host` &mdash; imap host
-    - `port` &mdash; imap port
-    - `encryption` &mdash; desired encryption method
-    - `validate_cert` &mdash; decide weather you want to verify the certificate or not
-    - `username` &mdash; imap account username
-    - `password` &mdash; imap account password
-  - `options` &mdash; additional fetch options
-    - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
-    - `fetch` &mdash; `FT_UID` (message marked as read by fetching the message) or `FT_PEEK` (fetch the message without setting the "read" flag)
-    - `open` &mdash; special configuration for imap_open()
-      - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
+   - `default` &mdash; account identifier
+     - `host` &mdash; imap host
+     - `port` &mdash; imap port
+     - `encryption` &mdash; desired encryption method
+     - `validate_cert` &mdash; decide weather you want to verify the certificate or not
+     - `username` &mdash; imap account username
+     - `password` &mdash; imap account password
+   - `options` &mdash; additional fetch options
+     - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
+     - `fetch` &mdash; `FT_UID` (message marked as read by fetching the message) or `FT_PEEK` (fetch the message without setting the "read" flag)
+     - `open` &mdash; special configuration for imap_open()
+       - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
 
 ## Usage
 
@@ -200,6 +200,37 @@ foreach($aMessage as $oMessage){
 }
 ```
 
+Available search criteria:
+- `ALL` &mdash; return all messages matching the rest of the criteria
+- `ANSWERED` &mdash; match messages with the \\ANSWERED flag set
+- `BCC` "string" &mdash; match messages with "string" in the Bcc: field
+- `BEFORE` "date" &mdash; match messages with Date: before "date"
+- `BODY` "string" &mdash; match messages with "string" in the body of the message
+- `CC` "string" &mdash; match messages with "string" in the Cc: field
+- `DELETED` &mdash; match deleted messages
+- `FLAGGED` &mdash; match messages with the \\FLAGGED (sometimes referred to as Important or Urgent) flag set
+- `FROM` "string" &mdash; match messages with "string" in the From: field
+- `KEYWORD` "string" &mdash; match messages with "string" as a keyword
+- `NEW` &mdash; match new messages
+- `OLD` &mdash; match old messages
+- `ON` "date" &mdash; match messages with Date: matching "date"
+- `RECENT` &mdash; match messages with the \\RECENT flag set
+- `SEEN` &mdash; match messages that have been read (the \\SEEN flag is set)
+- `SINCE` "date" &mdash; match messages with Date: after "date"
+- `SUBJECT` "string" &mdash; match messages with "string" in the Subject:
+- `TEXT` "string" &mdash; match messages with text "string"
+- `TO` "string" &mdash; match messages with "string" in the To:
+- `UNANSWERED` &mdash; match messages that have not been answered
+- `UNDELETED` &mdash; match messages that are not deleted
+- `UNFLAGGED` &mdash; match messages that are not flagged
+- `UNKEYWORD` "string" &mdash; match messages that do not have the keyword "string"
+- `UNSEEN` &mdash; match messages which have not been read yet
+
+Further information:
+- http://php.net/manual/en/function.imap-search.php
+- https://tools.ietf.org/html/rfc1064
+- https://tools.ietf.org/html/rfc822
+     
 Paginate a message collection:
 ``` php
 use Webklex\IMAP\Facades\Client;
