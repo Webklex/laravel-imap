@@ -14,10 +14,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | IMAP Host Address
+    | IMAP default account
     |--------------------------------------------------------------------------
     |
-    | By default this the imap handler will use this given account.
+    | The default account identifier
     |
     */
     'default' => env('IMAP_DEFAULT_ACCOUNT', 'default'),
@@ -33,7 +33,7 @@ return [
     */
     'accounts' => [
 
-        'default' => [
+        'default' => [ // account identifier
             'host'  => env('IMAP_HOST', 'localhost'),
             'port'  => env('IMAP_PORT', 993),
             'encryption'    => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls'
@@ -43,7 +43,7 @@ return [
         ],
 
         /*
-        'gmail' => [
+        'gmail' => [ // account identifier
             'host' => 'imap.gmail.com',
             'port' => 993,
             'encryption' => 'ssl', // Supported: false, 'ssl', 'tls'
@@ -52,7 +52,7 @@ return [
             'password' => 'PASSWORD',
         ],
 
-        'another' => [
+        'another' => [ // account identifier
             'host' => '',
             'port' => 993,
             'encryption' => false, // Supported: false, 'ssl', 'tls'

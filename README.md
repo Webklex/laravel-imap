@@ -74,6 +74,7 @@ IMAP_ENCRYPTION=ssl
 IMAP_VALIDATE_CERT=true
 IMAP_USERNAME=root@example.com
 IMAP_PASSWORD=secret
+IMAP_DEFAULT_ACCOUNT=default
 ```
 
 The following encryption methods are supported:
@@ -82,9 +83,9 @@ The following encryption methods are supported:
 - `tls` &mdash; Use TLS
 
 Detailed [config/imap.php](src/config/imap.php) configuration:
- - `default` &mdash; by default this the imap handler will use this given account.
+ - `default` &mdash; used default account
  - `accounts` &mdash; all available accounts
-   - `default` &mdash; account identifier
+   - `default` &mdash; default account identifier
      - `host` &mdash; imap host
      - `port` &mdash; imap port
      - `encryption` &mdash; desired encryption method
