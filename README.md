@@ -120,6 +120,7 @@ $oClient = new Client([
 $oClient->connect();
 
 //Get all Mailboxes
+/** @var \Webklex\IMAP\Support\FolderCollection $aFolder */
 $aFolder = $oClient->getFolders();
 
 //Loop through every Mailbox
