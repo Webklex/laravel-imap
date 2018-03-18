@@ -254,7 +254,7 @@ Save message attachments:
 /** @var \Webklex\IMAP\Support\AttachmentCollection $aAttachment */
 $aAttachment = $oMessage->getAttachments();
 
-$aAttachment->each(function ($oAttachment) use ($oMessage) {
+$aAttachment->each(function ($oAttachment) {
     /** @var \Webklex\IMAP\Attachment $oAttachment */
     $oAttachment->save();
 });
