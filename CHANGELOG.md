@@ -14,6 +14,16 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.3] - 2018-03-18
+### Added
+- FolderCollection::class added
+- Comments updated
+
+### Affected Classes
+- [Client::class](src/IMAP/Client.php)
+- [Folder::class](src/IMAP/Folder.php)
+- [FolderCollection::class](src/IMAP/Support/FolderCollection.php)
+
 ## [1.0.5.2] - 2018-03-18
 ### Added
 - Attachment::save() method added
