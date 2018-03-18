@@ -144,6 +144,7 @@ class Attachment {
                 }
             }
         }
+
         if(self::TYPE_MESSAGE == $this->structure->type) {
             if($this->structure->ifdescription) {
                 $this->name = $this->structure->description;
