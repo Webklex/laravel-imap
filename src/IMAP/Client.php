@@ -15,6 +15,7 @@ namespace Webklex\IMAP;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
+use Webklex\IMAP\Support\FolderCollection;
 use Webklex\IMAP\Support\MessageCollection;
 
 /**
@@ -252,11 +253,11 @@ class Client {
      * @param bool $hierarchical
      * @param null $parent_folder
      *
-     * @return array
+     * @return FolderCollection
      */
     public function getFolders($hierarchical = true, $parent_folder = null) {
         $this->checkConnection();
-        $folders = [];
+        $folders = FolderCollection::make([]);
 
         $pattern = $parent_folder.($hierarchical ? '%' : '*');
 
@@ -270,7 +271,8 @@ class Client {
                 $children = $this->getFolders(true, $pattern);
                 $folder->setChildren($children);
             }
-            $folders[] = $folder;
+
+            $folders->push($folder);
         }
 
         return $folders;

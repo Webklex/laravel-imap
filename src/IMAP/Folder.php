@@ -14,6 +14,7 @@ namespace Webklex\IMAP;
 
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
+use Webklex\IMAP\Support\FolderCollection;
 use Webklex\IMAP\Support\MessageCollection;
 
 /**
@@ -54,7 +55,7 @@ class Folder {
     /**
      * Children folders
      *
-     * @var array
+     * @var FolderCollection|array
      */
     public $children = [];
 
@@ -134,7 +135,7 @@ class Folder {
     /**
      * Set children.
      *
-     * @param array $children
+     * @param FolderCollection|array $children
      *
      * @return self
      */

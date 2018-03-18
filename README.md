@@ -277,7 +277,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false);
 | connect             | int $attempts                                                                   |                   | Connect to server.                                                                                                            |
 | disconnect          |                                                                                 |                   | Disconnect from server.                                                                                                       |
 | getFolder           | string $folder_name, int $attributes = 32, int or null $delimiter               | Folder            | Get a Folder instance by name                                                                                                 |
-| getFolders          | bool $hierarchical, string or null $parent_folder                               | array             | Get folders list. If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.  |
+| getFolders          | bool $hierarchical, string or null $parent_folder                               | FolderCollection  | Get folders list. If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.  |
 | openFolder          | Folder $folder, $attempts                                                       |                   | Open a given folder.                                                                                                          |
 | createFolder        | string $name                                                                    |                   | Create a new folder.                                                                                                          |
 | getMessages         | Folder $folder, string $criteria, bool $parse_body                              | MessageCollection | Get messages from folder.                                                                                                     |
@@ -363,6 +363,13 @@ Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illum
 | paginate | int $perPage = 15, $page = null, $pageName = 'page' | LengthAwarePaginator | Paginate the current collection. |
 
 ### [AttachmentCollection::class](src/IMAP/Support/AttachmentCollection.php)
+Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illuminate/Support/Collection.html)
+
+| Method   | Arguments                                           | Return               | Description                      |
+| -------- | --------------------------------------------------- | :------------------: | -------------------------------- |
+| paginate | int $perPage = 15, $page = null, $pageName = 'page' | LengthAwarePaginator | Paginate the current collection. |
+
+### [FolderCollection::class](src/IMAP/Support/FolderCollection.php)
 Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illuminate/Support/Collection.html)
 
 | Method   | Arguments                                           | Return               | Description                      |
