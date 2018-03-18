@@ -45,7 +45,7 @@ class ClientManager {
      *
      * @param  string  $name
      *
-     * @return \Webklex\IMAP\Client
+     * @return Client
      */
     public function account($name = null) {
         $name = $name ?: $this->getDefaultAccount();
@@ -65,7 +65,7 @@ class ClientManager {
      *
      * @param  string  $name
      *
-     * @return \Webklex\IMAP\Client
+     * @return Client
      */
     protected function resolve($name) {
         $config = $this->getConfig($name);

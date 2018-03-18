@@ -25,7 +25,7 @@ class Message {
     /**
      * Client instance
      *
-     * @var \Webklex\IMAP\Client
+     * @var Client
      */
     private $client = Client::class;
 

@@ -169,6 +169,8 @@ class Client {
 
     /**
      * Determine if connection was established and connect if not.
+     *
+     * @throws ConnectionFailedException
      */
     public function checkConnection() {
         if (!$this->isConnected()) {
@@ -252,6 +254,7 @@ class Client {
      * @param null $parent_folder
      *
      * @return FolderCollection
+     * @throws ConnectionFailedException
      */
     public function getFolders($hierarchical = true, $parent_folder = null) {
         $this->checkConnection();
@@ -279,8 +282,10 @@ class Client {
     /**
      * Open folder.
      *
-     * @param Folder  $folder
-     * @param integer $attempts
+     * @param Folder $folder
+     * @param int    $attempts
+     *
+     * @throws ConnectionFailedException
      */
     public function openFolder(Folder $folder, $attempts = 3) {
         $this->checkConnection();
@@ -312,6 +317,7 @@ class Client {
      * @param boolean $parse_body
      *
      * @return MessageCollection
+     * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *
@@ -331,6 +337,7 @@ class Client {
      * @param bool   $parse_body
      *
      * @return MessageCollection
+     * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *
@@ -351,6 +358,7 @@ class Client {
      * @param string  $charset
      *
      * @return MessageCollection
+     * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *

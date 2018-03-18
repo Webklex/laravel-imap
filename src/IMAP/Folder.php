@@ -169,6 +169,7 @@ class Folder {
      * @param bool $parse_body
      *
      * @return MessageCollection
+     * @throws Exceptions\ConnectionFailedException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      */
@@ -184,6 +185,7 @@ class Folder {
      * @param bool $parse_body
      *
      * @return MessageCollection
+     * @throws Exceptions\ConnectionFailedException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *
@@ -209,12 +211,13 @@ class Folder {
      *                        The following sample would search for all flagged messages:
      *                        [['FLAGGED']]
      *                        ---------------------------------------------------------------------------------------
-     * @param Folder  $folder
      * @param null    $fetch_options
      * @param boolean $parse_body
      * @param string  $charset
      *
      * @return MessageCollection
+     *
+     * @throws Exceptions\ConnectionFailedException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *
@@ -252,7 +255,6 @@ class Folder {
      *                                           ;  M:-12; N:+1; Y:+12
      *                  / ( ("+" / "-") 4DIGIT ) ; Local differential
      *                                           ;  hours+min. (HHMM)
-     *
      */
     public function searchMessages(array $where, $fetch_options = null, $parse_body = true, $charset = "UTF-8") {
 
