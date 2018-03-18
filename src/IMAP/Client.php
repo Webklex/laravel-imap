@@ -185,9 +185,7 @@ class Client {
      * @throws ConnectionFailedException
      */
     public function connect($attempts = 3) {
-        if ($this->isConnected()) {
-            $this->disconnect();
-        }
+        $this->disconnect();
 
         try {
             $this->connection = imap_open(
