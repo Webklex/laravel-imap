@@ -102,13 +102,6 @@ class Message {
      *
      * @const integer   TYPE_TEXT
      * @const integer   TYPE_MULTIPART
-     * @const integer   TYPE_MESSAGE
-     * @const integer   TYPE_APPLICATION
-     * @const integer   TYPE_AUDIO
-     * @const integer   TYPE_IMAGE
-     * @const integer   TYPE_VIDEO
-     * @const integer   TYPE_MODEL
-     * @const integer   TYPE_OTHER
      *
      * @const integer   ENC_7BIT
      * @const integer   ENC_8BIT
@@ -119,13 +112,6 @@ class Message {
      */
     const TYPE_TEXT = 0;
     const TYPE_MULTIPART = 1;
-    const TYPE_MESSAGE = 2;
-    const TYPE_APPLICATION = 3;
-    const TYPE_AUDIO = 4;
-    const TYPE_IMAGE = 5;
-    const TYPE_VIDEO = 6;
-    const TYPE_MODEL = 7;
-    const TYPE_OTHER = 8;
 
     const ENC_7BIT = 0;
     const ENC_8BIT = 1;
@@ -577,7 +563,6 @@ class Message {
     /**
      * Get all message attachments.
      *
-     * @return AttachmentCollection|array
      * @return AttachmentCollection
      */
     public function getAttachments(){
