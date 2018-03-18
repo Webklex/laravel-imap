@@ -30,7 +30,7 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
 
 ## Installation
 
-1. Install the php-imap library if it isn't already installed:
+1) Install the php-imap library if it isn't already installed:
 
 ``` shell
 sudo apt-get install php*-imap && sudo apache2ctl graceful
@@ -38,25 +38,25 @@ sudo apt-get install php*-imap && sudo apache2ctl graceful
 
 You might also want to check `phpinfo()` if the extension is enabled.
 
-2. Now install the Laravel IMAP package by running the following command:
+2) Now install the Laravel IMAP package by running the following command:
 
 ``` shell
 composer require webklex/laravel-imap
 ```
 
-3. Open your `config/app.php` file and add the following to the `providers` array:
+3) Open your `config/app.php` file and add the following to the `providers` array:
 
 ``` php
 Webklex\IMAP\Providers\LaravelServiceProvider::class,
 ```
 
-4. In the same `config/app.php` file add the following to the `aliases ` array: 
+4) In the same `config/app.php` file add the following to the `aliases ` array: 
 
 ``` php
 'Client' => Webklex\IMAP\Facades\Client::class,
 ```
 
-5. Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
+5) Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
 
 ``` shell
 php artisan vendor:publish
