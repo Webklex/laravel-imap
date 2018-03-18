@@ -91,11 +91,11 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
      - `validate_cert` &mdash; decide weather you want to verify the certificate or not
      - `username` &mdash; imap account username
      - `password` &mdash; imap account password
-   - `options` &mdash; additional fetch options
-     - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
-     - `fetch` &mdash; `FT_UID` (message marked as read by fetching the message) or `FT_PEEK` (fetch the message without setting the "read" flag)
-     - `open` &mdash; special configuration for imap_open()
-       - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
+ - `options` &mdash; additional fetch options
+   - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
+   - `fetch` &mdash; `FT_UID` (message marked as read by fetching the message) or `FT_PEEK` (fetch the message without setting the "read" flag)
+   - `open` &mdash; special configuration for imap_open()
+     - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
 
 ## Usage
 
@@ -126,8 +126,11 @@ $aMailboxes = $oClient->getFolders();
 foreach($aMailboxes as $oMailbox){
 
     //Get all Messages of the current Mailbox
+    /** @var \Webklex\IMAP\Support\MessageCollection $oMessage */
+    $aMessage = $oMailbox->getMessages();
+    
     /** @var \Webklex\IMAP\Message $oMessage */
-    foreach($oMailbox->getMessages() as $oMessage){
+    foreach($aMessage as $oMessage){
         echo $oMessage->subject.'<br />';
         echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
         echo $oMessage->getHTMLBody(true);
@@ -157,11 +160,7 @@ method takes three options: the required (string) $folder_name and two optional 
 seems to be sometimes 32 or 64 (I honestly have no clue what this number does, so feel free to enlighten me and anyone 
 else) and a delimiter which if it isn't set will use the default option configured inside the [config/imap.php](src/config/imap.php) file.
 ``` php
-use Webklex\IMAP\Facades\Client;
-
 /** @var \Webklex\IMAP\Client $oClient */
-$oClient = Client::account('default');
-$oClient->connect();
 
 /** @var \Webklex\IMAP\Folder $oFolder */
 $oFolder = $oClient->getFolder('INBOX.name');
@@ -179,25 +178,19 @@ foreach($aMessage as $oMessage){
 
 Search for specific emails:
 ``` php
-use Webklex\IMAP\Facades\Client;
-
-/** @var \Webklex\IMAP\Client $oClient */
-$oClient = Client::account('default');
-$oClient->connect();
-
 /** @var \Webklex\IMAP\Folder $oFolder */
-$oFolder = $oClient->getFolder('INBOX.name');
 
 //Get all messages since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->searchMessages([['SINCE', Carbon::parse('15.03.2018')->format('d M y')]]);
 
-/** @var \Webklex\IMAP\Message $oMessage */
-foreach($aMessage as $oMessage){
-    echo $oMessage->subject.'<br />';
-    echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
-    echo $oMessage->getHTMLBody(true);
-}
+//Get all messages containing "hello world"
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->searchMessages([['TEXT', 'hello world']]);
+
+//Get all unseen messages containing "hello world"
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->searchMessages([['UNSEEN'], ['TEXT', 'hello world']]);
 ```
 
 Available search criteria:
@@ -234,18 +227,7 @@ Further information:
      
 Paginate a message collection:
 ``` php
-use Webklex\IMAP\Facades\Client;
-
-/** @var \Webklex\IMAP\Client $oClient */
-$oClient = Client::account('default');
-$oClient->connect();
-
-/** @var \Webklex\IMAP\Folder $oFolder */
-$oFolder = $oClient->getFolder('INBOX.name');
-
-//Get all messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->searchMessages([['TEXT', 'hello world']]);
 
 /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
 $paginator = $aMessage->paginate();
@@ -253,15 +235,7 @@ $paginator = $aMessage->paginate();
 
 Get a specific message by uid (Please note that the uid is not unique and can change):
 ``` php
-use Webklex\IMAP\Facades\Client;
-
-/** @var \Webklex\IMAP\Client $oClient */
-$oClient = Client::account('default');
-$oClient->connect();
-
 /** @var \Webklex\IMAP\Folder $oFolder */
-$oFolder = $oClient->getFolder('INBOX.name');
-
 /** @var \Webklex\IMAP\Message $oMessage */
 $oMessage = $oFolder->getMessage($uid = 1);
 ```
@@ -276,23 +250,19 @@ $oMessage->unsetFlag('Spam');
 Save message attachments:
 ``` php
 /** @var \Webklex\IMAP\Message $oMessage */
-$oMessage->getAttachments()->each(function ($oAttachment) use ($oMessage) {
+
+/** @var \Webklex\IMAP\Support\AttachmentCollection $aAttachment */
+$aAttachment = $oMessage->getAttachments();
+
+$aAttachment->each(function ($oAttachment) use ($oMessage) {
     /** @var \Webklex\IMAP\Attachment $oAttachment */
-   file_put_contents($oAttachment->getName(), $oAttachment->getContent());
     $oAttachment->save();
 });
 ```
 
 Fetch messages without body parsing (decrease load):
 ``` php
-use Webklex\IMAP\Facades\Client;
-
-/** @var \Webklex\IMAP\Client $oClient */
-$oClient = Client::account('default');
-$oClient->connect();
-
 /** @var \Webklex\IMAP\Folder $oFolder */
-$oFolder = $oClient->getFolder('INBOX.name');
 
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->searchMessages([['TEXT', 'Hello world']], null, false);
@@ -383,14 +353,14 @@ $aMessage = $oFolder->getMessages('ALL', null, false);
 | getClient         |                                                                 | Client            | Get the current Client instance                |
 
 ### [Attachment::class](src/IMAP/Attachment.php)
-| Method         | Arguments  | Return         | Description                                            |
-| -------------- | ---------- | :------------: | ------------------------------------------------------ |
-| getContent     |            | string or null | Get attachment content                                 |     
-| getName        |            | string or null | Get attachment name                                    |        
-| getType        |            | string or null | Get attachment type                                    |        
-| getDisposition |            | string or null | Get attachment disposition                             | 
-| getContentType |            | string or null | Get attachment content type                            | 
-| getImgSrc      |            | string or null | Get attachment image source as base64 encoded data url |      
+| Method         | Arguments                      | Return         | Description                                            |
+| -------------- | ------------------------------ | :------------: | ------------------------------------------------------ |
+| getContent     |                                | string or null | Get attachment content                                 |     
+| getName        |                                | string or null | Get attachment name                                    |        
+| getType        |                                | string or null | Get attachment type                                    |        
+| getDisposition |                                | string or null | Get attachment disposition                             | 
+| getContentType |                                | string or null | Get attachment content type                            | 
+| getImgSrc      |                                | string or null | Get attachment image source as base64 encoded data url |      
 | save           | string $path, string $filename | boolean        | Save the attachment content to your filesystem         |      
 
 ### [MessageCollection::class](src/IMAP/Support/MessageCollection.php)
