@@ -578,6 +578,7 @@ class Message {
      * Get all message attachments.
      *
      * @return AttachmentCollection|array
+     * @return AttachmentCollection
      */
     public function getAttachments(){
         return $this->attachments;
