@@ -279,6 +279,7 @@ Save message attachments:
 $oMessage->getAttachments()->each(function ($oAttachment) use ($oMessage) {
     /** @var \Webklex\IMAP\Attachment $oAttachment */
    file_put_contents($oAttachment->getName(), $oAttachment->getContent());
+    $oAttachment->save();
 });
 ```
 
@@ -390,6 +391,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false);
 | getDisposition |            | string or null | Get attachment disposition                             | 
 | getContentType |            | string or null | Get attachment content type                            | 
 | getImgSrc      |            | string or null | Get attachment image source as base64 encoded data url |      
+| save           | string $path, string $filename | boolean        | Save the attachment content to your filesystem         |      
 
 ### [MessageCollection::class](src/IMAP/Support/MessageCollection.php)
 Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illuminate/Support/Collection.html)

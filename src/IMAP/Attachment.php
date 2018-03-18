@@ -11,6 +11,7 @@
 */
 
 namespace Webklex\IMAP;
+use Illuminate\Support\Facades\File;
 
 /**
  * Class Attachment
@@ -48,7 +49,6 @@ class Attachment {
 
     /** @var null|string $img_src */
     public $img_src = null;
-
 
     /**
      * Attachment const
@@ -165,6 +165,23 @@ class Attachment {
         if ($this->type == 'image') {
             $this->img_src = 'data:'.$this->content_type.';base64,'.base64_encode($this->content);
         }
+    }
+
+    /**
+     * Save the attachment content to your filesystem
+     *
+     * @param null $path
+     * @param null $filename
+     *
+     * @return boolean
+     */
+    public function save($path = null, $filename = null){
+        $path = $path ?: storage_path();
+        $filename = $filename ?: $this->getName();
+
+        $path = substr($path, -1) == DIRECTORY_SEPARATOR ? $path : $path.DIRECTORY_SEPARATOR;
+
+        return File::put($path.$filename, $this->getContent()) !== false;
     }
 
     /**
