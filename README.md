@@ -120,11 +120,11 @@ $oClient = new Client([
 $oClient->connect();
 
 //Get all Mailboxes
-$aMailboxes = $oClient->getFolders();
+$aFolder = $oClient->getFolders();
 
 //Loop through every Mailbox
-/** @var \Webklex\IMAP\Folder $oMailbox */
-foreach($aMailboxes as $oMailbox){
+/** @var \Webklex\IMAP\Folder $oFolder */
+foreach($aFolder as $oFolder){
 
     //Get all Messages of the current Mailbox
     /** @var \Webklex\IMAP\Support\MessageCollection $oMessage */
@@ -151,7 +151,7 @@ If you use the Facade [\Webklex\IMAP\Facades\Client::class](src/IMAP/Facades/Cli
 ``` php
 use Webklex\IMAP\Facades\Client;
 
-$oClient = Webklex\IMAP\Facades\Client::account('default');
+$oClient = Client::account('default');
 $oClient->connect();
 ```
 
@@ -165,16 +165,6 @@ else) and a delimiter which if it isn't set will use the default option configur
 
 /** @var \Webklex\IMAP\Folder $oFolder */
 $oFolder = $oClient->getFolder('INBOX.name');
-
-/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->getMessages();
-
-/** @var \Webklex\IMAP\Message $oMessage */
-foreach($aMessage as $oMessage){
-    echo $oMessage->subject.'<br />';
-    echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
-    echo $oMessage->getHTMLBody(true);
-}
 ```
 
 Search for specific emails:
@@ -237,6 +227,7 @@ $paginator = $aMessage->paginate();
 Get a specific message by uid (Please note that the uid is not unique and can change):
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
+
 /** @var \Webklex\IMAP\Message $oMessage */
 $oMessage = $oFolder->getMessage($uid = 1);
 ```
