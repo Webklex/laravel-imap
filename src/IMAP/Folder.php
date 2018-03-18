@@ -185,9 +185,12 @@ class Folder {
      * @return MessageCollection
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
+     *
+     * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::getMessages('UNSEEN') instead
+     * @see Folder::getMessages()
      */
     public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $parse_body = true) {
-        return $this->searchMessages([[$criteria]], $fetch_options, $parse_body);
+        return $this->getMessages($criteria, $fetch_options, $parse_body);
     }
 
     /**

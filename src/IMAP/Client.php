@@ -314,6 +314,9 @@ class Client {
      * @return MessageCollection
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
+     *
+     * @deprecated 1.0.5.2:2.0.0 No longer needed. Use Folder::getMessages() instead
+     * @see Folder::getMessages()
      */
     public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null, $parse_body = true) {
         return $folder->getMessages($criteria, $fetch_options, $parse_body);
@@ -330,6 +333,9 @@ class Client {
      * @return MessageCollection
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
+     *
+     * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::getMessages('UNSEEN') instead
+     * @see Folder::getMessages()
      */
     public function getUnseenMessages(Folder $folder, $criteria = 'UNSEEN', $fetch_options = null, $parse_body = true) {
         return $folder->getUnseenMessages($criteria, $fetch_options, $parse_body);
@@ -347,6 +353,9 @@ class Client {
      * @return MessageCollection
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
+     *
+     * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::searchMessages() instead
+     * @see Folder::searchMessages()
      *
      */
     public function searchMessages(array $where, Folder $folder, $fetch_options = null, $parse_body = true, $charset = "UTF-8") {
