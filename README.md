@@ -21,6 +21,7 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
   - [Attachment::class](#attachmentclass) 
   - [MessageCollection::class](#messagecollectionclass) 
   - [AttachmentCollection::class](#attachmentcollectionclass) 
+  - [FolderCollection::class](#foldercollectionclass) 
 - [Known issues](#known-issues)
 - [Milestones & upcoming features](#milestones--upcoming-features)
 - [Security](#security)
