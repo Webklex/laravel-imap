@@ -14,6 +14,17 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.2] - 2018-03-18
+### Added
+- Attachment::save() method added
+- Unnecessary methods declared deprecated
+
+### Affected Classes
+- [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
+- [Folder::class](src/IMAP/Folder.php)
+- [Attachment::class](src/IMAP/Attachment.php)
+
 ## [1.0.5.1] - 2018-03-16
 ### Added
 - Message collection moved to Support
