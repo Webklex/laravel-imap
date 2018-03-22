@@ -128,9 +128,9 @@ $aFolder = $oClient->getFolders();
 /** @var \Webklex\IMAP\Folder $oFolder */
 foreach($aFolder as $oFolder){
 
-    //Get all Messages of the current Mailbox
-    /** @var \Webklex\IMAP\Support\MessageCollection $oMessage */
-    $aMessage = $oMailbox->getMessages();
+    //Get all Messages of the current Mailbox $oFolder
+    /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+    $aMessage = $oFolder->getMessages();
     
     /** @var \Webklex\IMAP\Message $oMessage */
     foreach($aMessage as $oMessage){
