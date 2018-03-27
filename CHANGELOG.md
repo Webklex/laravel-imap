@@ -14,6 +14,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.4] - 2018-03-27
+### Fixed
+- Clear error stack before imap_close #72
+
+### Affected Classes
+- [Client::class](src/IMAP/Client.php)
+
 ## [1.0.5.3] - 2018-03-18
 ### Added
 - FolderCollection::class added
