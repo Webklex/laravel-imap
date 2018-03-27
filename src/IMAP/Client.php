@@ -89,9 +89,17 @@ class Client {
 
     /**
      * Connected parameter
+     *
      * @var bool
      */
     protected $connected = false;
+
+    /**
+     * IMAP errors that might have ben occurred
+     *
+     * @var array $errors
+     */
+    protected $errors = [];
 
     /**
      * Client constructor.
@@ -216,6 +224,7 @@ class Client {
      */
     public function disconnect() {
         if ($this->isConnected()) {
+            $this->errors = array_merge($this->errors, imap_errors() ?: []);
             $this->connected = ! imap_close($this->connection, CL_EXPUNGE);
         }
 
@@ -451,7 +460,9 @@ class Client {
      * @return array
      */
     public function getErrors(){
-        return imap_errors();
+        $this->errors = array_merge($this->errors, imap_errors() ?: []);
+
+        return $this->errors;
     }
 
     /**
