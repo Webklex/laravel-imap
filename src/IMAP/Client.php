@@ -102,6 +102,13 @@ class Client {
     protected $errors = [];
 
     /**
+     * All valid and available account config parameters
+     *
+     * @var array $validConfigKeys
+     */
+    protected $validConfigKeys = ['host', 'port', 'encryption', 'validate_cert', 'username', 'password'];
+
+    /**
      * Client constructor.
      *
      * @param array $config
@@ -128,8 +135,8 @@ class Client {
         $defaultAccount = config('imap.default');
         $defaultConfig  = config("imap.accounts.$defaultAccount");
 
-        foreach($defaultConfig as $key => $default){
-            $this->$key = isset($config[$key]) ? $config[$key] : $default;
+        foreach($this->validConfigKeys as $key){
+            $this->$key = isset($config[$key]) ? $config[$key] : $defaultConfig[$key];
         }
 
         return $this;
