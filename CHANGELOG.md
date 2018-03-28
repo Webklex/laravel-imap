@@ -14,6 +14,15 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.5] - 2018-03-28
+### Fixed
+- New validation rule for a new invalid date format added (Exception Parse Data #45) 
+- Default config keys are now fixed (Confusing default configuration values #66)
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+- [Client::class](src/IMAP/Client.php)
+
 ## [1.0.5.4] - 2018-03-27
 ### Fixed
 - Clear error stack before imap_close #72
