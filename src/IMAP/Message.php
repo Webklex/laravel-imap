@@ -249,6 +249,7 @@ class Message {
              * ^ Datetime                                   ^ Problem                           ^ Cause                 ^
              * | Mon, 20 Nov 2017 20:31:31 +0800 (GMT+8:00) | Double timezone specification     | A Windows feature     |
              * |                                            | and invalid timezone (max 6 char) |                       |
+             * | 04 Jan 2018 10:12:47 UT                    | Missing letter "C"                | Unknown
              *
              * Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)
              */
@@ -260,6 +261,9 @@ class Message {
                         $array = explode('(', $date);
                         $array = array_reverse($array);
                         $date = trim(array_pop($array));
+                        break;
+                    case preg_match('/([0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ UT)+$/i', $date):
+                        $date .= 'C';
                         break;
                 }
                 $this->date = Carbon::parse($date);
