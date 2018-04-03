@@ -154,7 +154,7 @@ class Folder {
      * @return Message|null
      */
     public function getMessage($uid, $msglist = null) {
-        if(imap_msgno($this->getClient()->getConnection(), $uid) > 0){
+        if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
             return new Message($uid, $msglist, $this->getClient());
         }
 
@@ -260,7 +260,7 @@ class Folder {
 
         $this->getClient()->checkConnection();
 
-        if($this->validateWhereStatements($where) === false) {
+        if ($this->validateWhereStatements($where) === false) {
             throw new MessageSearchValidationException('Invalid imap search criteria provided');
         }
 
@@ -269,10 +269,10 @@ class Folder {
             $messages = MessageCollection::make([]);
 
             $query = '';
-            foreach($where as $statement) {
-                if(count($statement) == 1) {
+            foreach ($where as $statement) {
+                if (count($statement) == 1) {
                     $query .= $statement[0];
-                } else{
+                } else {
                     $query .= $statement[0].' "'.$statement[1].'"';
                 }
             }
@@ -309,9 +309,9 @@ class Folder {
      *      https://tools.ietf.org/html/rfc822
      */
     protected function validateWhereStatements($statements) {
-        foreach($statements as $statement) {
+        foreach ($statements as $statement) {
             $criteria = $statement[0];
-            if(in_array($criteria, [
+            if (in_array($criteria, [
                     'OR', 'AND',
                     'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
                     'NEW', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
@@ -356,11 +356,11 @@ class Folder {
      * @param $attributes
      */
     protected function parseAttributes($attributes) {
-        $this->no_inferiors = ($attributes & LATT_NOINFERIORS)  ? true : false;
-        $this->no_select    = ($attributes & LATT_NOSELECT)     ? true : false;
-        $this->marked       = ($attributes & LATT_MARKED)       ? true : false;
-        $this->referal      = ($attributes & LATT_REFERRAL)     ? true : false;
-        $this->has_children = ($attributes & LATT_HASCHILDREN)  ? true : false;
+        $this->no_inferiors = ($attributes & LATT_NOINFERIORS) ? true : false;
+        $this->no_select    = ($attributes & LATT_NOSELECT) ? true : false;
+        $this->marked       = ($attributes & LATT_MARKED) ? true : false;
+        $this->referal      = ($attributes & LATT_REFERRAL) ? true : false;
+        $this->has_children = ($attributes & LATT_HASCHILDREN) ? true : false;
     }
 
     /**
