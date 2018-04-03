@@ -260,7 +260,7 @@ class Folder {
 
         $this->getClient()->checkConnection();
 
-        if($this->validateWhereStatements($where)){
+        if($this->validateWhereStatements($where) === false){
             throw new MessageSearchValidationException('Invalid imap search criteria provided');
         }
 
@@ -311,7 +311,7 @@ class Folder {
     protected function validateWhereStatements($statements){
         foreach($statements as $statement){
             $criteria = $statement[0];
-            if(in_array(explode($criteria, ' '), [
+            if(in_array($criteria, [
                     'OR', 'AND',
                     'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
                     'NEW', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
