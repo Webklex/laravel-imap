@@ -6,13 +6,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- More explicit date validation statements
 
 ### Added
 - NaN
 
 ### Affected Classes
-- NaN
+- [Message::class](src/IMAP/Message.php)
 
 ## [1.0.5.5] - 2018-03-28
 ### Fixed
