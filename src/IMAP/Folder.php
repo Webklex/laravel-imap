@@ -150,12 +150,14 @@ class Folder {
      *
      * @param integer      $uid     Please note that the uid is not unique and can change
      * @param integer|null $msglist
+     * @param integer|null $fetch_options
+     * @param boolean      $parse_body
      *
      * @return Message|null
      */
-    public function getMessage($uid, $msglist = null) {
+    public function getMessage($uid, $msglist = null, $fetch_options = null, $parse_body = false) {
         if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
-            return new Message($uid, $msglist, $this->getClient());
+            return new Message($uid, $msglist, $this->getClient(), $fetch_options, $parse_body);
         }
 
         return null;
