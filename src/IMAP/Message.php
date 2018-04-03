@@ -255,7 +255,7 @@ class Message {
              */
             try {
                 $this->date = Carbon::parse($date);
-            } catch (\Exception $e) {
+            } catch(\Exception $e) {
                 switch (true) {
                     case preg_match('/([A-Z]{2,3}\,\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ \+[0-9]{4}\ \([A-Z]{2,3}\+[0-9]{1,2}\:[0-9]{1,2})\)+$/i', $date) > 0:
                         $array = explode('(', $date);
@@ -298,7 +298,7 @@ class Message {
         }
         if (property_exists($header, 'Msgno')) {
             $this->message_no = ($this->fetch_options == FT_UID) ? trim($header->Msgno) : imap_msgno($this->client->getConnection(), trim($header->Msgno));
-        } else {
+        } else{
             $this->message_no = imap_msgno($this->client->getConnection(), $this->getUid());
         }
     }
@@ -454,7 +454,7 @@ class Message {
     public function setFetchOption($option) {
         if (is_long($option) == true) {
             $this->fetch_options = $option;
-        }elseif (is_null($option) == true) {
+        } elseif(is_null($option) == true) {
             $config = config('imap.options.fetch', FT_UID);
             $this->fetch_options = is_long($config) ? $config : 1;
         }
