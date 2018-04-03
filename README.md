@@ -332,20 +332,20 @@ $aMessage = $oFolder->getMessages('ALL', null, false);
 | getRawBody      |                               | mixed                | Get the current raw message body       |
 
 ### [Folder::class](src/IMAP/Folder.php)
-| Method            | Arguments                                                       | Return            | Description                                    |
-| ----------------- | --------------------------------------------------------------- | :---------------: | ---------------------------------------------- |
-| hasChildren       |                                                                 | bool              | Determine if folder has children.              |
-| setChildren       | array $children                                                 | self              | Set children.                                  |
-| getMessage        | integer $uid, integer or null $msglist                          | Message           | Get a specific message from folder.            |
-| getMessages       | string $criteria, bool $parse_body                              | MessageCollection | Get messages from folder.                      |
-| getUnseenMessages | string $criteria, bool $parse_body                              | MessageCollection | Get Unseen messages from folder.               |
-| searchMessages    | array $where, $fetch_options, bool $parse_body, string $charset | MessageCollection | Get specific messages from a given folder.     |
-| delete            |                                                                 |                   | Delete the current Mailbox                     |
-| move              | string $mailbox                                                 |                   | Move or Rename the current Mailbox             |
-| getStatus         | integer $options                                                | object            | Returns status information on a mailbox        |
-| appendMessage     | string $message, string $options, string $internal_date         | bool              | Append a string message to the current mailbox |
-| getClient         |                                                                 | Client            | Get the current Client instance                |
-
+| Method            | Arguments                                                                           | Return            | Description                                    |
+| ----------------- | ----------------------------------------------------------------------------------- | :---------------: | ---------------------------------------------- |
+| hasChildren       |                                                                                     | bool              | Determine if folder has children.              |
+| setChildren       | array $children                                                                     | self              | Set children.                                  |
+| getMessage        | integer $uid, integer or null $msglist, int or null fetch_options, bool $parse_body | Message           | Get a specific message from folder.            |
+| getMessages       | string $criteria, bool $parse_body                                                  | MessageCollection | Get messages from folder.                      |
+| getUnseenMessages | string $criteria, bool $parse_body                                                  | MessageCollection | Get Unseen messages from folder.               |
+| searchMessages    | array $where, $fetch_options, bool $parse_body, string $charset                     | MessageCollection | Get specific messages from a given folder.     |
+| delete            |                                                                                     |                   | Delete the current Mailbox                     |
+| move              | string $mailbox                                                                     |                   | Move or Rename the current Mailbox             |
+| getStatus         | integer $options                                                                    | object            | Returns status information on a mailbox        |
+| appendMessage     | string $message, string $options, string $internal_date                             | bool              | Append a string message to the current mailbox |
+| getClient         |                                                                                     | Client            | Get the current Client instance                |
+                    
 ### [Attachment::class](src/IMAP/Attachment.php)
 | Method         | Arguments                      | Return         | Description                                            |
 | -------------- | ------------------------------ | :------------: | ------------------------------------------------------ |
