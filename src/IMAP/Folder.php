@@ -153,7 +153,7 @@ class Folder {
      *
      * @return Message|null
      */
-    public function getMessage($uid, $msglist = null){
+    public function getMessage($uid, $msglist = null) {
         if(imap_msgno($this->getClient()->getConnection(), $uid) > 0){
             return new Message($uid, $msglist, $this->getClient());
         }
@@ -260,7 +260,7 @@ class Folder {
 
         $this->getClient()->checkConnection();
 
-        if($this->validateWhereStatements($where) === false){
+        if($this->validateWhereStatements($where) === false) {
             throw new MessageSearchValidationException('Invalid imap search criteria provided');
         }
 
@@ -269,8 +269,8 @@ class Folder {
             $messages = MessageCollection::make([]);
 
             $query = '';
-            foreach($where as $statement){
-                if(count($statement) == 1){
+            foreach($where as $statement) {
+                if(count($statement) == 1) {
                     $query .= $statement[0];
                 } else{
                     $query .= $statement[0].' "'.$statement[1].'"';
@@ -308,14 +308,14 @@ class Folder {
      *      https://tools.ietf.org/html/rfc1064
      *      https://tools.ietf.org/html/rfc822
      */
-    protected function validateWhereStatements($statements){
-        foreach($statements as $statement){
+    protected function validateWhereStatements($statements) {
+        foreach($statements as $statement) {
             $criteria = $statement[0];
             if(in_array($criteria, [
                     'OR', 'AND',
                     'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
                     'NEW', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
-                    'UNANSWERED', 'UNDELETED', 'UNFLAGGED', 'UNKEYWORD', 'UNSEEN']) == false){
+                    'UNANSWERED', 'UNDELETED', 'UNFLAGGED', 'UNKEYWORD', 'UNSEEN']) == false) {
                 return false;
             }
         }
@@ -368,7 +368,7 @@ class Folder {
      *
      * @return bool
      */
-    public function delete(){
+    public function delete() {
         $status = imap_deletemailbox($this->client->connection, $this->path);
         $this->client->expunge();
 
@@ -382,7 +382,7 @@ class Folder {
      *
      * @return bool
      */
-    public function move($target_mailbox){
+    public function move($target_mailbox) {
         $status = imap_renamemailbox($this->client->connection, $this->path, $target_mailbox);
         $this->client->expunge();
 
@@ -402,7 +402,7 @@ class Folder {
      *
      * @return object
      */
-    public function getStatus($options){
+    public function getStatus($options) {
         return imap_status($this->client->connection, $this->path, $options);
     }
 
@@ -415,7 +415,7 @@ class Folder {
      *
      * @return bool
      */
-    public function appendMessage($message, $options = null, $internal_date = null){
+    public function appendMessage($message, $options = null, $internal_date = null) {
         return imap_append($this->client->connection, $this->path, $message, $options, $internal_date);
     }
 
@@ -424,7 +424,7 @@ class Folder {
      *
      * @return Client
      */
-    public function getClient(){
+    public function getClient() {
         return $this->client;
     }
 }
