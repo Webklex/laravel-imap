@@ -6,13 +6,22 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- More explicit date validation statements
+- NaN
 
 ### Added
 - NaN
 
 ### Affected Classes
+- NaN
+
+## [1.0.5.6] - 2018-04-03
+### Fixed
+- More explicit date validation statements
+- Resolving getMessage is not returning the body of the message #75
+
+### Affected Classes
 - [Message::class](src/IMAP/Message.php)
+- [Folder::class](src/IMAP/Folder.php)
 
 ## [1.0.5.5] - 2018-03-28
 ### Fixed
