@@ -40,11 +40,11 @@ class LaravelServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
-        $this->app->singleton(ClientManager::class, function ($app) {
+        $this->app->singleton(ClientManager::class, function($app) {
             return new ClientManager($app);
         });
 
-        $this->app->singleton(Client::class, function ($app) {
+        $this->app->singleton(Client::class, function($app) {
             return $app[ClientManager::class]->account();
         });
 

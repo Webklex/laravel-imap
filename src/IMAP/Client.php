@@ -135,7 +135,7 @@ class Client {
         $defaultAccount = config('imap.default');
         $defaultConfig  = config("imap.accounts.$defaultAccount");
 
-        foreach($this->validConfigKeys as $key){
+        foreach ($this->validConfigKeys as $key) {
             $this->$key = isset($config[$key]) ? $config[$key] : $defaultConfig[$key];
         }
 
@@ -147,7 +147,7 @@ class Client {
      *
      * @return resource
      */
-    public function getConnection(){
+    public function getConnection() {
         return $this->connection;
     }
 
@@ -213,7 +213,7 @@ class Client {
                 $attempts,
                 config('imap.options.open')
             );
-            $this->connected = !! $this->connection;
+            $this->connected = !!$this->connection;
         } catch (\ErrorException $e) {
             $errors = imap_errors();
             $message = $e->getMessage().'. '.implode("; ", (is_array($errors) ? $errors : array()));
@@ -232,7 +232,7 @@ class Client {
     public function disconnect() {
         if ($this->isConnected()) {
             $this->errors = array_merge($this->errors, imap_errors() ?: []);
-            $this->connected = ! imap_close($this->connection, CL_EXPUNGE);
+            $this->connected = !imap_close($this->connection, CL_EXPUNGE);
         }
 
         return $this;
@@ -249,11 +249,11 @@ class Client {
      *
      * @return Folder
      */
-    public function getFolder($folder_name, $attributes = 32, $delimiter = null){
+    public function getFolder($folder_name, $attributes = 32, $delimiter = null) {
 
         $delimiter = $delimiter == null ? config('imap.options.delimiter', '/') : $delimiter;
 
-        $oFolder = new Folder($this, (object)[
+        $oFolder = new Folder($this, (object) [
             'name'       => $this->getAddress().$folder_name,
             'attributes' => $attributes,
             'delimiter'  => $delimiter
@@ -320,7 +320,7 @@ class Client {
      *
      * @return bool
      */
-    public function createFolder($name){
+    public function createFolder($name) {
         return imap_createmailbox($this->connection, imap_utf7_encode($name));
     }
 
@@ -419,7 +419,7 @@ class Client {
      *
      * @return array
      */
-    public function getQuota(){
+    public function getQuota() {
         return imap_get_quota($this->connection, 'user.'.$this->username);
     }
 
@@ -430,7 +430,7 @@ class Client {
      *
      * @return array
      */
-    public function getQuotaRoot($quota_root = 'INBOX'){
+    public function getQuotaRoot($quota_root = 'INBOX') {
         return imap_get_quotaroot($this->connection, $quota_root);
     }
 
@@ -439,7 +439,7 @@ class Client {
      *
      * @return int
      */
-    public function countMessages(){
+    public function countMessages() {
         return imap_num_msg($this->connection);
     }
 
@@ -448,7 +448,7 @@ class Client {
      *
      * @return int
      */
-    public function countRecentMessages(){
+    public function countRecentMessages() {
         return imap_num_recent($this->connection);
     }
 
@@ -457,7 +457,7 @@ class Client {
      *
      * @return array
      */
-    public function getAlerts(){
+    public function getAlerts() {
         return imap_alerts();
     }
 
@@ -466,7 +466,7 @@ class Client {
      *
      * @return array
      */
-    public function getErrors(){
+    public function getErrors() {
         $this->errors = array_merge($this->errors, imap_errors() ?: []);
 
         return $this->errors;
@@ -477,7 +477,7 @@ class Client {
      *
      * @return string
      */
-    public function getLastError(){
+    public function getLastError() {
         return imap_last_error();
     }
 
@@ -486,7 +486,7 @@ class Client {
      *
      * @return bool
      */
-    public function expunge(){
+    public function expunge() {
         return imap_expunge($this->connection);
     }
 
@@ -501,7 +501,7 @@ class Client {
      *      Recent  [int(0)]                                                        number of recent messages in the mailbox
      * }
      */
-    public function checkCurrentMailbox(){
+    public function checkCurrentMailbox() {
         return imap_check($this->connection);
     }
 }

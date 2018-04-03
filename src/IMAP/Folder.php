@@ -272,7 +272,7 @@ class Folder {
             foreach($where as $statement){
                 if(count($statement) == 1){
                     $query .= $statement[0];
-                }else{
+                } else{
                     $query .= $statement[0].' "'.$statement[1].'"';
                 }
             }

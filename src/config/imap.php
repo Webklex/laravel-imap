@@ -33,7 +33,7 @@ return [
     */
     'accounts' => [
 
-        'default' => [ // account identifier
+        'default' => [// account identifier
             'host'  => env('IMAP_HOST', 'localhost'),
             'port'  => env('IMAP_PORT', 993),
             'encryption'    => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls'

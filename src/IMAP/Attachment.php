@@ -92,7 +92,7 @@ class Attachment {
     /**
      * Determine the structure type
      */
-    protected function findType(){
+    protected function findType() {
         switch ($this->structure->type) {
             case self::TYPE_MESSAGE:
                 $this->type = 'message';
@@ -124,7 +124,7 @@ class Attachment {
     /**
      * Fetch the given attachment
      */
-    protected function fetch(){
+    protected function fetch() {
 
         $content = imap_fetchbody($this->oMessage->getClient()->getConnection(), $this->oMessage->getUid(), $this->part_number, $this->oMessage->getFetchOptions());
 
@@ -145,8 +145,8 @@ class Attachment {
             }
         }
 
-        if(self::TYPE_MESSAGE == $this->structure->type) {
-            if($this->structure->ifdescription) {
+        if (self::TYPE_MESSAGE == $this->structure->type) {
+            if ($this->structure->ifdescription) {
                 $this->name = $this->structure->description;
             } else {
                 $this->name = $this->structure->subtype;
@@ -176,7 +176,7 @@ class Attachment {
      *
      * @return boolean
      */
-    public function save($path = null, $filename = null){
+    public function save($path = null, $filename = null) {
         $path = $path ?: storage_path();
         $filename = $filename ?: $this->getName();
 
@@ -188,49 +188,49 @@ class Attachment {
     /**
      * @return null|string
      */
-    public function getContent(){
+    public function getContent() {
         return $this->content;
     }
 
     /**
      * @return null|string
      */
-    public function getType(){
+    public function getType() {
         return $this->type;
     }
 
     /**
      * @return null|string
      */
-    public function getContentType(){
+    public function getContentType() {
         return $this->content_type;
     }
 
     /**
      * @return null|string
      */
-    public function getId(){
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @return null|string
      */
-    public function getName(){
+    public function getName() {
         return $this->name;
     }
 
     /**
      * @return null|string
      */
-    public function getDisposition(){
+    public function getDisposition() {
         return $this->disposition;
     }
 
     /**
      * @return null|string
      */
-    public function getImgSrc(){
+    public function getImgSrc() {
         return $this->img_src;
     }
 }

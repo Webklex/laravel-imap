@@ -140,7 +140,7 @@ class Message {
         
         $this->parseHeader();
 
-        if($parse_body !== false){
+        if ($parse_body !== false) {
             $this->parseBody();
         }
     }
@@ -153,7 +153,7 @@ class Message {
      *
      * @return bool
      */
-    public function copy($mailbox, $options = 0){
+    public function copy($mailbox, $options = 0) {
         return imap_mail_copy($this->client->getConnection(), $this->msglist, $mailbox, $options);
     }
 
@@ -165,7 +165,7 @@ class Message {
      *
      * @return bool
      */
-    public function move($mailbox, $options = 0){
+    public function move($mailbox, $options = 0) {
         return imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox, $options);
     }
 
@@ -215,7 +215,7 @@ class Message {
         $body = $this->bodies['html']->content;
         if ($replaceImages) {
             $this->attachments->each(function($oAttachment) use(&$body){
-                if ($oAttachment->id && isset($oAttachment->img_src)){
+                if ($oAttachment->id && isset($oAttachment->img_src)) {
                     $body = str_replace('cid:'.$oAttachment->id, $oAttachment->img_src, $body);
                 }
             });
@@ -253,10 +253,10 @@ class Message {
              *
              * Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)
              */
-            try{
+            try {
                 $this->date = Carbon::parse($date);
-            }catch(\Exception $e){
-                switch(true){
+            } catch (\Exception $e) {
+                switch (true) {
                     case preg_match('/([A-Z]{2,3}\,\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ \+[0-9]{4}\ \([A-Z]{2,3}\+[0-9]{1,2}\:[0-9]{1,2})\)+$/i', $date) > 0:
                         $array = explode('(', $date);
                         $array = array_reverse($array);
@@ -298,7 +298,7 @@ class Message {
         }
         if (property_exists($header, 'Msgno')) {
             $this->message_no = ($this->fetch_options == FT_UID) ? trim($header->Msgno) : imap_msgno($this->client->getConnection(), trim($header->Msgno));
-        }else{
+        } else {
             $this->message_no = imap_msgno($this->client->getConnection(), $this->getUid());
         }
     }
@@ -308,10 +308,10 @@ class Message {
      *
      * @return object
      */
-    public function getHeaderInfo(){
-        if($this->header_info == null){
+    public function getHeaderInfo() {
+        if ($this->header_info == null) {
             $this->header_info =
-            $this->header_info = imap_headerinfo($this->client->getConnection(), $this->getMessageNo());;
+            $this->header_info = imap_headerinfo($this->client->getConnection(), $this->getMessageNo()); ;
         }
 
         return $this->header_info;
@@ -342,7 +342,7 @@ class Message {
 
             $address->personal = imap_utf8($address->personal);
 
-            $address->mail = ($address->mailbox && $address->host) ? $address->mailbox . '@' . $address->host : false;
+            $address->mail = ($address->mailbox && $address->host) ? $address->mailbox.'@'.$address->host : false;
             $address->full = ($address->personal) ? $address->personal.' <'.$address->mail.'>' : $address->mail;
 
             $addresses[] = $address;
@@ -416,9 +416,9 @@ class Message {
             foreach ($structure->parts as $index => $subStruct) {
                 $prefix = "";
                 if ($partNumber) {
-                    $prefix = $partNumber . ".";
+                    $prefix = $partNumber.".";
                 }
-                $this->fetchStructure($subStruct, $prefix . ($index + 1));
+                $this->fetchStructure($subStruct, $prefix.($index + 1));
             }
         } else {
             $this->fetchAttachment($structure, $partNumber);
@@ -431,11 +431,11 @@ class Message {
      * @param object $structure
      * @param mixed  $partNumber
      */
-    protected function fetchAttachment($structure, $partNumber){
+    protected function fetchAttachment($structure, $partNumber) {
 
         $oAttachment = new Attachment($this, $structure, $partNumber);
 
-        if($oAttachment->getName() != null){
+        if ($oAttachment->getName() != null) {
             if ($oAttachment->getId() != null) {
                 $this->attachments->put($oAttachment->getId(), $oAttachment);
             } else {
@@ -451,10 +451,10 @@ class Message {
      *
      * @return $this
      */
-    public function setFetchOption($option){
-        if(is_long($option) == true){
+    public function setFetchOption($option) {
+        if (is_long($option) == true) {
             $this->fetch_options = $option;
-        }elseif(is_null($option) == true){
+        }elseif (is_null($option) == true) {
             $config = config('imap.options.fetch', FT_UID);
             $this->fetch_options = is_long($config) ? $config : 1;
         }
@@ -499,10 +499,10 @@ class Message {
      * @return mixed|string
      */
     private function convertEncoding($str, $from = "ISO-8859-2", $to = "UTF-8") {
-        if (function_exists('iconv') && $from!='UTF-7' && $to!='UTF-7') {
+        if (function_exists('iconv') && $from != 'UTF-7' && $to != 'UTF-7') {
             return iconv($from, $to.'//IGNORE', $str);
         } else {
-            if (! $from) {
+            if (!$from) {
                 return mb_convert_encoding($str, $to);
             }
             return mb_convert_encoding($str, $to, $from);
@@ -534,10 +534,10 @@ class Message {
      *
      * @return bool
      */
-    public function moveToFolder($mailbox = 'INBOX'){
+    public function moveToFolder($mailbox = 'INBOX') {
         $this->client->createFolder($mailbox);
 
-        if(imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox) == true){
+        if (imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox) == true) {
             return true;
         }
         return false;
@@ -548,7 +548,7 @@ class Message {
      *
      * @return bool
      */
-    public function delete(){
+    public function delete() {
         $status = imap_delete($this->client->getConnection(), $this->uid, $this->fetch_options);
         $this->client->expunge();
 
@@ -560,7 +560,7 @@ class Message {
      *
      * @return bool
      */
-    public function restore(){
+    public function restore() {
         return imap_undelete($this->client->getConnection(), $this->message_no);
     }
 
@@ -569,7 +569,7 @@ class Message {
      *
      * @return AttachmentCollection
      */
-    public function getAttachments(){
+    public function getAttachments() {
         return $this->attachments;
     }
 
@@ -579,7 +579,7 @@ class Message {
      *
      * @return bool
      */
-    public function setFlag($flag){
+    public function setFlag($flag) {
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
         return imap_setflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
     }
@@ -590,7 +590,7 @@ class Message {
      *
      * @return bool
      */
-    public function unsetFlag($flag){
+    public function unsetFlag($flag) {
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
         return imap_clearflag_full($this->client->getConnection(), $this->getUid(), "\\$flag", SE_UID);
     }
@@ -598,8 +598,8 @@ class Message {
     /**
      * @return null|object|string
      */
-    public function getRawBody(){
-        if($this->raw_body == null){
+    public function getRawBody() {
+        if ($this->raw_body == null) {
             $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '');
         }
 
@@ -609,7 +609,7 @@ class Message {
     /**
      * @return string
      */
-    public function getHeader(){
+    public function getHeader() {
         return $this->header;
     }
 
