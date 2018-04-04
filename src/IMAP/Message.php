@@ -32,7 +32,7 @@ class Message {
     /**
      * U ID
      *
-     * @var string
+     * @var integer
      */
     public $uid = '';
 
@@ -685,7 +685,7 @@ class Message {
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getUid() {
         return $this->uid;
@@ -741,7 +741,7 @@ class Message {
     }
 
     /**
-     * @return null
+     * @return Carbon|null
      */
     public function getDate() {
         return $this->date;
