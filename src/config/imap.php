@@ -70,7 +70,7 @@ return [
     |
     | Available php imap config parameters are listed below
     |   -Delimiter (optional):
-    |       This option is only used wehen calling $oClient->
+    |       This option is only used when calling $oClient->
     |       You can use any supported char such as ".", "/", (...)
     |   -Fetch option:
     |       FT_UID  - Message marked as read by fetching the message
