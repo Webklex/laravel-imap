@@ -90,7 +90,7 @@ return [
     'options' => [
         'delimiter' => '/',
         'fetch' => FT_UID,
-        'attachments' => false,
+        'fetch_attachment' => true,
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ]
