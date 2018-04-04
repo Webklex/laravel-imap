@@ -39,7 +39,7 @@ class Message {
     /**
      * Fetch body options
      *
-     * @var string
+     * @var integer
      */
     public $fetch_options = null;
 
