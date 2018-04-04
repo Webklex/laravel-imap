@@ -75,10 +75,10 @@ return [
     |   -Fetch option:
     |       FT_UID  - Message marked as read by fetching the message
     |       FT_PEEK - Fetch the message without setting the "read" flag
-    |
+    |   -Body download option
+    |       Default TRUE
     |   -Attachment download option
-    |       Default FALSE
-    |
+    |       Default TRUE
     |   -Open IMAP options:
     |       DISABLE_AUTHENTICATOR - Disable authentication properties.
     |                               Use 'GSSAPI' if you encounter the following
@@ -90,6 +90,7 @@ return [
     'options' => [
         'delimiter' => '/',
         'fetch' => FT_UID,
+        'fetch_body' => true,
         'fetch_attachment' => true,
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'

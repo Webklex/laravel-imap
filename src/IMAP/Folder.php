@@ -151,13 +151,14 @@ class Folder {
      * @param integer      $uid     Please note that the uid is not unique and can change
      * @param integer|null $msglist
      * @param integer|null $fetch_options
-     * @param boolean      $parse_body
+     * @param boolean      $fetch_body
+     * @param boolean      $fetch_attachment
      *
      * @return Message|null
      */
-    public function getMessage($uid, $msglist = null, $fetch_options = null, $parse_body = false) {
+    public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false) {
         if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
-            return new Message($uid, $msglist, $this->getClient(), $fetch_options, $parse_body);
+            return new Message($uid, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment);
         }
 
         return null;
@@ -166,25 +167,27 @@ class Folder {
     /**
      * Get all messages
      *
-     * @param string $criteria
-     * @param null $fetch_options
-     * @param bool $parse_body
+     * @param string    $criteria
+     * @param null      $fetch_options
+     * @param boolean   $fetch_body
+     * @param boolean   $fetch_attachment
      *
      * @return MessageCollection
      * @throws Exceptions\ConnectionFailedException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      */
-    public function getMessages($criteria = 'ALL', $fetch_options = null, $parse_body = true) {
-        return $this->searchMessages([[$criteria]], $fetch_options, $parse_body);
+    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
+        return $this->searchMessages([[$criteria]], $fetch_options, $fetch_body, $fetch_attachment);
     }
 
     /**
      * Get all unseen messages
      *
-     * @param string $criteria
-     * @param null $fetch_options
-     * @param bool $parse_body
+     * @param string    $criteria
+     * @param null      $fetch_options
+     * @param boolean   $fetch_body
+     * @param boolean   $fetch_attachment
      *
      * @return MessageCollection
      * @throws Exceptions\ConnectionFailedException
@@ -194,8 +197,8 @@ class Folder {
      * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::getMessages('UNSEEN') instead
      * @see Folder::getMessages()
      */
-    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $parse_body = true) {
-        return $this->getMessages($criteria, $fetch_options, $parse_body);
+    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
+        return $this->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment);
     }
 
     /**
@@ -213,9 +216,10 @@ class Folder {
      *                        The following sample would search for all flagged messages:
      *                        [['FLAGGED']]
      *                        ---------------------------------------------------------------------------------------
-     * @param null    $fetch_options
-     * @param boolean $parse_body
-     * @param string  $charset
+     * @param null      $fetch_options
+     * @param boolean   $fetch_body
+     * @param string    $charset
+     * @param boolean   $fetch_attachment
      *
      * @return MessageCollection
      *
@@ -258,7 +262,7 @@ class Folder {
      *                  / ( ("+" / "-") 4DIGIT ) ; Local differential
      *                                           ;  hours+min. (HHMM)
      */
-    public function searchMessages(array $where, $fetch_options = null, $parse_body = true, $charset = "UTF-8") {
+    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true, $charset = "UTF-8", $fetch_attachment = true) {
 
         $this->getClient()->checkConnection();
 
@@ -284,8 +288,7 @@ class Folder {
             if ($availableMessages !== false) {
                 $msglist = 1;
                 foreach ($availableMessages as $msgno) {
-                    $fetch_attachments = config('imap.options.attachments', false);
-                    $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $parse_body, $fetch_attachments);
+                    $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment);
 
                     $messages->put($message->getMessageId(), $message);
                     $msglist++;

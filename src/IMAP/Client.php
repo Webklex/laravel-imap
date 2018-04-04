@@ -330,7 +330,8 @@ class Client {
      * @param Folder  $folder
      * @param string  $criteria
      * @param integer $fetch_options
-     * @param boolean $parse_body
+     * @param boolean $fetch_body
+     * @param boolean $fetch_attachment
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
@@ -340,17 +341,18 @@ class Client {
      * @deprecated 1.0.5.2:2.0.0 No longer needed. Use Folder::getMessages() instead
      * @see Folder::getMessages()
      */
-    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null, $parse_body = true) {
-        return $folder->getMessages($criteria, $fetch_options, $parse_body);
+    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
+        return $folder->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment);
     }
 
     /**
      * Get all unseen messages from folder
      *
-     * @param Folder $folder
-     * @param string $criteria
-     * @param null   $fetch_options
-     * @param bool   $parse_body
+     * @param Folder  $folder
+     * @param string  $criteria
+     * @param null    $fetch_options
+     * @param boolean $fetch_body
+     * @param boolean $fetch_attachment
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
@@ -360,8 +362,8 @@ class Client {
      * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::getMessages('UNSEEN') instead
      * @see Folder::getMessages()
      */
-    public function getUnseenMessages(Folder $folder, $criteria = 'UNSEEN', $fetch_options = null, $parse_body = true) {
-        return $folder->getUnseenMessages($criteria, $fetch_options, $parse_body);
+    public function getUnseenMessages(Folder $folder, $criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
+        return $folder->getUnseenMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment);
     }
 
     /**
@@ -370,8 +372,9 @@ class Client {
      * @param array   $where
      * @param Folder  $folder
      * @param null    $fetch_options
-     * @param boolean $parse_body
+     * @param boolean $fetch_body
      * @param string  $charset
+     * @param boolean $fetch_attachment
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
@@ -382,8 +385,8 @@ class Client {
      * @see Folder::searchMessages()
      *
      */
-    public function searchMessages(array $where, Folder $folder, $fetch_options = null, $parse_body = true, $charset = "UTF-8") {
-        return $folder->searchMessages($where, $fetch_options, $parse_body, $charset);
+    public function searchMessages(array $where, Folder $folder, $fetch_options = null, $fetch_body = true, $charset = "UTF-8", $fetch_attachment = true) {
+        return $folder->searchMessages($where, $fetch_options, $fetch_body, $charset, $fetch_attachment);
     }
 
     /**

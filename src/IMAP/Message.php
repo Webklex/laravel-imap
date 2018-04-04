@@ -44,6 +44,13 @@ class Message {
     public $fetch_options = null;
 
     /**
+     * Fetch body options
+     *
+     * @var bool
+     */
+    public $fetch_body = null;
+
+    /**
      * Fetch attachments options
      *
      * @var bool
@@ -134,12 +141,13 @@ class Message {
      * @param integer|null  $msglist
      * @param Client        $client
      * @param integer|null  $fetch_options
-     * @param boolean       $parse_body
+     * @param boolean       $fetch_body
      * @param boolean       $fetch_attachment
      */
-    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $parse_body = false, $fetch_attachment = false) {
+    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false) {
         $this->setFetchOption($fetch_options);
-        $this->setFetchAttachment($fetch_attachment);
+        $this->setFetchBodyOption($fetch_body);
+        $this->setFetchAttachmentOption($fetch_attachment);
 
         $this->attachments = AttachmentCollection::make([]);
         
@@ -149,7 +157,7 @@ class Message {
         
         $this->parseHeader();
 
-        if ($parse_body !== false) {
+        if ($this->getFetchBodyOption() === true) {
             $this->parseBody();
         }
     }
@@ -465,13 +473,32 @@ class Message {
     public function setFetchOption($option) {
         if (is_long($option) == true) {
             $this->fetch_options = $option;
-        } elseif(is_null($option) == true) {
+        } elseif (is_null($option) == true) {
             $config = config('imap.options.fetch', FT_UID);
             $this->fetch_options = is_long($config) ? $config : 1;
         }
 
         return $this;
     }
+
+    /**
+     * Fail proof setter for $fetch_body
+     *
+     * @param $option
+     *
+     * @return $this
+     */
+    public function setFetchBodyOption($option) {
+        if (is_bool($option) == true) {
+            $this->fetch_body = $option;
+        } elseif (is_null($option) == true) {
+            $config = config('imap.options.fetch_body', true);
+            $this->fetch_body = is_bool($config) ? $config : true;
+        }
+
+        return $this;
+    }
+
     /**
      * Fail proof setter for $fetch_attachment
      *
@@ -479,12 +506,12 @@ class Message {
      *
      * @return $this
      */
-    public function setFetchAttachment($option) {
+    public function setFetchAttachmentOption($option) {
         if (is_bool($option) == true) {
             $this->fetch_attachment = $option;
-        } elseif(is_null($option) == true) {
-            $config = config('imap.options.attachments', false);
-            $this->fetch_attachment = is_bool($config) ? $config : false;
+        } elseif (is_null($option) == true) {
+            $config = config('imap.options.fetch_attachment', true);
+            $this->fetch_attachment = is_bool($config) ? $config : true;
         }
 
         return $this;
@@ -660,6 +687,20 @@ class Message {
      */
     public function getFetchOptions() {
         return $this->fetch_options;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getFetchBodyOption() {
+        return $this->fetch_body;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getFetchAttachmentOption() {
+        return $this->fetch_attachment;
     }
 
     /**
