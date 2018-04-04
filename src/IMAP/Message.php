@@ -438,7 +438,7 @@ class Message {
                 $this->fetchStructure($subStruct, $prefix.($index + 1));
             }
         } else {
-            if ($this->fetch_attachment === true) {
+            if ($this->getFetchAttachmentOption() === true) {
                 $this->fetchAttachment($structure, $partNumber);
             }
         }
