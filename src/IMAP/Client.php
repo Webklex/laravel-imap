@@ -327,11 +327,11 @@ class Client {
     /**
      * Get messages from folder.
      *
-     * @param Folder  $folder
-     * @param string  $criteria
-     * @param integer $fetch_options
-     * @param boolean $fetch_body
-     * @param boolean $fetch_attachment
+     * @param Folder   $folder
+     * @param string   $criteria
+     * @param int|null $fetch_options
+     * @param boolean  $fetch_body
+     * @param boolean  $fetch_attachment
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
@@ -348,11 +348,11 @@ class Client {
     /**
      * Get all unseen messages from folder
      *
-     * @param Folder  $folder
-     * @param string  $criteria
-     * @param null    $fetch_options
-     * @param boolean $fetch_body
-     * @param boolean $fetch_attachment
+     * @param Folder   $folder
+     * @param string   $criteria
+     * @param int|null $fetch_options
+     * @param boolean  $fetch_body
+     * @param boolean  $fetch_attachment
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
@@ -369,12 +369,12 @@ class Client {
     /**
      * Search messages by a given search criteria
      *
-     * @param array   $where
-     * @param Folder  $folder
-     * @param null    $fetch_options
-     * @param boolean $fetch_body
-     * @param string  $charset
-     * @param boolean $fetch_attachment
+     * @param array    $where
+     * @param Folder   $folder
+     * @param int|null $fetch_options
+     * @param boolean  $fetch_body
+     * @param string   $charset
+     * @param boolean  $fetch_attachment
      *
      * @return MessageCollection
      * @throws ConnectionFailedException

@@ -26,9 +26,9 @@ class PaginatedCollection extends Collection {
     /**
      * Paginate the current collection.
      *
-     * @param int    $perPage
-     * @param null   $page
-     * @param string $pageName
+     * @param int      $perPage
+     * @param int|null $page
+     * @param string   $pageName
      *
      * @return LengthAwarePaginator
      */
@@ -46,11 +46,11 @@ class PaginatedCollection extends Collection {
     /**
      * Create a new length-aware paginator instance.
      *
-     * @param  array   $items
-     * @param  int     $total
-     * @param  int     $perPage
-     * @param  int     $currentPage
-     * @param  array   $options
+     * @param  array    $items
+     * @param  int      $total
+     * @param  int      $perPage
+     * @param  int|null $currentPage
+     * @param  array    $options
      *
      * @return LengthAwarePaginator
      */

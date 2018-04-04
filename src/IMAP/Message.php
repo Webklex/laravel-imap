@@ -314,7 +314,8 @@ class Message {
             $this->message_id = str_replace(['<', '>'], '', $header->message_id);
         }
         if (property_exists($header, 'Msgno')) {
-            $this->message_no = ($this->fetch_options == FT_UID) ? trim($header->Msgno) : imap_msgno($this->client->getConnection(), trim($header->Msgno));
+            $messageNo = (int)trim($header->Msgno);
+            $this->message_no = ($this->fetch_options == FT_UID) ? $messageNo : imap_msgno($this->client->getConnection(), $messageNo);
         } else{
             $this->message_no = imap_msgno($this->client->getConnection(), $this->getUid());
         }
@@ -454,8 +455,8 @@ class Message {
 
         $oAttachment = new Attachment($this, $structure, $partNumber);
 
-        if ($oAttachment->getName() != null) {
-            if ($oAttachment->getId() != null) {
+        if ($oAttachment->getName() !== null) {
+            if ($oAttachment->getId() !== null) {
                 $this->attachments->put($oAttachment->getId(), $oAttachment);
             } else {
                 $this->attachments->push($oAttachment);
@@ -471,9 +472,9 @@ class Message {
      * @return $this
      */
     public function setFetchOption($option) {
-        if (is_long($option) == true) {
+        if (is_long($option) === true) {
             $this->fetch_options = $option;
-        } elseif (is_null($option) == true) {
+        } elseif (is_null($option) === true) {
             $config = config('imap.options.fetch', FT_UID);
             $this->fetch_options = is_long($config) ? $config : 1;
         }
@@ -489,9 +490,9 @@ class Message {
      * @return $this
      */
     public function setFetchBodyOption($option) {
-        if (is_bool($option) == true) {
+        if (is_bool($option)) {
             $this->fetch_body = $option;
-        } elseif (is_null($option) == true) {
+        } elseif (is_null($option)) {
             $config = config('imap.options.fetch_body', true);
             $this->fetch_body = is_bool($config) ? $config : true;
         }
@@ -507,9 +508,9 @@ class Message {
      * @return $this
      */
     public function setFetchAttachmentOption($option) {
-        if (is_bool($option) == true) {
+        if (is_bool($option)) {
             $this->fetch_attachment = $option;
-        } elseif (is_null($option) == true) {
+        } elseif (is_null($option)) {
             $config = config('imap.options.fetch_attachment', true);
             $this->fetch_attachment = is_bool($config) ? $config : true;
         }
@@ -592,10 +593,7 @@ class Message {
     public function moveToFolder($mailbox = 'INBOX') {
         $this->client->createFolder($mailbox);
 
-        if (imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox) == true) {
-            return true;
-        }
-        return false;
+        return imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox);
     }
 
     /**
@@ -663,7 +661,7 @@ class Message {
      * @return null|object|string
      */
     public function getRawBody() {
-        if ($this->raw_body == null) {
+        if ($this->raw_body === null) {
             $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '');
         }
 

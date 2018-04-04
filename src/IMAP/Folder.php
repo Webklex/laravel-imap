@@ -168,7 +168,7 @@ class Folder {
      * Get all messages
      *
      * @param string    $criteria
-     * @param null      $fetch_options
+     * @param int|null  $fetch_options
      * @param boolean   $fetch_body
      * @param boolean   $fetch_attachment
      *
@@ -185,7 +185,7 @@ class Folder {
      * Get all unseen messages
      *
      * @param string    $criteria
-     * @param null      $fetch_options
+     * @param int|null  $fetch_options
      * @param boolean   $fetch_body
      * @param boolean   $fetch_attachment
      *
@@ -216,7 +216,7 @@ class Folder {
      *                        The following sample would search for all flagged messages:
      *                        [['FLAGGED']]
      *                        ---------------------------------------------------------------------------------------
-     * @param null      $fetch_options
+     * @param int|null  $fetch_options
      * @param boolean   $fetch_body
      * @param string    $charset
      * @param boolean   $fetch_attachment
@@ -321,12 +321,12 @@ class Folder {
                     'OR', 'AND',
                     'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
                     'NEW', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
-                    'UNANSWERED', 'UNDELETED', 'UNFLAGGED', 'UNKEYWORD', 'UNSEEN']) == false) {
+                    'UNANSWERED', 'UNDELETED', 'UNFLAGGED', 'UNKEYWORD', 'UNSEEN']) === false) {
                 return false;
             }
         }
 
-        return empty($statements) == false;
+        return empty($statements) === false;
     }
 
     /**
@@ -375,7 +375,7 @@ class Folder {
      * @return bool
      */
     public function delete() {
-        $status = imap_deletemailbox($this->client->connection, $this->path);
+        $status = imap_deletemailbox($this->client->getConnection(), $this->path);
         $this->client->expunge();
 
         return $status;
@@ -389,7 +389,7 @@ class Folder {
      * @return bool
      */
     public function move($target_mailbox) {
-        $status = imap_renamemailbox($this->client->connection, $this->path, $target_mailbox);
+        $status = imap_renamemailbox($this->client->getConnection(), $this->path, $target_mailbox);
         $this->client->expunge();
 
         return $status;
@@ -409,7 +409,7 @@ class Folder {
      * @return object
      */
     public function getStatus($options) {
-        return imap_status($this->client->connection, $this->path, $options);
+        return imap_status($this->client->getConnection(), $this->path, $options);
     }
 
     /**
@@ -422,7 +422,7 @@ class Folder {
      * @return bool
      */
     public function appendMessage($message, $options = null, $internal_date = null) {
-        return imap_append($this->client->connection, $this->path, $message, $options, $internal_date);
+        return imap_append($this->client->getConnection(), $this->path, $message, $options, $internal_date);
     }
 
     /**
