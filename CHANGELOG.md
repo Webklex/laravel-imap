@@ -19,6 +19,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Added option for optional attachment download #76
 - Added option for optional body download
 - Renamed "fetch" parameters
+- hasAttachment() method added
 
 ### Affected Classes
 - [Message::class](src/IMAP/Message.php)
