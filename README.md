@@ -311,6 +311,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false);
 | getTextBody     |                               | string               | Get the Message text body              |
 | getHTMLBody     |                               | string               | Get the Message html body              |
 | getAttachments  |                               | AttachmentCollection | Get all message attachments            |
+| hasAttachments  |                               | boolean              | Checks if there are any attachments present            |
 | getClient       |                               | Client               | Get the current Client instance        |
 | getUid          |                               | string               | Get the current UID                    |
 | getFetchOptions |                               | string               | Get the current fetch option           |
