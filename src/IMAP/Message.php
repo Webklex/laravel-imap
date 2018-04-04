@@ -656,7 +656,7 @@ class Message {
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getFetchOptions() {
         return $this->fetch_options;
