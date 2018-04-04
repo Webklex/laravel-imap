@@ -430,7 +430,7 @@ class Message {
                 $this->fetchStructure($subStruct, $prefix.($index + 1));
             }
         } else {
-            if ($this->fetch_attachment == true) {
+            if ($this->fetch_attachment === true) {
                 $this->fetchAttachment($structure, $partNumber);
             }
         }
@@ -473,7 +473,7 @@ class Message {
         return $this;
     }
     /**
-     * Fail proof setter for $fetch_option
+     * Fail proof setter for $fetch_attachment
      *
      * @param $option
      *
@@ -481,10 +481,10 @@ class Message {
      */
     public function setFetchAttachment($option) {
         if (is_bool($option) == true) {
-            $this->fetch_options = $option;
+            $this->fetch_attachment = $option;
         } elseif(is_null($option) == true) {
             $config = config('imap.options.attachments', false);
-            $this->fetch_options = is_bool($config) ? $config : false;
+            $this->fetch_attachment = is_bool($config) ? $config : false;
         }
 
         return $this;
