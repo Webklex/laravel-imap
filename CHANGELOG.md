@@ -14,6 +14,17 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.7] - 2018-04-04
+### Fixed
+- Added option for optional attachment download #76
+- Added option for optional body download
+- Renamed "fetch" parameters
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+- [Folder::class](src/IMAP/Folder.php)
+- [Client::class](src/IMAP/Client.php)
+
 ## [1.0.5.6] - 2018-04-03
 ### Fixed
 - More explicit date validation statements
