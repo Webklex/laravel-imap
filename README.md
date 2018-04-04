@@ -96,6 +96,8 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
  - `options` &mdash; additional fetch options
    - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
    - `fetch` &mdash; `FT_UID` (message marked as read by fetching the message) or `FT_PEEK` (fetch the message without setting the "read" flag)
+   - `fetch_body` &mdash; If set to `false` all messages will be fetched without the body and any potential attachments
+   - `fetch_attachment` &mdash;  If set to `false` all messages will be fetched without any attachments
    - `open` &mdash; special configuration for imap_open()
      - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
 
@@ -254,7 +256,7 @@ $aAttachment->each(function ($oAttachment) {
 });
 ```
 
-Fetch messages without body parsing (decrease load):
+Fetch messages without body fetching (decrease load):
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
 
@@ -263,6 +265,17 @@ $aMessage = $oFolder->searchMessages([['TEXT', 'Hello world']], null, false);
 
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->getMessages('ALL', null, false);
+```
+
+Fetch messages without body and attachment fetching (decrease load):
+``` php
+/** @var \Webklex\IMAP\Folder $oFolder */
+
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->searchMessages([['TEXT', 'Hello world']], null, false, 'UTF-8', false);
+
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->getMessages('ALL', null, false, false);
 ```
 
 ## Documentation
