@@ -44,6 +44,13 @@ class Message {
     public $fetch_options = null;
 
     /**
+     * Fetch attachments options
+     *
+     * @var bool
+     */
+    public $fetch_attachment = null;
+
+    /**
      * @var int $msglist
      */
     public $msglist = 1;
@@ -128,9 +135,11 @@ class Message {
      * @param Client        $client
      * @param integer|null  $fetch_options
      * @param boolean       $parse_body
+     * @param boolean       $fetch_attachment
      */
-    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $parse_body = false) {
+    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $parse_body = false, $fetch_attachment = false) {
         $this->setFetchOption($fetch_options);
+        $this->setFetchAttachment($fetch_attachment);
 
         $this->attachments = AttachmentCollection::make([]);
         
@@ -371,8 +380,8 @@ class Message {
      * @param mixed $partNumber
      */
     private function fetchStructure($structure, $partNumber = null) {
-        if ($structure->type == self::TYPE_TEXT && 
-            ($structure->ifdisposition == 0 || 
+        if ($structure->type == self::TYPE_TEXT &&
+            ($structure->ifdisposition == 0 ||
                 ($structure->ifdisposition == 1 && !isset($structure->parts) && $partNumber == null)
             )
         ) {
@@ -421,7 +430,9 @@ class Message {
                 $this->fetchStructure($subStruct, $prefix.($index + 1));
             }
         } else {
-            $this->fetchAttachment($structure, $partNumber);
+            if ($this->fetch_attachment === true) {
+                $this->fetchAttachment($structure, $partNumber);
+            }
         }
     }
 
@@ -457,6 +468,23 @@ class Message {
         } elseif(is_null($option) == true) {
             $config = config('imap.options.fetch', FT_UID);
             $this->fetch_options = is_long($config) ? $config : 1;
+        }
+
+        return $this;
+    }
+    /**
+     * Fail proof setter for $fetch_attachment
+     *
+     * @param $option
+     *
+     * @return $this
+     */
+    public function setFetchAttachment($option) {
+        if (is_bool($option) == true) {
+            $this->fetch_attachment = $option;
+        } elseif(is_null($option) == true) {
+            $config = config('imap.options.attachments', false);
+            $this->fetch_attachment = is_bool($config) ? $config : false;
         }
 
         return $this;
