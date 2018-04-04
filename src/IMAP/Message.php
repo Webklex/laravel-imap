@@ -629,6 +629,15 @@ class Message {
     }
 
     /**
+     * Checks if there are any attachments present
+     *
+     * @return boolean
+     */
+    public function hasAttachments() {
+        return $this->attachments->isEmpty() === false;
+    }
+
+    /**
      * Set a given flag
      * @param string|array $flag
      *
