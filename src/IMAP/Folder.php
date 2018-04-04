@@ -284,7 +284,8 @@ class Folder {
             if ($availableMessages !== false) {
                 $msglist = 1;
                 foreach ($availableMessages as $msgno) {
-                    $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $parse_body);
+                    $fetch_attachments = config('imap.options.attachments', false);
+                    $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $parse_body, $fetch_attachments);
 
                     $messages->put($message->getMessageId(), $message);
                     $msglist++;
