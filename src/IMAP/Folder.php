@@ -211,7 +211,7 @@ class Folder {
      *                        [['FROM' => 'someone@example.com'],[' TEXT' => 'Hello world!']]
      *                        ---------------------------------------------------------------------------------------
      *                        The following sample would search for all messages received since march 15 2018:
-     *                        [['SINCE' => Carbon::parse('15.03.2018')->format('d M y')]]
+     *                        [['SINCE' => Carbon::parse('15.03.2018')]]
      *                        ---------------------------------------------------------------------------------------
      *                        The following sample would search for all flagged messages:
      *                        [['FLAGGED']]
@@ -279,7 +279,11 @@ class Folder {
                 if (count($statement) == 1) {
                     $query .= $statement[0];
                 } else {
-                    $query .= $statement[0].' "'.$statement[1].'"';
+                    $value = $statement[1];
+                    if ($value instanceof \Carbon\Carbon) {
+                        $value = $value->format('d M y');
+                    }
+                    $query .= $statement[0].' "'.$value.'"';
                 }
             }
 
