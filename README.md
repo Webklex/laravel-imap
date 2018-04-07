@@ -60,7 +60,7 @@ Webklex\IMAP\Providers\LaravelServiceProvider::class,
 5) Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
 
 ``` shell
-php artisan vendor:publish
+php artisan vendor:publish --provider="Webklex\IMAP\Providers\LaravelServiceProvider"
 ```
 
 ## Configuration
