@@ -45,19 +45,20 @@ You might also want to check `phpinfo()` if the extension is enabled.
 composer require webklex/laravel-imap
 ```
 
-3) Open your `config/app.php` file and add the following to the `providers` array:
+3) If you're running Laravel >= 5.5, package discovery will configure the service provider and `Client` alias out of the box.
 
-``` php
-Webklex\IMAP\Providers\LaravelServiceProvider::class,
-```
+    Otherwise, for Laravel <= 5.4, edit your `config/app.php` file and:
 
-4) In the same `config/app.php` file add the following to the `aliases ` array: 
+    - add the following to the `providers` array:
+        ``` php
+        Webklex\IMAP\Providers\LaravelServiceProvider::class,
+        ```
+    - add the following to the `aliases` array: 
+        ``` php
+        'Client' => Webklex\IMAP\Facades\Client::class,
+        ```
 
-``` php
-'Client' => Webklex\IMAP\Facades\Client::class,
-```
-
-5) Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
+4) Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
 
 ``` shell
 php artisan vendor:publish
