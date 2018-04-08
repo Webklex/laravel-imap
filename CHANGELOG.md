@@ -14,6 +14,11 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.8] - 2018-04-08
+### Added
+- Specify provider name when publishing the config #80
+- Enable package discovery #81
+
 ## [1.0.5.7] - 2018-04-04
 ### Fixed
 - Added option for optional attachment download #76
