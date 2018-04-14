@@ -272,7 +272,7 @@ class Message {
              */
             try {
                 $this->date = Carbon::parse($date);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 switch (true) {
                     case preg_match('/([A-Z]{2,3}\,\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ \+[0-9]{4}\ \([A-Z]{2,3}\+[0-9]{1,2}\:[0-9]{1,2})\)+$/i', $date) > 0:
                         $array = explode('(', $date);
@@ -314,9 +314,9 @@ class Message {
             $this->message_id = str_replace(['<', '>'], '', $header->message_id);
         }
         if (property_exists($header, 'Msgno')) {
-            $messageNo = (int)trim($header->Msgno);
+            $messageNo = (int) trim($header->Msgno);
             $this->message_no = ($this->fetch_options == FT_UID) ? $messageNo : imap_msgno($this->client->getConnection(), $messageNo);
-        } else{
+        } else {
             $this->message_no = imap_msgno($this->client->getConnection(), $this->getUid());
         }
     }
