@@ -14,6 +14,16 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.0.5.9] - 2018-04-15
+### Added
+- Handle Carbon instances in message search criteria #82
+- $message->getRawBody() throws Exception #88
+- Request: add getReferences method to Message class #83
+
+### Affected Classes
+- [Folder::class](src/IMAP/Folder.php)
+- [Message::class](src/IMAP/Message.php)
+
 ## [1.0.5.8] - 2018-04-08
 ### Added
 - Specify provider name when publishing the config #80
