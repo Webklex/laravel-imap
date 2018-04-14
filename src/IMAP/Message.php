@@ -662,7 +662,7 @@ class Message {
      */
     public function getRawBody() {
         if ($this->raw_body === null) {
-            $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '');
+            $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getMessageNo(), '');
         }
 
         return $this->raw_body;
