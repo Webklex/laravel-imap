@@ -317,7 +317,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | restore         |                               |                      | Restore a deleted Message              |
 | copy            | string $mailbox, int $options |                      | Copy the current Messages to a mailbox |
 | move            | string $mailbox, int $options |                      | Move the current Messages to a mailbox |
-| moveToFolder    | string $mailbox               |                      | Move the Message into an other Folder  |
+| moveToFolder    | string $mailbox, int $options |                      | Move the Message into an other Folder  |
 | setFlag         | string or array $flag         | boolean              | Set one or many flags                  |
 | unsetFlag       | string or array $flag         | boolean              | Unset one or many flags                |
 | hasTextBody     |                               |                      | Check if the Message has a text body   |
