@@ -72,7 +72,7 @@ class Message {
      */
     public $header_info = null;
 
-    /** @var null|object $raw_body */
+    /** @var null|string $raw_body */
     public $raw_body = null;
 
     /**
