@@ -178,7 +178,7 @@ Search for specific emails:
 
 //Get all messages since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->searchMessages([['SINCE', Carbon::parse('15.03.2018')->format('d M y')]]);
+$aMessage = $oFolder->searchMessages([['SINCE', Carbon::parse('15.03.2018')]]);
 
 //Get all messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
