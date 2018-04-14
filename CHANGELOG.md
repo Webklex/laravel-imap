@@ -9,10 +9,10 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN
 
 ### Added
-- NaN
+- Connection validation added
 
 ### Affected Classes
-- NaN
+- [Client::class](src/IMAP/Client.php)
 
 ## [1.0.5.9] - 2018-04-15
 ### Added
