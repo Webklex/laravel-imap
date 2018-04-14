@@ -188,7 +188,7 @@ class Client {
      * @throws ConnectionFailedException
      */
     public function checkConnection() {
-        if (!$this->isConnected()) {
+        if (!$this->isConnected() || $this->connection === false) {
             $this->connect();
         }
     }
@@ -230,7 +230,7 @@ class Client {
      * @return $this
      */
     public function disconnect() {
-        if ($this->isConnected()) {
+        if ($this->isConnected() && $this->connection !== false) {
             $this->errors = array_merge($this->errors, imap_errors() ?: []);
             $this->connected = !imap_close($this->connection, CL_EXPUNGE);
         }
@@ -318,8 +318,11 @@ class Client {
      * @param string $name
      *
      * @return bool
+     * @throws ConnectionFailedException
      */
     public function createFolder($name) {
+        $this->checkConnection();
+
         return imap_createmailbox($this->connection, imap_utf7_encode($name));
     }
 
@@ -420,8 +423,10 @@ class Client {
      * Retrieve the quota level settings, and usage statics per mailbox
      *
      * @return array
+     * @throws ConnectionFailedException
      */
     public function getQuota() {
+        $this->checkConnection();
         return imap_get_quota($this->connection, 'user.'.$this->username);
     }
 
@@ -431,8 +436,10 @@ class Client {
      * @param string $quota_root
      *
      * @return array
+     * @throws ConnectionFailedException
      */
     public function getQuotaRoot($quota_root = 'INBOX') {
+        $this->checkConnection();
         return imap_get_quotaroot($this->connection, $quota_root);
     }
 
@@ -440,8 +447,10 @@ class Client {
      * Gets the number of messages in the current mailbox
      *
      * @return int
+     * @throws ConnectionFailedException
      */
     public function countMessages() {
+        $this->checkConnection();
         return imap_num_msg($this->connection);
     }
 
@@ -449,8 +458,10 @@ class Client {
      * Gets the number of recent messages in current mailbox
      *
      * @return int
+     * @throws ConnectionFailedException
      */
     public function countRecentMessages() {
+        $this->checkConnection();
         return imap_num_recent($this->connection);
     }
 
@@ -487,8 +498,10 @@ class Client {
      * Delete all messages marked for deletion
      *
      * @return bool
+     * @throws ConnectionFailedException
      */
     public function expunge() {
+        $this->checkConnection();
         return imap_expunge($this->connection);
     }
 
@@ -502,8 +515,10 @@ class Client {
      *      Nmsgs   [int(1)]                                                        number of messages in the mailbox
      *      Recent  [int(0)]                                                        number of recent messages in the mailbox
      * }
+     * @throws ConnectionFailedException
      */
     public function checkCurrentMailbox() {
+        $this->checkConnection();
         return imap_check($this->connection);
     }
 }
