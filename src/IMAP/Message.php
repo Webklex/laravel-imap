@@ -81,6 +81,7 @@ class Message {
      * @var string  $message_id
      * @var mixed   $message_no
      * @var string  $subject
+     * @var mixed   $references
      * @var mixed   $date
      * @var array   $from
      * @var array   $to
@@ -93,6 +94,7 @@ class Message {
     public $message_id = '';
     public $message_no = null;
     public $subject = '';
+    public $references = null;
     public $date = null;
     public $from = [];
     public $to = [];
@@ -298,6 +300,9 @@ class Message {
         }
         if (property_exists($header, 'bcc')) {
             $this->bcc = $this->parseAddresses($header->bcc);
+        }
+        if (property_exists($header, 'references')) {
+            $this->references = $header->references;
         }
 
         if (property_exists($header, 'reply_to')) {
@@ -737,6 +742,13 @@ class Message {
      */
     public function getSubject() {
         return $this->subject;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReferences() {
+        return $this->references;
     }
 
     /**

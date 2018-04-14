@@ -335,6 +335,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | getMessageId    |                               | integer              | Get the current message ID             |
 | getMessageNo    |                               | integer              | Get the current message number         |
 | getSubject      |                               | string               | Get the current subject                |
+| getReferences   |                               | mixed                | Get any potentially present references |
 | getDate         |                               | Carbon               | Get the current date object            |
 | getFrom         |                               | array                | Get the current from information       |
 | getTo           |                               | array                | Get the current to information         |
