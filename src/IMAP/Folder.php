@@ -402,7 +402,7 @@ class Folder {
     /**
      * Returns status information on a mailbox
      *
-     * @param string    $options
+     * @param integer   $options
      *                  SA_MESSAGES     - set $status->messages to the number of messages in the mailbox
      *                  SA_RECENT       - set $status->recent to the number of recent messages in the mailbox
      *                  SA_UNSEEN       - set $status->unseen to the number of unseen (new) messages in the mailbox

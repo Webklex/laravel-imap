@@ -26,7 +26,7 @@ use Webklex\IMAP\Support\MessageCollection;
 class Client {
 
     /**
-     * @var bool|resource
+     * @var boolean|resource
      */
     public $connection = false;
 
@@ -145,7 +145,7 @@ class Client {
     /**
      * Get the current imap resource
      *
-     * @return resource
+     * @return resource|boolean
      */
     public function getConnection() {
         return $this->connection;
@@ -251,7 +251,7 @@ class Client {
      */
     public function getFolder($folder_name, $attributes = 32, $delimiter = null) {
 
-        $delimiter = $delimiter == null ? config('imap.options.delimiter', '/') : $delimiter;
+        $delimiter = $delimiter === null ? config('imap.options.delimiter', '/') : $delimiter;
 
         $oFolder = new Folder($this, (object) [
             'name'       => $this->getAddress().$folder_name,
@@ -266,8 +266,8 @@ class Client {
      * Get folders list.
      * If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.
      *
-     * @param bool $hierarchical
-     * @param null $parent_folder
+     * @param boolean     $hierarchical
+     * @param string|null $parent_folder
      *
      * @return FolderCollection
      * @throws ConnectionFailedException
@@ -315,8 +315,7 @@ class Client {
 
     /**
      * Create a new Folder
-     *
-     * @param $name
+     * @param string $name
      *
      * @return bool
      */

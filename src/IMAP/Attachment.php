@@ -171,8 +171,8 @@ class Attachment {
     /**
      * Save the attachment content to your filesystem
      *
-     * @param null $path
-     * @param null $filename
+     * @param string|null $path
+     * @param string|null $filename
      *
      * @return boolean
      */
