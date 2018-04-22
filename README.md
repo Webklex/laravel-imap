@@ -279,6 +279,11 @@ $aMessage = $oFolder->searchMessages([['TEXT', 'Hello world']], null, false, 'UT
 $aMessage = $oFolder->getMessages('ALL', null, false, false);
 ```
 
+Find the folder containing a message:
+``` php
+$oFolder = $aMessage->getContainingFolder();
+```
+
 ## Documentation
 ### [Client::class](src/IMAP/Client.php)
 | Method              | Arguments                                                                       | Return            | Description                                                                                                                   |
@@ -317,6 +322,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | restore         |                               |                      | Restore a deleted Message              |
 | copy            | string $mailbox, int $options |                      | Copy the current Messages to a mailbox |
 | move            | string $mailbox, int $options |                      | Move the current Messages to a mailbox |
+| getContainingFolder | Folder or null $folder    | null|Folder          | Get the folder containing the message  |
 | moveToFolder    | string $mailbox, int $options |                      | Move the Message into an other Folder  |
 | setFlag         | string or array $flag         | boolean              | Set one or many flags                  |
 | unsetFlag       | string or array $flag         | boolean              | Unset one or many flags                |
@@ -346,6 +352,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | getSender       |                               | array                | Get the current sender information     |
 | getBodies       |                               | mixed                | Get the current bodies                 |
 | getRawBody      |                               | mixed                | Get the current raw message body       |
+| is              |                               | boolean              | Does this message match another one?   |
 
 ### [Folder::class](src/IMAP/Folder.php)
 | Method            | Arguments                                                                           | Return            | Description                                    |
