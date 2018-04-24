@@ -589,6 +589,46 @@ class Message {
     }
 
     /**
+     * Find the folder containing this message.
+     *
+     * @param null|Folder $folder where to start searching from (top-level inbox by default)
+     * @return null|Folder
+     */
+    public function getContainingFolder(Folder $folder = null)
+    {
+        $folder = $folder ?: $this->client->getFolders()->first();
+        $this->client->checkConnection();
+
+        // Try finding the message by uid in the current folder
+        $client = new Client;
+        $client->openFolder($folder);
+        $uidMatches = imap_fetch_overview($client->getConnection(), $this->uid, $this->fetch_options);
+        $uidMatch = count($uidMatches)
+            ? new Message($uidMatches[0]->uid, $uidMatches[0]->msgno, $client)
+            : null;
+        $client->disconnect();
+
+        // imap_fetch_overview() on a parent folder will return the matching message
+        // even when the message is in a child folder so we need to recursively
+        // search the children
+        foreach ($folder->children as $child) {
+            $childFolder = $this->getContainingFolder($child);
+
+            if ($childFolder) {
+                return $childFolder;
+            }
+        }
+
+        // before returning the parent
+        if ($this->is($uidMatch)) {
+            return $folder;
+        }
+
+        // or signalling that the message was not found in any folder
+        return null;
+    }
+
+    /**
      * Move the Message into an other Folder
      *
      * @param string  $mailbox
@@ -812,5 +852,25 @@ class Message {
      */
     public function getBodies() {
         return $this->bodies;
+    }
+
+    /**
+     * Does this message match another one?
+     *
+     * A match means same uid, message id, subject and date/time.
+     *
+     * @param  null|static $message
+     * @return boolean
+     */
+    public function is(Message $message = null)
+    {
+        if (is_null($message)) {
+            return false;
+        }
+
+        return $this->uid == $message->uid
+            && $this->message_id == $message->message_id
+            && $this->subject == $message->subject
+            && $this->date->eq($message->date);
     }
 }
