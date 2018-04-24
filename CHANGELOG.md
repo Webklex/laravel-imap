@@ -6,15 +6,28 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
+- NaN
+
+### Added
+- NaN
+
+### Affected Classes
+- NaN
+
+## [1.1.0] - 2018-04-24
+### Fixed
 - Client::createFolder($name) fixed #91
+- Versions will now follow basic **Semantic Versioning** guidelines (MAJOR.MINOR.PATCH) 
 
 ### Added
 - Connection validation added
 - Client::renameFolder($old_name, $new_name) and Client::deleteFolder($name) methods added #91
 - Find the folder containing a message #92
+- Change all incoming encodings to iconv() supported ones #94
 
 ### Affected Classes
 - [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
 
 ## [1.0.5.9] - 2018-04-15
 ### Added
