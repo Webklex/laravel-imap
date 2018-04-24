@@ -6,13 +6,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Force to add a space between criteria in search query, otherwise no messages are fetched. Thanks to @cent89
 
 ### Added
 - NaN
 
 ### Affected Classes
-- NaN
+- [Folder::class](src/IMAP/Folder.php)
 
 ## [1.1.0] - 2018-04-24
 ### Fixed

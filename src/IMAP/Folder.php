@@ -285,7 +285,10 @@ class Folder {
                     }
                     $query .= $statement[0].' "'.$value.'"';
                 }
+                $query .= ' ';
             }
+
+            $query = trim($query);
 
             $availableMessages = imap_search($this->getClient()->getConnection(), $query, SE_UID, $charset);
 
@@ -377,6 +380,8 @@ class Folder {
      * Delete the current Mailbox
      *
      * @return bool
+     *
+     * @throws Exceptions\ConnectionFailedException
      */
     public function delete() {
         $status = imap_deletemailbox($this->client->getConnection(), $this->path);
@@ -391,6 +396,8 @@ class Folder {
      * @param string $target_mailbox
      *
      * @return bool
+     *
+     * @throws Exceptions\ConnectionFailedException
      */
     public function move($target_mailbox) {
         $status = imap_renamemailbox($this->client->getConnection(), $this->path, $target_mailbox);
