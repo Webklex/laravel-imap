@@ -6,10 +6,12 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Client::createFolder($name) fixed #91
 
 ### Added
 - Connection validation added
+- Client::renameFolder($old_name, $new_name) and Client::deleteFolder($name) methods added #91
+- Find the folder containing a message #92
 
 ### Affected Classes
 - [Client::class](src/IMAP/Client.php)
