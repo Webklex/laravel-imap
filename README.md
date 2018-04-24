@@ -431,7 +431,7 @@ If you discover any security related issues, please email github@webklex.com ins
 
 ## Supporters
 
-A special thanks to Jetbrains for supporting this project with their [open source license program](https://www.jetbrains.com/buy/opensource/).
+A special thanks to Jetbrains for supporting this project through their [open source license program](https://www.jetbrains.com/buy/opensource/).
 
 [![Jetbrains][png-jetbrains]][link-jetbrains]
 
