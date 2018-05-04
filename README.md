@@ -375,6 +375,8 @@ $oFolder = $aMessage->getContainingFolder();
 | Method         | Arguments                      | Return         | Description                                            |
 | -------------- | ------------------------------ | :------------: | ------------------------------------------------------ |
 | getContent     |                                | string or null | Get attachment content                                 |     
+| getMimeType    |                                | string or null | Get attachment mime type                               |     
+| getExtension   |                                | string or null | Get a guessed attachment extension                     |     
 | getName        |                                | string or null | Get attachment name                                    |        
 | getType        |                                | string or null | Get attachment type                                    |        
 | getDisposition |                                | string or null | Get attachment disposition                             | 
