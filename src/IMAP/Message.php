@@ -90,6 +90,7 @@ class Message {
      * @var array   $reply_to
      * @var string  $in_reply_to
      * @var array   $sender
+     * @var array   $flags
      */
     public $message_id = '';
     public $message_no = null;
@@ -103,6 +104,7 @@ class Message {
     public $reply_to = [];
     public $in_reply_to = '';
     public $sender = [];
+    public $flags = [];
 
     /**
      * Message body components
@@ -158,6 +160,7 @@ class Message {
         $this->uid = ($this->fetch_options == FT_UID) ? $uid : imap_msgno($this->client->getConnection(), $uid);
         
         $this->parseHeader();
+        $this->parseFlags();
 
         if ($this->getFetchBodyOption() === true) {
             $this->parseBody();
@@ -326,6 +329,19 @@ class Message {
         }
     }
 
+     /**
+     * Parse additional flags
+     *
+     * @return void
+     */
+    private function parseFlags() {
+    	$flags = imap_fetch_overview($this->client->getConnection(), $this->uid, $this->fetch_options);
+    	if (is_array($flags) && isset($flags[0]))
+    	{
+    	    $this->flags = $flags[0];
+    	}
+    }
+    
     /**
      * Get the current Message header info
      *
@@ -852,6 +868,13 @@ class Message {
      */
     public function getBodies() {
         return $this->bodies;
+    }
+    
+     /**
+     * @return array
+     */
+    public function getFlags() {
+        return $this->flags;
     }
 
     /**
