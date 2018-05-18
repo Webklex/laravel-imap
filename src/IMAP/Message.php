@@ -700,7 +700,7 @@ class Message {
      */
     public function unsetFlag($flag) {
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
-        return imap_clearflag_full($this->client->getConnection(), $this->getUid(), "\\$flag", SE_UID);
+        return imap_clearflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
     }
 
     /**
