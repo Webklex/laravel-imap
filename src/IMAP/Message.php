@@ -58,6 +58,13 @@ class Message {
     public $fetch_attachment = null;
 
     /**
+     * Fetch flags options
+     *
+     * @var bool
+     */
+    public $fetch_flags = null;
+    
+    /**
      * @var int $msglist
      */
     public $msglist = 1;
@@ -90,6 +97,7 @@ class Message {
      * @var array   $reply_to
      * @var string  $in_reply_to
      * @var array   $sender
+     * @var array   $flags
      */
     public $message_id = '';
     public $message_no = null;
@@ -103,6 +111,7 @@ class Message {
     public $reply_to = [];
     public $in_reply_to = '';
     public $sender = [];
+    public $flags = [];
 
     /**
      * Message body components
@@ -146,10 +155,11 @@ class Message {
      * @param boolean       $fetch_body
      * @param boolean       $fetch_attachment
      */
-    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false) {
+    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = false) {
         $this->setFetchOption($fetch_options);
         $this->setFetchBodyOption($fetch_body);
         $this->setFetchAttachmentOption($fetch_attachment);
+        $this->setFetchFlagsOption($fetch_flags);
 
         $this->attachments = AttachmentCollection::make([]);
         
@@ -158,6 +168,10 @@ class Message {
         $this->uid = ($this->fetch_options == FT_UID) ? $uid : imap_msgno($this->client->getConnection(), $uid);
         
         $this->parseHeader();
+        
+        if ($this->getFetchFlagsOption() === true) {
+            $this->parseFlags();
+        }
 
         if ($this->getFetchBodyOption() === true) {
             $this->parseBody();
@@ -326,6 +340,35 @@ class Message {
         }
     }
 
+    /**
+     * Parse additional flags
+     *
+     * @return object
+     */
+    private function parseFlags() {
+        $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, $this->fetch_options);        
+        if (is_array($flags) && isset($flags[0])) {
+            if (property_exists($flags[0], 'recent')) {
+                $this->flags['recent'] = $flags[0]->recent;
+            }
+            if (property_exists($flags[0], 'flagged')) {
+                $this->flags['flagged'] = $flags[0]->flagged;
+            }
+            if (property_exists($flags[0], 'answered')) {
+                $this->flags['answered'] = $flags[0]->answered;
+            }
+            if (property_exists($flags[0], 'deleted')) {
+                $this->flags['deleted'] = $flags[0]->deleted;
+            }
+            if (property_exists($flags[0], 'seen')) {
+                $this->flags['seen'] = $flags[0]->seen;
+            }
+            if (property_exists($flags[0], 'draft')) {
+                $this->flags['draft'] = $flags[0]->draft;
+            }  
+        }
+    }
+    
     /**
      * Get the current Message header info
      *
@@ -518,6 +561,24 @@ class Message {
         } elseif (is_null($option)) {
             $config = config('imap.options.fetch_attachment', true);
             $this->fetch_attachment = is_bool($config) ? $config : true;
+        }
+
+        return $this;
+    }
+    
+    /**
+     * Fail proof setter for $fetch_flags
+     *
+     * @param $option
+     *
+     * @return $this
+     */
+    public function setFetchFlagsOption($option) {
+        if (is_bool($option)) {
+            $this->fetch_flags = $option;
+        } elseif (is_null($option)) {
+            $config = config('imap.options.fetch_flags', true);
+            $this->fetch_flags = is_bool($config) ? $config : true;
         }
 
         return $this;
@@ -755,6 +816,13 @@ class Message {
     public function getFetchAttachmentOption() {
         return $this->fetch_attachment;
     }
+    
+    /**
+     * @return boolean
+     */
+    public function getFetchFlagsOption() {
+        return $this->fetch_flags;
+    }
 
     /**
      * @return int
@@ -852,6 +920,13 @@ class Message {
      */
     public function getBodies() {
         return $this->bodies;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getFlags() {
+        return $this->flags;
     }
 
     /**
