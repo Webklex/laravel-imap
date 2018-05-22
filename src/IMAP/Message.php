@@ -343,7 +343,7 @@ class Message {
     /**
      * Parse additional flags
      *
-     * @return object
+     * @return void
      */
     private function parseFlags() {
         $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, $this->fetch_options);        
