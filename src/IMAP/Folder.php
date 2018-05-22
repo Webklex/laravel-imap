@@ -156,9 +156,9 @@ class Folder {
      *
      * @return Message|null
      */
-    public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false) {
+    public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = false) {
         if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
-            return new Message($uid, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment);
+            return new Message($uid, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
         }
 
         return null;
@@ -177,8 +177,8 @@ class Folder {
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      */
-    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
-        return $this->searchMessages([[$criteria]], $fetch_options, $fetch_body, 'UTF-8', $fetch_attachment);
+    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false) {
+        return $this->searchMessages([[$criteria]], $fetch_options, $fetch_body, 'UTF-8', $fetch_attachment, $fetch_flags);
     }
 
     /**
@@ -197,8 +197,8 @@ class Folder {
      * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::getMessages('UNSEEN') instead
      * @see Folder::getMessages()
      */
-    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
-        return $this->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment);
+    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false) {
+        return $this->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
     }
 
     /**
@@ -262,7 +262,7 @@ class Folder {
      *                  / ( ("+" / "-") 4DIGIT ) ; Local differential
      *                                           ;  hours+min. (HHMM)
      */
-    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true, $charset = "UTF-8", $fetch_attachment = true) {
+    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true, $charset = "UTF-8", $fetch_attachment = true, $fetch_flags = false) {
 
         $this->getClient()->checkConnection();
 
@@ -295,7 +295,7 @@ class Folder {
             if ($availableMessages !== false) {
                 $msglist = 1;
                 foreach ($availableMessages as $msgno) {
-                    $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment);
+                    $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
 
                     $messages->put($message->getMessageId(), $message);
                     $msglist++;
