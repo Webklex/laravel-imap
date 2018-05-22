@@ -178,7 +178,7 @@ class Folder {
      * @throws MessageSearchValidationException
      */
     public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
-        return $this->searchMessages([[$criteria]], $fetch_options, $fetch_body, $fetch_attachment);
+        return $this->searchMessages([[$criteria]], $fetch_options, $fetch_body, 'UTF-8', $fetch_attachment);
     }
 
     /**
