@@ -367,8 +367,8 @@ class Client {
      * @deprecated 1.0.5.2:2.0.0 No longer needed. Use Folder::getMessages() instead
      * @see Folder::getMessages()
      */
-    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
-        return $folder->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment);
+    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false) {
+        return $folder->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
     }
 
     /**
@@ -388,8 +388,8 @@ class Client {
      * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::getMessages('UNSEEN') instead
      * @see Folder::getMessages()
      */
-    public function getUnseenMessages(Folder $folder, $criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true) {
-        return $folder->getUnseenMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment);
+    public function getUnseenMessages(Folder $folder, $criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false) {
+        return $folder->getUnseenMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
     }
 
     /**
@@ -411,8 +411,8 @@ class Client {
      * @see Folder::searchMessages()
      *
      */
-    public function searchMessages(array $where, Folder $folder, $fetch_options = null, $fetch_body = true, $charset = "UTF-8", $fetch_attachment = true) {
-        return $folder->searchMessages($where, $fetch_options, $fetch_body, $charset, $fetch_attachment);
+    public function searchMessages(array $where, Folder $folder, $fetch_options = null, $fetch_body = true, $charset = "UTF-8", $fetch_attachment = true, $fetch_flags = false) {
+        return $folder->searchMessages($where, $fetch_options, $fetch_body, $charset, $fetch_attachment, $fetch_flags);
     }
 
     /**
