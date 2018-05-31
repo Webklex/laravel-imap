@@ -269,6 +269,8 @@ class Message {
              * | Mon, 20 Nov 2017 20:31:31 +0800 (GMT+8:00) | Double timezone specification     | A Windows feature
              * |                                            | and invalid timezone (max 6 char) |
              * | 04 Jan 2018 10:12:47 UT                    | Missing letter "C"                | Unknown
+             * | Thu, 31 May 2018 18:15:00 +0800 (added by) | Non-standard details added by the | Unknown
+             * |                                            | mail server                       |
              *
              * Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)
              */
@@ -276,7 +278,7 @@ class Message {
                 $this->date = Carbon::parse($date);
             } catch (\Exception $e) {
                 switch (true) {
-                    case preg_match('/([A-Z]{2,3}\,\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ \+[0-9]{4}\ \([A-Z]{2,3}\+[0-9]{1,2}\:[0-9]{1,2})\)+$/i', $date) > 0:
+                    case preg_match('/([A-Z]{2,3}\,\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ \+[0-9]{4}\ \(.*)\)+$/i', $date) > 0:
                         $array = explode('(', $date);
                         $array = array_reverse($array);
                         $date = trim(array_pop($array));
