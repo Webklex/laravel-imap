@@ -279,6 +279,11 @@ $aMessage = $oFolder->searchMessages([['TEXT', 'Hello world']], null, false, 'UT
 $aMessage = $oFolder->getMessages('ALL', null, false, false);
 ```
 
+Find the folder containing a message:
+``` php
+$oFolder = $aMessage->getContainingFolder();
+```
+
 ## Documentation
 ### [Client::class](src/IMAP/Client.php)
 | Method              | Arguments                                                                       | Return            | Description                                                                                                                   |
@@ -286,7 +291,6 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | setConfig           | array $config                                                                   | self              | Set the Client configuration. Take a look at `config/imap.php` for more inspiration.                                          |
 | getConnection       | resource $connection                                                            | resource          | Get the current imap resource                                                                                                 |
 | setReadOnly         | bool $readOnly                                                                  | self              | Set read only property and reconnect if it's necessary.                                                                       |
-| setFetchOption      | integer $option                                                                 | self              | Fail proof setter for $fetch_option                                                                                           |
 | isReadOnly          |                                                                                 | bool              | Determine if connection is in read only mode.                                                                                 |
 | isConnected         |                                                                                 | bool              | Determine if connection was established.                                                                                      |
 | checkConnection     |                                                                                 |                   | Determine if connection was established and connect if not.                                                                   |
@@ -294,10 +298,12 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | disconnect          |                                                                                 |                   | Disconnect from server.                                                                                                       |
 | getFolder           | string $folder_name, int $attributes = 32, int or null $delimiter               | Folder            | Get a Folder instance by name                                                                                                 |
 | getFolders          | bool $hierarchical, string or null $parent_folder                               | FolderCollection  | Get folders list. If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.  |
-| openFolder          | Folder $folder, $attempts                                                       |                   | Open a given folder.                                                                                                          |
-| createFolder        | string $name                                                                    |                   | Create a new folder.                                                                                                          |
-| getMessages         | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment                              | MessageCollection | Get messages from folder.                                                                                                     |
-| getUnseenMessages   | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment                              | MessageCollection | Get Unseen messages from folder.                                                                                              |
+| openFolder          | Folder $folder, integer $attempts                                               |                   | Open a given folder.                                                                                                          |
+| createFolder        | string $name                                                                    | boolean           | Create a new folder.                                                                                                          |
+| renameFolder        | string $old_name, string $new_name                                              | boolean           | Rename a folder. |
+| deleteFolder        | string $name                                                                    | boolean           | Delete a folder. |
+| getMessages         | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment      | MessageCollection | Get messages from folder.                                                                                                     |
+| getUnseenMessages   | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment      | MessageCollection | Get Unseen messages from folder.                                                                                              |
 | searchMessages      | array $where, Folder $folder, $fetch_options, bool $fetch_body, string $charset, bool $fetch_attachment | MessageCollection | Get specific messages from a given folder.                                                                                    |
 | getQuota            |                                                                                 | array             | Retrieve the quota level settings, and usage statics per mailbox                                                              |
 | getQuotaRoot        | string $quota_root                                                              | array             | Retrieve the quota settings per user                                                                                          |
@@ -317,6 +323,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | restore         |                               |                      | Restore a deleted Message              |
 | copy            | string $mailbox, int $options |                      | Copy the current Messages to a mailbox |
 | move            | string $mailbox, int $options |                      | Move the current Messages to a mailbox |
+| getContainingFolder | Folder or null $folder    | null|Folder          | Get the folder containing the message  |
 | moveToFolder    | string $mailbox, int $options |                      | Move the Message into an other Folder  |
 | setFlag         | string or array $flag         | boolean              | Set one or many flags                  |
 | unsetFlag       | string or array $flag         | boolean              | Unset one or many flags                |
@@ -346,6 +353,7 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | getSender       |                               | array                | Get the current sender information     |
 | getBodies       |                               | mixed                | Get the current bodies                 |
 | getRawBody      |                               | mixed                | Get the current raw message body       |
+| is              |                               | boolean              | Does this message match another one?   |
 
 ### [Folder::class](src/IMAP/Folder.php)
 | Method            | Arguments                                                                           | Return            | Description                                    |
@@ -366,6 +374,8 @@ $aMessage = $oFolder->getMessages('ALL', null, false, false);
 | Method         | Arguments                      | Return         | Description                                            |
 | -------------- | ------------------------------ | :------------: | ------------------------------------------------------ |
 | getContent     |                                | string or null | Get attachment content                                 |     
+| getMimeType    |                                | string or null | Get attachment mime type                               |     
+| getExtension   |                                | string or null | Get a guessed attachment extension                     |     
 | getName        |                                | string or null | Get attachment name                                    |        
 | getType        |                                | string or null | Get attachment type                                    |        
 | getDisposition |                                | string or null | Get attachment disposition                             | 
@@ -422,7 +432,7 @@ If you discover any security related issues, please email github@webklex.com ins
 
 ## Supporters
 
-A special thanks to Jetbrains for supporting this project with their [open source license program](https://www.jetbrains.com/buy/opensource/).
+A special thanks to Jetbrains for supporting this project through their [open source license program](https://www.jetbrains.com/buy/opensource/).
 
 [![Jetbrains][png-jetbrains]][link-jetbrains]
 

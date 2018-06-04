@@ -12,6 +12,7 @@
 
 namespace Webklex\IMAP;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 
 /**
  * Class Attachment
@@ -232,5 +233,19 @@ class Attachment {
      */
     public function getImgSrc() {
         return $this->img_src;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMimeType(){
+        return (new \finfo())->buffer($this->getContent(), FILEINFO_MIME_TYPE);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExtension(){
+        return ExtensionGuesser::getInstance()->guess($this->getMimeType());
     }
 }

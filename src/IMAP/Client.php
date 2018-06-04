@@ -322,8 +322,32 @@ class Client {
      */
     public function createFolder($name) {
         $this->checkConnection();
-
-        return imap_createmailbox($this->connection, imap_utf7_encode($name));
+        return imap_createmailbox($this->connection, $this->getAddress() . imap_utf7_encode($name));
+    }
+    
+    /**
+     * Rename Folder
+     * @param string $old_name
+     * @param string $new_name
+     *
+     * @return bool
+     * @throws ConnectionFailedException
+     */
+    public function renameFolder($old_name, $new_name) {
+        $this->checkConnection();
+        return imap_renamemailbox($this->connection, $this->getAddress() . imap_utf7_encode($old_name), $this->getAddress() . imap_utf7_encode($new_name));
+    }
+    
+     /**
+     * Delete Folder
+     * @param string $name
+     *
+     * @return bool
+     * @throws ConnectionFailedException
+     */
+    public function deleteFolder($name) {
+        $this->checkConnection();
+        return imap_deletemailbox($this->connection, $this->getAddress() . imap_utf7_encode($name));
     }
 
     /**
