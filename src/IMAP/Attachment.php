@@ -164,6 +164,13 @@ class Attachment {
             }
         }
 
+        $nameParts = imap_mime_header_decode($this->name);
+        $name = "";
+        foreach ($nameParts as $n) {
+            $name .= $n->text;
+        }
+        $this->name = $name;
+
         if ($this->type == 'image') {
             $this->img_src = 'data:'.$this->content_type.';base64,'.base64_encode($this->content);
         }
