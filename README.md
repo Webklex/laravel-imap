@@ -291,7 +291,6 @@ $oFolder = $aMessage->getContainingFolder();
 | setConfig           | array $config                                                                   | self              | Set the Client configuration. Take a look at `config/imap.php` for more inspiration.                                          |
 | getConnection       | resource $connection                                                            | resource          | Get the current imap resource                                                                                                 |
 | setReadOnly         | bool $readOnly                                                                  | self              | Set read only property and reconnect if it's necessary.                                                                       |
-| setFetchOption      | integer $option                                                                 | self              | Fail proof setter for $fetch_option                                                                                           |
 | isReadOnly          |                                                                                 | bool              | Determine if connection is in read only mode.                                                                                 |
 | isConnected         |                                                                                 | bool              | Determine if connection was established.                                                                                      |
 | checkConnection     |                                                                                 |                   | Determine if connection was established and connect if not.                                                                   |
@@ -375,6 +374,8 @@ $oFolder = $aMessage->getContainingFolder();
 | Method         | Arguments                      | Return         | Description                                            |
 | -------------- | ------------------------------ | :------------: | ------------------------------------------------------ |
 | getContent     |                                | string or null | Get attachment content                                 |     
+| getMimeType    |                                | string or null | Get attachment mime type                               |     
+| getExtension   |                                | string or null | Get a guessed attachment extension                     |     
 | getName        |                                | string or null | Get attachment name                                    |        
 | getType        |                                | string or null | Get attachment type                                    |        
 | getDisposition |                                | string or null | Get attachment disposition                             | 
@@ -431,7 +432,7 @@ If you discover any security related issues, please email github@webklex.com ins
 
 ## Supporters
 
-A special thanks to Jetbrains for supporting this project with their [open source license program](https://www.jetbrains.com/buy/opensource/).
+A special thanks to Jetbrains for supporting this project through their [open source license program](https://www.jetbrains.com/buy/opensource/).
 
 [![Jetbrains][png-jetbrains]][link-jetbrains]
 

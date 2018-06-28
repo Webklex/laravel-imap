@@ -6,13 +6,24 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Force to add a space between criteria in search query, otherwise no messages are fetched. Thanks to @cent89
+- NaN
 
 ### Added
 - NaN
 
 ### Affected Classes
+- NaN
+
+## [1.1.1] - 2018-05-04
+### Fixed
+- Force to add a space between criteria in search query, otherwise no messages are fetched. Thanks to @cent89
+
+### Added
+- Attachment::getMimeType() and Attachment::getExtension() added
+
+### Affected Classes
 - [Folder::class](src/IMAP/Folder.php)
+- [Attachment::class](src/IMAP/Attachment.php)
 
 ## [1.1.0] - 2018-04-24
 ### Fixed
