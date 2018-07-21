@@ -58,6 +58,13 @@ class Message {
     public $fetch_attachment = null;
 
     /**
+     * Fetch flags options
+     *
+     * @var bool
+     */
+    public $fetch_flags = null;
+    
+    /**
      * @var int $msglist
      */
     public $msglist = 1;
@@ -90,6 +97,7 @@ class Message {
      * @var array   $reply_to
      * @var string  $in_reply_to
      * @var array   $sender
+     * @var array   $flags
      */
     public $message_id = '';
     public $message_no = null;
@@ -103,6 +111,7 @@ class Message {
     public $reply_to = [];
     public $in_reply_to = '';
     public $sender = [];
+    public $flags = [];
 
     /**
      * Message body components
@@ -146,10 +155,11 @@ class Message {
      * @param boolean       $fetch_body
      * @param boolean       $fetch_attachment
      */
-    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false) {
+    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = false) {
         $this->setFetchOption($fetch_options);
         $this->setFetchBodyOption($fetch_body);
         $this->setFetchAttachmentOption($fetch_attachment);
+        $this->setFetchFlagsOption($fetch_flags);
 
         $this->attachments = AttachmentCollection::make([]);
         
@@ -158,6 +168,10 @@ class Message {
         $this->uid = ($this->fetch_options == FT_UID) ? $uid : imap_msgno($this->client->getConnection(), $uid);
         
         $this->parseHeader();
+        
+        if ($this->getFetchFlagsOption() === true) {
+            $this->parseFlags();
+        }
 
         if ($this->getFetchBodyOption() === true) {
             $this->parseBody();
@@ -269,6 +283,8 @@ class Message {
              * | Mon, 20 Nov 2017 20:31:31 +0800 (GMT+8:00) | Double timezone specification     | A Windows feature
              * |                                            | and invalid timezone (max 6 char) |
              * | 04 Jan 2018 10:12:47 UT                    | Missing letter "C"                | Unknown
+             * | Thu, 31 May 2018 18:15:00 +0800 (added by) | Non-standard details added by the | Unknown
+             * |                                            | mail server                       |
              *
              * Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)
              */
@@ -276,7 +292,7 @@ class Message {
                 $this->date = Carbon::parse($date);
             } catch (\Exception $e) {
                 switch (true) {
-                    case preg_match('/([A-Z]{2,3}\,\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ \+[0-9]{4}\ \([A-Z]{2,3}\+[0-9]{1,2}\:[0-9]{1,2})\)+$/i', $date) > 0:
+                    case preg_match('/([A-Z]{2,3}\,\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}\ \+[0-9]{4}\ \(.*)\)+$/i', $date) > 0:
                         $array = explode('(', $date);
                         $array = array_reverse($array);
                         $date = trim(array_pop($array));
@@ -326,6 +342,35 @@ class Message {
         }
     }
 
+    /**
+     * Parse additional flags
+     *
+     * @return void
+     */
+    private function parseFlags() {
+        $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, $this->fetch_options);        
+        if (is_array($flags) && isset($flags[0])) {
+            if (property_exists($flags[0], 'recent')) {
+                $this->flags['recent'] = $flags[0]->recent;
+            }
+            if (property_exists($flags[0], 'flagged')) {
+                $this->flags['flagged'] = $flags[0]->flagged;
+            }
+            if (property_exists($flags[0], 'answered')) {
+                $this->flags['answered'] = $flags[0]->answered;
+            }
+            if (property_exists($flags[0], 'deleted')) {
+                $this->flags['deleted'] = $flags[0]->deleted;
+            }
+            if (property_exists($flags[0], 'seen')) {
+                $this->flags['seen'] = $flags[0]->seen;
+            }
+            if (property_exists($flags[0], 'draft')) {
+                $this->flags['draft'] = $flags[0]->draft;
+            }  
+        }
+    }
+    
     /**
      * Get the current Message header info
      *
@@ -533,6 +578,24 @@ class Message {
 
         return $this;
     }
+    
+    /**
+     * Fail proof setter for $fetch_flags
+     *
+     * @param $option
+     *
+     * @return $this
+     */
+    public function setFetchFlagsOption($option) {
+        if (is_bool($option)) {
+            $this->fetch_flags = $option;
+        } elseif (is_null($option)) {
+            $config = config('imap.options.fetch_flags', true);
+            $this->fetch_flags = is_bool($config) ? $config : true;
+        }
+
+        return $this;
+    }
 
     /**
      * Decode a given string
@@ -711,7 +774,7 @@ class Message {
      */
     public function unsetFlag($flag) {
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
-        return imap_clearflag_full($this->client->getConnection(), $this->getUid(), "\\$flag", SE_UID);
+        return imap_clearflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
     }
 
     /**
@@ -765,6 +828,13 @@ class Message {
      */
     public function getFetchAttachmentOption() {
         return $this->fetch_attachment;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function getFetchFlagsOption() {
+        return $this->fetch_flags;
     }
 
     /**
@@ -863,6 +933,13 @@ class Message {
      */
     public function getBodies() {
         return $this->bodies;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getFlags() {
+        return $this->flags;
     }
 
     /**

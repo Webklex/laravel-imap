@@ -291,7 +291,6 @@ $oFolder = $aMessage->getContainingFolder();
 | setConfig           | array $config                                                                   | self              | Set the Client configuration. Take a look at `config/imap.php` for more inspiration.                                          |
 | getConnection       | resource $connection                                                            | resource          | Get the current imap resource                                                                                                 |
 | setReadOnly         | bool $readOnly                                                                  | self              | Set read only property and reconnect if it's necessary.                                                                       |
-| setFetchOption      | integer $option                                                                 | self              | Fail proof setter for $fetch_option                                                                                           |
 | isReadOnly          |                                                                                 | bool              | Determine if connection is in read only mode.                                                                                 |
 | isConnected         |                                                                                 | bool              | Determine if connection was established.                                                                                      |
 | checkConnection     |                                                                                 |                   | Determine if connection was established and connect if not.                                                                   |
@@ -303,9 +302,9 @@ $oFolder = $aMessage->getContainingFolder();
 | createFolder        | string $name                                                                    | boolean           | Create a new folder.                                                                                                          |
 | renameFolder        | string $old_name, string $new_name                                              | boolean           | Rename a folder. |
 | deleteFolder        | string $name                                                                    | boolean           | Delete a folder. |
-| getMessages         | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment      | MessageCollection | Get messages from folder.                                                                                                     |
-| getUnseenMessages   | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment      | MessageCollection | Get Unseen messages from folder.                                                                                              |
-| searchMessages      | array $where, Folder $folder, $fetch_options, bool $fetch_body, string $charset, bool $fetch_attachment | MessageCollection | Get specific messages from a given folder.                                                                                    |
+| getMessages         | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags      | MessageCollection | Get messages from folder.                                                                                                     |
+| getUnseenMessages   | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags      | MessageCollection | Get Unseen messages from folder.                                                                                              |
+| searchMessages      | array $where, Folder $folder, $fetch_options, bool $fetch_body, string $charset, bool $fetch_attachment, bool $fetch_flags | MessageCollection | Get specific messages from a given folder.                                                                                    |
 | getQuota            |                                                                                 | array             | Retrieve the quota level settings, and usage statics per mailbox                                                              |
 | getQuotaRoot        | string $quota_root                                                              | array             | Retrieve the quota settings per user                                                                                          |
 | countMessages       |                                                                                 | int               | Gets the number of messages in the current mailbox                                                                            |
@@ -354,6 +353,7 @@ $oFolder = $aMessage->getContainingFolder();
 | getSender       |                               | array                | Get the current sender information     |
 | getBodies       |                               | mixed                | Get the current bodies                 |
 | getRawBody      |                               | mixed                | Get the current raw message body       |
+| getFlags        |                               | array                | Get the current message flags          |
 | is              |                               | boolean              | Does this message match another one?   |
 
 ### [Folder::class](src/IMAP/Folder.php)
@@ -361,10 +361,10 @@ $oFolder = $aMessage->getContainingFolder();
 | ----------------- | ----------------------------------------------------------------------------------- | :---------------: | ---------------------------------------------- |
 | hasChildren       |                                                                                     | bool              | Determine if folder has children.              |
 | setChildren       | array $children                                                                     | self              | Set children.                                  |
-| getMessage        | integer $uid, integer or null $msglist, int or null fetch_options, bool $fetch_body, bool $fetch_attachment | Message           | Get a specific message from folder.            |
-| getMessages       | string $criteria, bool $fetch_body, bool $fetch_attachment                                                  | MessageCollection | Get messages from folder.                      |
-| getUnseenMessages | string $criteria, bool $fetch_body, bool $fetch_attachment                                                  | MessageCollection | Get Unseen messages from folder.               |
-| searchMessages    | array $where, $fetch_options, bool $fetch_body, string $charset, bool $fetch_attachment                     | MessageCollection | Get specific messages from a given folder.     |
+| getMessage        | integer $uid, integer or null $msglist, int or null fetch_options, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags | Message           | Get a specific message from folder.            |
+| getMessages       | string $criteria, int or null $fetch_options, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags                                                  | MessageCollection | Get messages from folder.                      |
+| getUnseenMessages | string $criteria, int or null $fetch_options, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags                                                  | MessageCollection | Get Unseen messages from folder.               |
+| searchMessages    | array $where, int or null $fetch_options, bool $fetch_body, string $charset, bool $fetch_attachment, bool $fetch_flags                     | MessageCollection | Get specific messages from a given folder.     |
 | delete            |                                                                                     |                   | Delete the current Mailbox                     |
 | move              | string $mailbox                                                                     |                   | Move or Rename the current Mailbox             |
 | getStatus         | integer $options                                                                    | object            | Returns status information on a mailbox        |
