@@ -155,6 +155,7 @@ class Client {
      * @return resource|boolean
      */
     public function getConnection() {
+        $this->checkConnection();
         return $this->connection;
     }
 

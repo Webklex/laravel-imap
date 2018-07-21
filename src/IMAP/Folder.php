@@ -14,6 +14,7 @@ namespace Webklex\IMAP;
 
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
+use Webklex\IMAP\Query\WhereQuery;
 use Webklex\IMAP\Support\FolderCollection;
 use Webklex\IMAP\Support\MessageCollection;
 
@@ -124,6 +125,19 @@ class Folder {
     }
 
     /**
+     * Get a new search query instance
+     * @param string $charset
+     *
+     * @return WhereQuery
+     */
+    public function query($charset = 'UTF-8'){
+        $this->getClient()->checkConnection();
+        $this->getClient()->openFolder($this);
+
+        return new WhereQuery($this->getClient(), $charset);
+    }
+
+    /**
      * Determine if folder has children.
      *
      * @return bool
@@ -153,6 +167,7 @@ class Folder {
      * @param integer|null $fetch_options
      * @param boolean      $fetch_body
      * @param boolean      $fetch_attachment
+     * @param boolean      $fetch_flags
      *
      * @return Message|null
      */
@@ -171,14 +186,21 @@ class Folder {
      * @param int|null  $fetch_options
      * @param boolean   $fetch_body
      * @param boolean   $fetch_attachment
+     * @param boolean   $fetch_flags
+     * @param int|null  $limit
+     * @param int       $page
+     * @param string    $charset
      *
      * @return MessageCollection
      * @throws Exceptions\ConnectionFailedException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      */
-    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false, $limit = null, $page = 1) {
-        return $this->searchMessages([[$criteria]], $fetch_options, $fetch_body, $fetch_attachment, $limit, $page);
+    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false, $limit = null, $page = 1, $charset = "UTF-8") {
+
+        return $this->query($charset)->where($criteria)->setFetchOptions($fetch_options)->setFetchBody($fetch_body)
+            ->setFetchAttachment($fetch_attachment)->setFetchFlags($fetch_flags)
+            ->limit($limit, $page)->get();
     }
 
     /**
@@ -188,6 +210,10 @@ class Folder {
      * @param int|null  $fetch_options
      * @param boolean   $fetch_body
      * @param boolean   $fetch_attachment
+     * @param boolean   $fetch_flags
+     * @param int|null  $limit
+     * @param int       $page
+     * @param string    $charset
      *
      * @return MessageCollection
      * @throws Exceptions\ConnectionFailedException
@@ -197,8 +223,8 @@ class Folder {
      * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::getMessages('UNSEEN') instead
      * @see Folder::getMessages()
      */
-    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false) {
-        return $this->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
+    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false, $limit = null, $page = 1, $charset = "UTF-8") {
+        return $this->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags, $limit, $page, $charset);
     }
 
     /**
@@ -218,8 +244,11 @@ class Folder {
      *                        ---------------------------------------------------------------------------------------
      * @param int|null  $fetch_options
      * @param boolean   $fetch_body
-     * @param string    $charset
      * @param boolean   $fetch_attachment
+     * @param boolean   $fetch_flags
+     * @param int|null  $limit
+     * @param int       $page
+     * @param string    $charset
      *
      * @return MessageCollection
      *
@@ -261,83 +290,17 @@ class Folder {
      *                                           ;  M:-12; N:+1; Y:+12
      *                  / ( ("+" / "-") 4DIGIT ) ; Local differential
      *                                           ;  hours+min. (HHMM)
+     *
+     * @deprecated 1.2.1:2.0.0 No longer needed. Use Folder::query() instead
+     * @see Folder::query()
      */
-    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true,  $fetch_attachment = true, $fetch_flags = false, $charset = "UTF-8", $limit = null, $page = 1) {
-
+    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true,  $fetch_attachment = true, $fetch_flags = false, $limit = null, $page = 1, $charset = "UTF-8") {
         $this->getClient()->checkConnection();
 
-        if ($this->validateWhereStatements($where) === false) {
-            throw new MessageSearchValidationException('Invalid imap search criteria provided');
-        }
+        return $this->query($charset)->where($where)->setFetchOptions($fetch_options)->setFetchBody($fetch_body)
+            ->setFetchAttachment($fetch_attachment)->setFetchFlags($fetch_flags)
+            ->limit($limit, $page)->get();
 
-        try {
-            $this->getClient()->openFolder($this);
-            $messages = MessageCollection::make([]);
-
-            $query = '';
-            foreach ($where as $statement) {
-                if (count($statement) == 1) {
-                    $query .= $statement[0];
-                } else {
-                    $value = $statement[1];
-                    if ($value instanceof \Carbon\Carbon) {
-                        $value = $value->format('d M y');
-                    }
-                    $query .= $statement[0].' "'.$value.'"';
-                }
-                $query .= ' ';
-            }
-
-            $query = trim($query);
-
-            $availableMessages = array_reverse(imap_search($this->getClient()->getConnection(), $query, SE_UID, $charset));
-
-            $numMessages = imap_num_msg($this->getClient()->getConnection());
-            if($limit == null || $limit > $numMessages){
-                $maxMessages = $numMessages;
-            }else{
-                $maxMessages = $limit;
-            }
-            if ($availableMessages !== false) {
-                for ($msglist = ($page * $maxMessages) - $limit; $msglist < $page * $maxMessages; $msglist++){
-                    $msgno = $availableMessages[$msglist];
-                    $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
-                    $messages->put($message->getMessageId(), $message);
-                }
-            }
-
-            return $messages;
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
-
-            throw new GetMessagesFailedException($message);
-        }
-    }
-
-    /**
-     * Validate a given statement array
-     *
-     * @param array $statements
-     *
-     * @return bool
-     *
-     * @doc http://php.net/manual/en/function.imap-search.php
-     *      https://tools.ietf.org/html/rfc1064
-     *      https://tools.ietf.org/html/rfc822
-     */
-    protected function validateWhereStatements($statements) {
-        foreach ($statements as $statement) {
-            $criteria = $statement[0];
-            if (in_array($criteria, [
-                    'OR', 'AND',
-                    'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
-                    'NEW', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
-                    'UNANSWERED', 'UNDELETED', 'UNFLAGGED', 'UNKEYWORD', 'UNSEEN']) === false) {
-                return false;
-            }
-        }
-
-        return empty($statements) === false;
     }
 
     /**

@@ -80,6 +80,14 @@ return [
     |       Default TRUE
     |   -Attachment download option
     |       Default TRUE
+    |   -Message key identifier option
+    |       You can choose between 'id', 'number' or 'list'
+    |       'id'     - Use the MessageID as array key (default, might cause hickups with yahoo mail)
+    |       'number' - Use the message number as array key (isn't always unique and can cause some interesting behavior)
+    |       'list'   - Use the message list number as array key (incrementing integer (does not always start at 0 or 1)
+    |   -Fetch order
+    |       'asc'  - Order all messages ascending (probably results in oldest first)
+    |       'desc' - Order all messages descending (probably results in newest first)
     |   -Open IMAP options:
     |       DISABLE_AUTHENTICATOR - Disable authentication properties.
     |                               Use 'GSSAPI' if you encounter the following
@@ -94,6 +102,8 @@ return [
         'fetch_body' => true,
         'fetch_attachment' => true,
         'fetch_flags' => true,
+        'message_key' => 'id',
+        'fetch_order' => 'asc',
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ]
