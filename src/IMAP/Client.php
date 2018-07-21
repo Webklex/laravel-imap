@@ -237,7 +237,7 @@ class Client {
      * @return $this
      */
     public function disconnect() {
-        if ($this->isConnected() && $this->connection !== false) {
+        if ($this->isConnected() && $this->connection !== false && is_integer($this->connection) === false) {
             $this->errors = array_merge($this->errors, imap_errors() ?: []);
             $this->connected = !imap_close($this->connection, CL_EXPUNGE);
         }
