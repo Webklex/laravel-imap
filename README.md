@@ -101,6 +101,9 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
    - `fetch` &mdash; `FT_UID` (message marked as read by fetching the message) or `FT_PEEK` (fetch the message without setting the "read" flag)
    - `fetch_body` &mdash; If set to `false` all messages will be fetched without the body and any potential attachments
    - `fetch_attachment` &mdash;  If set to `false` all messages will be fetched without any attachments
+   - `fetch_flags` &mdash;  If set to `false` all messages will be fetched without any flags
+   - `message_key` &mdash; Message key identifier option
+   - `fetch_order` &mdash; Message fetch order
    - `open` &mdash; special configuration for imap_open()
      - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
 

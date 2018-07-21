@@ -80,6 +80,8 @@ return [
     |       Default TRUE
     |   -Attachment download option
     |       Default TRUE
+    |   -Flag download option
+    |       Default TRUE
     |   -Message key identifier option
     |       You can choose between 'id', 'number' or 'list'
     |       'id'     - Use the MessageID as array key (default, might cause hickups with yahoo mail)
