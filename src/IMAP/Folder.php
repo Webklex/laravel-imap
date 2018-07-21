@@ -177,8 +177,8 @@ class Folder {
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      */
-    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false) {
-        return $this->searchMessages([[$criteria]], $fetch_options, $fetch_body, 'UTF-8', $fetch_attachment, $fetch_flags);
+    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false, $limit = null, $page = 1) {
+        return $this->searchMessages([[$criteria]], $fetch_options, $fetch_body, $fetch_attachment, $limit, $page);
     }
 
     /**
@@ -262,7 +262,7 @@ class Folder {
      *                  / ( ("+" / "-") 4DIGIT ) ; Local differential
      *                                           ;  hours+min. (HHMM)
      */
-    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true, $charset = "UTF-8", $fetch_attachment = true, $fetch_flags = false) {
+    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true,  $fetch_attachment = true, $fetch_flags = false, $charset = "UTF-8", $limit = null, $page = 1) {
 
         $this->getClient()->checkConnection();
 
@@ -290,15 +290,19 @@ class Folder {
 
             $query = trim($query);
 
-            $availableMessages = imap_search($this->getClient()->getConnection(), $query, SE_UID, $charset);
+            $availableMessages = array_reverse(imap_search($this->getClient()->getConnection(), $query, SE_UID, $charset));
 
+            $numMessages = imap_num_msg($this->getClient()->getConnection());
+            if($limit == null || $limit > $numMessages){
+                $maxMessages = $numMessages;
+            }else{
+                $maxMessages = $limit;
+            }
             if ($availableMessages !== false) {
-                $msglist = 1;
-                foreach ($availableMessages as $msgno) {
+                for ($msglist = ($page * $maxMessages) - $limit; $msglist < $page * $maxMessages; $msglist++){
+                    $msgno = $availableMessages[$msglist];
                     $message = new Message($msgno, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
-
                     $messages->put($message->getMessageId(), $message);
-                    $msglist++;
                 }
             }
 
