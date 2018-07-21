@@ -92,6 +92,7 @@ return [
         'fetch' => FT_UID,
         'fetch_body' => true,
         'fetch_attachment' => true,
+        'fetch_flags' => true,
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ]
