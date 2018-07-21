@@ -18,10 +18,12 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
   - [Client::class](#clientclass)
   - [Message::class](#messageclass)
   - [Folder::class](#folderclass)
+  - [Query::class](#queryclass)
   - [Attachment::class](#attachmentclass) 
   - [MessageCollection::class](#messagecollectionclass) 
   - [AttachmentCollection::class](#attachmentcollectionclass) 
   - [FolderCollection::class](#foldercollectionclass) 
+  - [FlaggCollection::class](#flaggcollectionclass) 
 - [Known issues](#known-issues)
 - [Milestones & upcoming features](#milestones--upcoming-features)
 - [Security](#security)
@@ -178,15 +180,19 @@ Search for specific emails:
 
 //Get all messages since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->searchMessages([['SINCE', Carbon::parse('15.03.2018')]]);
+$aMessage = $oFolder->query()->whereSince('15.03.2018')->get();
 
 //Get all messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->searchMessages([['TEXT', 'hello world']]);
+$aMessage = $oFolder->query()->whereText('hello world')->get();
 
 //Get all unseen messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->searchMessages([['UNSEEN'], ['TEXT', 'hello world']]);
+$aMessage = $oFolder->query()->whereUnseen()->whereText('hello world')->get();
+
+//Extended custom search query for all messages containing "hello world" and have been received since march 15 2018
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->where([['TEXT', 'Hello world'], ['SINCE', \Carbon::parse('15.03.2018')]])->get();
 ```
 
 Available search criteria:
@@ -262,10 +268,10 @@ Fetch messages without body fetching (decrease load):
 /** @var \Webklex\IMAP\Folder $oFolder */
 
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->searchMessages([['TEXT', 'Hello world']], null, false);
+$aMessage = $oFolder->query()->whereText('Hello world')->setFetchBody(false)->get();
 
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->getMessages('ALL', null, false);
+$aMessage = $oFolder->query()->whereAll()->setFetchBody(false)->setFetchAttachment();
 ```
 
 Fetch messages without body and attachment fetching (decrease load):
@@ -273,10 +279,10 @@ Fetch messages without body and attachment fetching (decrease load):
 /** @var \Webklex\IMAP\Folder $oFolder */
 
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->searchMessages([['TEXT', 'Hello world']], null, false, 'UTF-8', false);
+$aMessage = $oFolder->query()->whereText('Hello world')->setFetchBody(false)->setFetchAttachment(false)->get();
 
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->getMessages('ALL', null, false, false);
+$aMessage = $oFolder->query()->whereAll()->setFetchBody(false)->setFetchAttachment(false)->get();
 ```
 
 Find the folder containing a message:
@@ -353,7 +359,7 @@ $oFolder = $aMessage->getContainingFolder();
 | getSender       |                               | array                | Get the current sender information     |
 | getBodies       |                               | mixed                | Get the current bodies                 |
 | getRawBody      |                               | mixed                | Get the current raw message body       |
-| getFlags        |                               | array                | Get the current message flags          |
+| getFlags        |                               | FlagCollection       | Get the current message flags          |
 | is              |                               | boolean              | Does this message match another one?   |
 
 ### [Folder::class](src/IMAP/Folder.php)
@@ -370,7 +376,46 @@ $oFolder = $aMessage->getContainingFolder();
 | getStatus         | integer $options                                                                    | object            | Returns status information on a mailbox        |
 | appendMessage     | string $message, string $options, string $internal_date                             | bool              | Append a string message to the current mailbox |
 | getClient         |                                                                                     | Client            | Get the current Client instance                |
-                    
+| query             | string $charset = 'UTF-8'                                                           | WhereQuery        | Get the current Client instance                |
+      
+### [Query::class](src/IMAP/WhereQuery.php)
+| Method             | Arguments                         | Return            | Description                                    |
+| ------------------ | --------------------------------- | :---------------: | ---------------------------------------------- |
+| where              | mixed $criteria, $value = null    | WhereQuery        | Add new criteria to the current query |
+| orWhere            | Closure $$closure                 | WhereQuery        | If supported you can perform extended search requests |
+| andWhere           | Closure $$closure                 | WhereQuery        | If supported you can perform extended search requests |
+| whereAll           |                                   | WhereQuery        | Select all available messages |
+| whereAnswered      |                                   | WhereQuery        | Select answered messages |
+| whereAnswered      |                                   | WhereQuery        | Select answered messages |
+| whereDeleted       |                                   | WhereQuery        | Select deleted messages |
+| whereNew           |                                   | WhereQuery        | Select new messages |
+| whereOld           |                                   | WhereQuery        | Select old messages |
+| whereRecent        |                                   | WhereQuery        | Select recent messages |
+| whereSeen          |                                   | WhereQuery        | Select seen messages |
+| whereUnanswered    |                                   | WhereQuery        | Select unanswered messages |
+| whereUndeleted     |                                   | WhereQuery        | Select undeleted messages |
+| whereUnflagged     |                                   | WhereQuery        | Select unflagged messages |
+| whereUnseen        |                                   | WhereQuery        | Select unseen messages |
+| whereUnkeyword     | string $value                     | WhereQuery        | Select messages matching a given unkeyword |
+| whereTo            | string $value                     | WhereQuery        | Select messages matching a given receiver (To:) |
+| whereText          | string $value                     | WhereQuery        | Select messages matching a given text body |
+| whereSubject       | string $value                     | WhereQuery        | Select messages matching a given subject |
+| whereSince         | string $value                     | WhereQuery        | Select messages since a given date |
+| whereOn            | string $value                     | WhereQuery        | Select messages on a given date |
+| whereKeyword       | string $value                     | WhereQuery        | Select messages matching a given keyword |
+| whereFrom          | string $value                     | WhereQuery        | Select messages matching a given sender (From:) |
+| whereFlagged       | string $value                     | WhereQuery        | Select messages matching a given flag |
+| whereCc            | string $value                     | WhereQuery        | Select messages matching a given receiver (CC:) |
+| whereBody          | string $value                     | WhereQuery        | Select messages matching a given HTML body |
+| whereBefore        | string $value                     | WhereQuery        | Select messages before a given date |
+| whereBcc           | string $value                     | WhereQuery        | Select messages matching a given receiver (BCC:) |
+| get                |                                   | MessageCollection | Fetch messages with the current query |
+| limit              | integer $limit, integer $page = 1 | WhereQuery        | Limit the amount of messages being fetched |
+| setFetchOptions    | boolean $fetch_options            | WhereQuery        | Set the fetch options |
+| setFetchBody       | boolean $fetch_body               | WhereQuery        | Set the fetch body option |
+| getFetchAttachment | boolean $fetch_attachment         | WhereQuery        | Set the fetch attachment option |
+| setFetchFlags      | boolean $fetch_flags              | WhereQuery        | Set the fetch flags option |
+           
 ### [Attachment::class](src/IMAP/Attachment.php)
 | Method         | Arguments                      | Return         | Description                                            |
 | -------------- | ------------------------------ | :------------: | ------------------------------------------------------ |
@@ -385,6 +430,13 @@ $oFolder = $aMessage->getContainingFolder();
 | save           | string $path, string $filename | boolean        | Save the attachment content to your filesystem         |      
 
 ### [MessageCollection::class](src/IMAP/Support/MessageCollection.php)
+Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illuminate/Support/Collection.html)
+
+| Method   | Arguments                                           | Return               | Description                      |
+| -------- | --------------------------------------------------- | :------------------: | -------------------------------- |
+| paginate | int $perPage = 15, $page = null, $pageName = 'page' | LengthAwarePaginator | Paginate the current collection. |
+
+### [FlaggCollection::class](src/IMAP/Support/FlaggCollection.php)
 Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illuminate/Support/Collection.html)
 
 | Method   | Arguments                                           | Return               | Description                      |
