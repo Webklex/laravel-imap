@@ -78,23 +78,27 @@ class WhereQuery extends Query {
     }
 
     /**
-     * @param mixed $value
+     * @param \Closure $closure
      *
-     * @return WhereQuery
-     * @throws InvalidWhereQueryCriteriaException
+     * @return $this
      */
-    public function orWhere($value){
-        return $this->where('OR', $value);
+    public function orWhere(\Closure $closure = null){
+        $this->query->push(['OR']);
+        if($closure !== null) $closure($this);
+
+        return $this;
     }
 
     /**
-     * @param mixed $value
+     * @param \Closure $closure
      *
-     * @return WhereQuery
-     * @throws InvalidWhereQueryCriteriaException
+     * @return $this
      */
-    public function andWhere($value){
-        return $this->where('AND', $value);
+    public function andWhere(\Closure $closure = null) {
+        $this->query->push(['AND']);
+        if($closure !== null) $closure($this);
+
+        return $this;
     }
 
     /**
