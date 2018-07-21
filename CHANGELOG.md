@@ -14,6 +14,28 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.2.0] - 2018-07-22
+### Fixed
+- Charset error fixed #109
+- Potential imap_close() error fixed #118
+- Plain text attachments have a content type of other/plain of text/plain #119
+- Carbon Exception Parse Data #45 
+
+### Added
+- Protocol option added #124
+- Message collection key option added
+- Message collection sorting option added
+- Search Query functionality added
+- Flag collection added
+- Search methods updated
+
+### Affected Classes
+- [Folder::class](src/IMAP/Folder.php)
+- [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
+- [Attachment::class](src/IMAP/Attachment.php)
+- [Query::class](src/IMAP/Query/Query.php) [WhereQuery::class](src/IMAP/Query/WhereQuery.php)
+
 ## [1.1.1] - 2018-05-04
 ### Fixed
 - Force to add a space between criteria in search query, otherwise no messages are fetched. Thanks to @cent89
