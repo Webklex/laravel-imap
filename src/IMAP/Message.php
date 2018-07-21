@@ -14,6 +14,7 @@ namespace Webklex\IMAP;
 
 use Carbon\Carbon;
 use Webklex\IMAP\Support\AttachmentCollection;
+use Webklex\IMAP\Support\FlagCollection;
 
 /**
  * Class Message
@@ -111,16 +112,17 @@ class Message {
     public $reply_to = [];
     public $in_reply_to = '';
     public $sender = [];
-    public $flags = [];
 
     /**
      * Message body components
      *
      * @var array   $bodies
-     * @var AttachmentCollection|array  $attachments
+     * @var AttachmentCollection|array $attachments
+     * @var FlagCollection|array       $flags
      */
     public $bodies = [];
     public $attachments = [];
+    public $flags = [];
 
     /**
      * Message const
@@ -154,6 +156,7 @@ class Message {
      * @param integer|null  $fetch_options
      * @param boolean       $fetch_body
      * @param boolean       $fetch_attachment
+     * @param boolean       $fetch_flags
      */
     public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = false) {
         $this->setFetchOption($fetch_options);
@@ -162,7 +165,8 @@ class Message {
         $this->setFetchFlagsOption($fetch_flags);
 
         $this->attachments = AttachmentCollection::make([]);
-        
+        $this->flags = FlagCollection::make([]);
+
         $this->msglist = $msglist;
         $this->client = $client;
         $this->uid = ($this->fetch_options == FT_UID) ? $uid : imap_msgno($this->client->getConnection(), $uid);
@@ -247,7 +251,7 @@ class Message {
 
         $body = $this->bodies['html']->content;
         if ($replaceImages) {
-            $this->attachments->each(function($oAttachment) use(&$body){
+            $this->attachments->each(function($oAttachment) use(&$body) {
                 if ($oAttachment->id && isset($oAttachment->img_src)) {
                     $body = str_replace('cid:'.$oAttachment->id, $oAttachment->img_src, $body);
                 }
@@ -351,22 +355,22 @@ class Message {
         $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, $this->fetch_options);        
         if (is_array($flags) && isset($flags[0])) {
             if (property_exists($flags[0], 'recent')) {
-                $this->flags['recent'] = $flags[0]->recent;
+                $this->flags->put('recent', $flags[0]->recent);
             }
             if (property_exists($flags[0], 'flagged')) {
-                $this->flags['flagged'] = $flags[0]->flagged;
+                $this->flags->put('flagged', $flags[0]->flagged);
             }
             if (property_exists($flags[0], 'answered')) {
-                $this->flags['answered'] = $flags[0]->answered;
+                $this->flags->put('answered', $flags[0]->answered);
             }
             if (property_exists($flags[0], 'deleted')) {
-                $this->flags['deleted'] = $flags[0]->deleted;
+                $this->flags->put('deleted', $flags[0]->deleted);
             }
             if (property_exists($flags[0], 'seen')) {
-                $this->flags['seen'] = $flags[0]->seen;
+                $this->flags->put('seen', $flags[0]->seen);
             }
             if (property_exists($flags[0], 'draft')) {
-                $this->flags['draft'] = $flags[0]->draft;
+                $this->flags->put('draft', $flags[0]->draft);
             }  
         }
     }
@@ -379,7 +383,7 @@ class Message {
     public function getHeaderInfo() {
         if ($this->header_info == null) {
             $this->header_info =
-            $this->header_info = imap_headerinfo($this->client->getConnection(), $this->getMessageNo()); ;
+            $this->header_info = imap_headerinfo($this->client->getConnection(), $this->getMessageNo());
         }
 
         return $this->header_info;
@@ -427,13 +431,15 @@ class Message {
     public function parseBody() {
         $structure = imap_fetchstructure($this->client->getConnection(), $this->uid, $this->fetch_options);
 
-        $parts = $structure->parts;
+        if(property_exists($structure, 'parts')){
+            $parts = $structure->parts;
 
-        foreach ($parts as $part)  {
-            foreach ($part->parameters as $parameter)  {
-                if($parameter->attribute == "charset")  {
-                    $encoding = $parameter->value;
-                    $parameter->value = preg_replace('/Content-Transfer-Encoding/', '', $encoding);
+            foreach ($parts as $part)  {
+                foreach ($part->parameters as $parameter)  {
+                    if($parameter->attribute == "charset")  {
+                        $encoding = $parameter->value;
+                        $parameter->value = preg_replace('/Content-Transfer-Encoding/', '', $encoding);
+                    }
                 }
             }
         }
@@ -668,8 +674,7 @@ class Message {
      * @param null|Folder $folder where to start searching from (top-level inbox by default)
      * @return null|Folder
      */
-    public function getContainingFolder(Folder $folder = null)
-    {
+    public function getContainingFolder(Folder $folder = null) {
         $folder = $folder ?: $this->client->getFolders()->first();
         $this->client->checkConnection();
 
@@ -936,7 +941,7 @@ class Message {
     }
     
     /**
-     * @return array
+     * @return FlagCollection
      */
     public function getFlags() {
         return $this->flags;
@@ -950,8 +955,7 @@ class Message {
      * @param  null|static $message
      * @return boolean
      */
-    public function is(Message $message = null)
-    {
+    public function is(Message $message = null) {
         if (is_null($message)) {
             return false;
         }
