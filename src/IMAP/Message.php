@@ -382,6 +382,17 @@ class Message {
     public function parseBody() {
         $structure = imap_fetchstructure($this->client->getConnection(), $this->uid, $this->fetch_options);
 
+        $parts = $structure->parts;
+
+        foreach ($parts as $part)  {
+            foreach ($part->parameters as $parameter)  {
+                if($parameter->attribute == "charset")  {
+                    $encoding = $parameter->value;
+                    $parameter->value = preg_replace('/Content-Transfer-Encoding/', '', $encoding);
+                }
+            }
+        }
+
         $this->fetchStructure($structure);
 
         return $this;
