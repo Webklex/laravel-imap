@@ -11,6 +11,7 @@
 */
 
 namespace Webklex\IMAP;
+
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 
@@ -113,8 +114,11 @@ class Attachment {
             case self::TYPE_MODEL:
                 $this->type = 'model';
                 break;
-            case self::TYPE_OTHER:
-                $this->type = 'other';
+            case self::TYPE_TEXT:
+                $this->type = 'text';
+                break;
+            case self::TYPE_MULTIPART:
+                $this->type = 'multipart';
                 break;
             default:
                 $this->type = 'other';
