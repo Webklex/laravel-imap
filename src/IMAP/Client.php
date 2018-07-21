@@ -45,6 +45,13 @@ class Client {
     public $port;
 
     /**
+     * Service protocol.
+     *
+     * @var int
+     */
+    public $protocol;
+
+    /**
      * Server encryption.
      * Supported: none, ssl or tls.
      *
@@ -431,7 +438,7 @@ class Client {
      * @return string
      */
     protected function getAddress() {
-        $address = "{".$this->host.":".$this->port."/imap";
+        $address = "{".$this->host.":".$this->port."/".($this->protocol ? $this->protocol : 'imap');
         if (!$this->validate_cert) {
             $address .= '/novalidate-cert';
         }
