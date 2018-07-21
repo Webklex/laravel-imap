@@ -162,11 +162,11 @@ class Message {
         $this->setFetchFlagsOption($fetch_flags);
 
         $this->attachments = AttachmentCollection::make([]);
-        
+
         $this->msglist = $msglist;
         $this->client = $client;
         $this->uid = ($this->fetch_options == FT_UID) ? $uid : imap_msgno($this->client->getConnection(), $uid);
-        
+
         $this->parseHeader();
         
         if ($this->getFetchFlagsOption() === true) {
@@ -269,7 +269,10 @@ class Message {
         }
 
         if (property_exists($header, 'subject')) {
-            $this->subject = imap_utf8($header->subject);
+            $subject = imap_mime_header_decode($header->subject);
+            foreach ($subject as $s) {
+                $this->subject .= $s->text;
+            }
         }
         if (property_exists($header, 'date')) {
             $date = $header->date;
@@ -279,7 +282,7 @@ class Message {
              * Will be extended in the future
              *
              * Currently known invalid formats:
-             * ^ Datetime                                   ^ Problem                           ^ Cause                 
+             * ^ Datetime                                   ^ Problem                           ^ Cause
              * | Mon, 20 Nov 2017 20:31:31 +0800 (GMT+8:00) | Double timezone specification     | A Windows feature
              * |                                            | and invalid timezone (max 6 char) |
              * | 04 Jan 2018 10:12:47 UT                    | Missing letter "C"                | Unknown
@@ -612,7 +615,7 @@ class Message {
                 return $string;
         }
     }
-    
+
     /**
      * Convert the encoding
      *
@@ -902,7 +905,7 @@ class Message {
     public function getReplyTo() {
         return $this->reply_to;
     }
-    
+
     /**
      * @return string
      */
