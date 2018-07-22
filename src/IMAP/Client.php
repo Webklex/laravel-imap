@@ -113,7 +113,7 @@ class Client {
      *
      * @var array $validConfigKeys
      */
-    protected $validConfigKeys = ['host', 'port', 'encryption', 'validate_cert', 'username', 'password'];
+    protected $validConfigKeys = ['host', 'port', 'encryption', 'validate_cert', 'username', 'password','protocol'];
 
     /**
      * Client constructor.
