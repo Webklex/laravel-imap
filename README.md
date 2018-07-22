@@ -124,6 +124,9 @@ $oClient = new Client([
     'username'      => 'username',
     'password'      => 'password',
 ]);
+/* Alternative by using the Facade
+$oClient = Webklex\IMAP\Facades\Client::account('default');
+*/
 
 //Connect to the IMAP Server
 $oClient->connect();
@@ -183,19 +186,31 @@ Search for specific emails:
 
 //Get all messages since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->query()->whereSince('15.03.2018')->get();
+$aMessage = $oFolder->query()->since('15.03.2018')->get();
 
 //Get all messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->query()->whereText('hello world')->get();
+$aMessage = $oFolder->query()->text('hello world')->get();
 
 //Get all unseen messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->query()->whereUnseen()->whereText('hello world')->get();
+$aMessage = $oFolder->query()->unseen()->text('hello world')->get();
 
 //Extended custom search query for all messages containing "hello world" and have been received since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->text('hello world')->since('15.03.2018')->get();
+$aMessage = $oFolder->query()->Text('hello world')->Since('15.03.2018')->get();
+$aMessage = $oFolder->query()->whereText('hello world')->whereSince('15.03.2018')->get();
 $aMessage = $oFolder->query()->where([['TEXT', 'Hello world'], ['SINCE', \Carbon::parse('15.03.2018')]])->get();
+```
+
+Limiting the request emails:
+``` php
+/** @var \Webklex\IMAP\Folder $oFolder */
+
+//Get all messages for page 2 since march 15 2018 where each apge contains 10 messages
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->since('15.03.2018')->limit(10, 2)->get();
 ```
 
 Available search criteria:
