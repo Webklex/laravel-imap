@@ -119,7 +119,16 @@ class Query {
 
         try {
             $this->generate_query();
-            $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), SE_UID, $this->getCharset());
+
+            /**
+             * Don't set the charset if it isn't used - prevent strange outlook mail server errors
+             * @see https://github.com/Webklex/laravel-imap/issues/100
+             */
+            if($this->getCharset() === null){
+                $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), SE_UID);
+            }else{
+                $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), SE_UID, $this->getCharset());
+            }
 
             if ($available_messages !== false) {
 
