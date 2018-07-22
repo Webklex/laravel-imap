@@ -14,6 +14,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.2.1] - 2018-07-22
+### Added
+- WhereQuery aliases for all where methods added
+
+### Affected Classes
+- [WhereQuery::class](src/IMAP/Query/WhereQuery.php)
+
 ## [1.2.0] - 2018-07-22
 ### Fixed
 - Charset error fixed #109
