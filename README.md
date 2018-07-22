@@ -387,31 +387,31 @@ $oFolder = $aMessage->getContainingFolder();
 | where              | mixed $criteria, $value = null    | WhereQuery        | Add new criteria to the current query |
 | orWhere            | Closure $$closure                 | WhereQuery        | If supported you can perform extended search requests |
 | andWhere           | Closure $$closure                 | WhereQuery        | If supported you can perform extended search requests |
-| whereAll           |                                   | WhereQuery        | Select all available messages |
-| whereAnswered      |                                   | WhereQuery        | Select answered messages |
-| whereAnswered      |                                   | WhereQuery        | Select answered messages |
-| whereDeleted       |                                   | WhereQuery        | Select deleted messages |
-| whereNew           |                                   | WhereQuery        | Select new messages |
-| whereOld           |                                   | WhereQuery        | Select old messages |
-| whereRecent        |                                   | WhereQuery        | Select recent messages |
-| whereSeen          |                                   | WhereQuery        | Select seen messages |
-| whereUnanswered    |                                   | WhereQuery        | Select unanswered messages |
-| whereUndeleted     |                                   | WhereQuery        | Select undeleted messages |
-| whereUnflagged     |                                   | WhereQuery        | Select unflagged messages |
-| whereUnseen        |                                   | WhereQuery        | Select unseen messages |
-| whereUnkeyword     | string $value                     | WhereQuery        | Select messages matching a given unkeyword |
-| whereTo            | string $value                     | WhereQuery        | Select messages matching a given receiver (To:) |
-| whereText          | string $value                     | WhereQuery        | Select messages matching a given text body |
-| whereSubject       | string $value                     | WhereQuery        | Select messages matching a given subject |
-| whereSince         | string $value                     | WhereQuery        | Select messages since a given date |
-| whereOn            | string $value                     | WhereQuery        | Select messages on a given date |
-| whereKeyword       | string $value                     | WhereQuery        | Select messages matching a given keyword |
-| whereFrom          | string $value                     | WhereQuery        | Select messages matching a given sender (From:) |
-| whereFlagged       | string $value                     | WhereQuery        | Select messages matching a given flag |
-| whereCc            | string $value                     | WhereQuery        | Select messages matching a given receiver (CC:) |
-| whereBody          | string $value                     | WhereQuery        | Select messages matching a given HTML body |
-| whereBefore        | string $value                     | WhereQuery        | Select messages before a given date |
-| whereBcc           | string $value                     | WhereQuery        | Select messages matching a given receiver (BCC:) |
+| all                |                                   | WhereQuery        | Select all available messages |
+| answered           |                                   | WhereQuery        | Select answered messages |
+| answered           |                                   | WhereQuery        | Select answered messages |
+| deleted            |                                   | WhereQuery        | Select deleted messages |
+| new                |                                   | WhereQuery        | Select new messages |
+| old                |                                   | WhereQuery        | Select old messages |
+| recent             |                                   | WhereQuery        | Select recent messages |
+| seen               |                                   | WhereQuery        | Select seen messages |
+| unanswered         |                                   | WhereQuery        | Select unanswered messages |
+| undeleted          |                                   | WhereQuery        | Select undeleted messages |
+| unflagged          |                                   | WhereQuery        | Select unflagged messages |
+| unseen             |                                   | WhereQuery        | Select unseen messages |
+| unkeyword          | string $value                     | WhereQuery        | Select messages matching a given unkeyword |
+| to                 | string $value                     | WhereQuery        | Select messages matching a given receiver (To:) |
+| text               | string $value                     | WhereQuery        | Select messages matching a given text body |
+| subject            | string $value                     | WhereQuery        | Select messages matching a given subject |
+| since              | string $value                     | WhereQuery        | Select messages since a given date |
+| on                 | string $value                     | WhereQuery        | Select messages on a given date |
+| keyword            | string $value                     | WhereQuery        | Select messages matching a given keyword |
+| from               | string $value                     | WhereQuery        | Select messages matching a given sender (From:) |
+| flagged            | string $value                     | WhereQuery        | Select messages matching a given flag |
+| cc                 | string $value                     | WhereQuery        | Select messages matching a given receiver (CC:) |
+| body               | string $value                     | WhereQuery        | Select messages matching a given HTML body |
+| before             | string $value                     | WhereQuery        | Select messages before a given date |
+| bcc                | string $value                     | WhereQuery        | Select messages matching a given receiver (BCC:) |
 | get                |                                   | MessageCollection | Fetch messages with the current query |
 | limit              | integer $limit, integer $page = 1 | WhereQuery        | Limit the amount of messages being fetched |
 | setFetchOptions    | boolean $fetch_options            | WhereQuery        | Set the fetch options |

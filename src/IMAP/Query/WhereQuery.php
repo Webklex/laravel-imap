@@ -32,6 +32,24 @@ class WhereQuery extends Query {
     ];
 
     /**
+     * Magic method in order to allow alias usage of all "where" methods
+     * @param string $name
+     * @param array|null $arguments
+     *
+     * @return mixed
+     * @throws MethodNotFoundException
+     */
+    public function __call($name, $arguments) {
+        $method = 'where'.ucfirst($name);
+        if(method_exists($this, $method) === true){
+            return call_user_func_array([$this, $method], $arguments);
+        }
+
+        throw new MethodNotFoundException();
+    }
+
+    /**
+     * Validate a given criteria
      * @param $criteria
      *
      * @return string
