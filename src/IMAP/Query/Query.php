@@ -96,7 +96,7 @@ class Query {
      * @return Carbon
      * @throws MessageSearchValidationException
      */
-    protected function parse_date($date){
+    protected function parse_date($date) {
         if($date instanceof \Carbon\Carbon) return $date;
 
         try {
@@ -114,7 +114,7 @@ class Query {
      * @return MessageCollection
      * @throws GetMessagesFailedException
      */
-    public function get(){
+    public function get() {
         $messages = MessageCollection::make([]);
 
         try {
@@ -161,7 +161,7 @@ class Query {
      *
      * @return string
      */
-    public function generate_query(){
+    public function generate_query() {
         $query = '';
         $this->query->each(function($statement) use(&$query) {
             if (count($statement) == 1) {
@@ -185,7 +185,7 @@ class Query {
     /**
      * @return Client
      */
-    public function getClient(){
+    public function getClient() {
         $this->oClient->checkConnection();
         return $this->oClient;
     }
@@ -197,7 +197,7 @@ class Query {
      *
      * @return $this
      */
-    public function limit($limit, $page = 1){
+    public function limit($limit, $page = 1) {
         if($page >= 1) $this->page = $page;
         $this->limit = $limit;
 
