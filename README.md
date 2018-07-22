@@ -23,7 +23,7 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
   - [MessageCollection::class](#messagecollectionclass) 
   - [AttachmentCollection::class](#attachmentcollectionclass) 
   - [FolderCollection::class](#foldercollectionclass) 
-  - [FlaggCollection::class](#flaggcollectionclass) 
+  - [FlagCollection::class](#flagcollectionclass) 
 - [Known issues](#known-issues)
 - [Milestones & upcoming features](#milestones--upcoming-features)
 - [Security](#security)
@@ -454,7 +454,7 @@ Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illum
 | -------- | --------------------------------------------------- | :------------------: | -------------------------------- |
 | paginate | int $perPage = 15, $page = null, $pageName = 'page' | LengthAwarePaginator | Paginate the current collection. |
 
-### [FlaggCollection::class](src/IMAP/Support/FlaggCollection.php)
+### [FlagCollection::class](src/IMAP/Support/FlagCollection.php)
 Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illuminate/Support/Collection.html)
 
 | Method   | Arguments                                           | Return               | Description                      |
