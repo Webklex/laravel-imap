@@ -14,6 +14,18 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.2.2] - 2018-07-22
+### Fixed
+- Don't set the charset if it isn't used - prevent strange outlook mail server errors #100
+- Protocol option added -minor Fix #126
+
+### Added
+- Query extended with markAsRead() and leaveUnread() methods
+
+### Affected Classes
+- [Query::class](src/IMAP/Query/Query.php)
+- [Client::class](src/IMAP/Client.php)
+
 ## [1.2.1] - 2018-07-22
 ### Added
 - WhereQuery aliases for all where methods added
