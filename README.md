@@ -268,6 +268,20 @@ $oMessage->setFlag(['Seen', 'Spam']);
 $oMessage->unsetFlag('Spam');
 ```
 
+Mark all messages as "read" while fetching:
+``` php
+/** @var \Webklex\IMAP\Folder $oFolder */
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->text('Hello world')->markAsRead()->get();
+```
+
+Don't mark all messages as "read" while fetching:
+``` php
+/** @var \Webklex\IMAP\Folder $oFolder */
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->text('Hello world')->leaveUnread()->get();
+```
+
 Save message attachments:
 ``` php
 /** @var \Webklex\IMAP\Message $oMessage */
@@ -433,6 +447,8 @@ $oFolder = $aMessage->getContainingFolder();
 | setFetchBody       | boolean $fetch_body               | WhereQuery        | Set the fetch body option |
 | getFetchAttachment | boolean $fetch_attachment         | WhereQuery        | Set the fetch attachment option |
 | setFetchFlags      | boolean $fetch_flags              | WhereQuery        | Set the fetch flags option |
+| leaveUnread        |                                   | WhereQuery        | Don't mark all messages as "read" while fetching:  |
+| markAsRead         |                                   | WhereQuery        | Mark all messages as "read" while fetching |
            
 ### [Attachment::class](src/IMAP/Attachment.php)
 | Method         | Arguments                      | Return         | Description                                            |

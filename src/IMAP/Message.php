@@ -71,6 +71,11 @@ class Message {
     public $msglist = 1;
 
     /**
+     * @var int $msgn
+     */
+    public $msgn = null;
+
+    /**
      * @var string $header
      */
     public $header = null;
@@ -169,8 +174,10 @@ class Message {
 
         $this->msglist = $msglist;
         $this->client = $client;
-        $this->uid = ($this->fetch_options == FT_UID) ? $uid : imap_msgno($this->client->getConnection(), $uid);
-        
+
+        $this->uid =  ($this->fetch_options == FT_UID) ? $uid : $uid;
+        $this->msgn = ($this->fetch_options == FT_UID) ? imap_msgno($this->client->getConnection(), $uid) : $uid;
+
         $this->parseHeader();
         
         if ($this->getFetchFlagsOption() === true) {
@@ -267,7 +274,7 @@ class Message {
      * @return void
      */
     private function parseHeader() {
-        $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, $this->fetch_options);
+        $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, FT_UID);
         if ($this->header) {
             $header = imap_rfc822_parse_headers($this->header);
         }
@@ -353,7 +360,7 @@ class Message {
      * @return void
      */
     private function parseFlags() {
-        $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, $this->fetch_options);        
+        $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, FT_UID);
         if (is_array($flags) && isset($flags[0])) {
             if (property_exists($flags[0], 'recent')) {
                 $this->flags->put('recent', $flags[0]->recent);
@@ -430,7 +437,7 @@ class Message {
      * @return $this
      */
     public function parseBody() {
-        $structure = imap_fetchstructure($this->client->getConnection(), $this->uid, $this->fetch_options);
+        $structure = imap_fetchstructure($this->client->getConnection(), $this->uid, FT_UID);
 
         if(property_exists($structure, 'parts')){
             $parts = $structure->parts;
@@ -469,7 +476,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options);
+                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | FT_UID);
                 $content = $this->decodeString($content, $structure->encoding);
                 $content = $this->convertEncoding($content, $encoding);
 
@@ -488,7 +495,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options);
+                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | FT_UID);
                 $content = $this->decodeString($content, $structure->encoding);
                 $content = $this->convertEncoding($content, $encoding);
 
@@ -682,7 +689,7 @@ class Message {
         // Try finding the message by uid in the current folder
         $client = new Client;
         $client->openFolder($folder);
-        $uidMatches = imap_fetch_overview($client->getConnection(), $this->uid, $this->fetch_options);
+        $uidMatches = imap_fetch_overview($client->getConnection(), $this->uid, FT_UID);
         $uidMatch = count($uidMatches)
             ? new Message($uidMatches[0]->uid, $uidMatches[0]->msgno, $client)
             : null;
@@ -728,7 +735,7 @@ class Message {
      * @return bool
      */
     public function delete() {
-        $status = imap_delete($this->client->getConnection(), $this->uid, $this->fetch_options);
+        $status = imap_delete($this->client->getConnection(), $this->uid, FT_UID);
         $this->client->expunge();
 
         return $status;
@@ -740,7 +747,7 @@ class Message {
      * @return bool
      */
     public function restore() {
-        return imap_undelete($this->client->getConnection(), $this->message_no);
+        return imap_undelete($this->client->getConnection(), $this->uid, FT_UID);
     }
 
     /**
@@ -788,7 +795,7 @@ class Message {
      */
     public function getRawBody() {
         if ($this->raw_body === null) {
-            $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getMessageNo(), '');
+            $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '', $this->fetch_options | FT_UID);
         }
 
         return $this->raw_body;

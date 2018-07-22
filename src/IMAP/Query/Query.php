@@ -35,8 +35,8 @@ class Query {
     /** @var string $charset */
     protected $charset;
 
-    /** @var Client $oClient */
-    protected $oClient;
+    /** @var Client $client */
+    protected $client;
 
     /** @var int $limit */
     protected $limit = null;
@@ -58,11 +58,14 @@ class Query {
 
     /**
      * Query constructor.
-     * @param Client $oClient
+     * @param Client $client
      * @param string $charset
      */
-    public function __construct(Client $oClient, $charset = 'UTF-8') {
-        $this->oClient = $oClient;
+    public function __construct(Client $client, $charset = 'UTF-8') {
+        $this->setClient($client);
+
+        if(config('imap.options.fetch') === FT_PEEK) $this->leaveUnread();
+
         $this->charset = $charset;
         $this->query = collect();
         $this->boot();
@@ -106,6 +109,28 @@ class Query {
         }
 
         return $date;
+    }
+
+    /**
+     * Don't mark messages as read when fetching
+     *
+     * @return $this
+     */
+    public function leaveUnread() {
+        $this->setFetchOptions(FT_PEEK);
+
+        return $this;
+    }
+
+    /**
+     * Mark all messages as read when fetching
+     *
+     * @return $this
+     */
+    public function markAsRead() {
+        $this->setFetchOptions(FT_UID);
+
+        return $this;
     }
 
     /**
@@ -195,8 +220,8 @@ class Query {
      * @return Client
      */
     public function getClient() {
-        $this->oClient->checkConnection();
-        return $this->oClient;
+        $this->client->checkConnection();
+        return $this->client;
     }
 
     /**
@@ -262,18 +287,11 @@ class Query {
     }
 
     /**
-     * @return Client
-     */
-    public function getOClient() {
-        return $this->oClient;
-    }
-
-    /**
-     * @param Client $oClient
+     * @param Client $client
      * @return Query
      */
-    public function setOClient($oClient) {
-        $this->oClient = $oClient;
+    public function setClient(Client $client) {
+        $this->client = $client;
         return $this;
     }
 

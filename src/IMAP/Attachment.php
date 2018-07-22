@@ -131,7 +131,7 @@ class Attachment {
      */
     protected function fetch() {
 
-        $content = imap_fetchbody($this->oMessage->getClient()->getConnection(), $this->oMessage->getUid(), $this->part_number, $this->oMessage->getFetchOptions());
+        $content = imap_fetchbody($this->oMessage->getClient()->getConnection(), $this->oMessage->getUid(), $this->part_number, $this->oMessage->getFetchOptions() | FT_UID);
 
         $this->content_type = $this->type.'/'.strtolower($this->structure->subtype);
         $this->content = $this->oMessage->decodeString($content, $this->structure->encoding);
