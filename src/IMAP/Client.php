@@ -443,8 +443,8 @@ class Client {
         if (!$this->validate_cert) {
             $address .= '/novalidate-cert';
         }
-        if ($this->encryption == 'ssl') {
-            $address .= '/ssl';
+        if (in_array($this->encryption,['tls','ssl'])) {
+            $address .= '/'.$this->encryption;
         }
         $address .= '}';
 
