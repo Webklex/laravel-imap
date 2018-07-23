@@ -14,6 +14,16 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.2.3] - 2018-07-23
+### Fixed
+- Config loading fixed and moved to a custom solution
+- Set Encryption type correctly #128
+- Moving a message takes now a uid #127
+
+### Affected Classes
+- [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
+
 ## [1.2.2] - 2018-07-22
 ### Fixed
 - Don't set the charset if it isn't used - prevent strange outlook mail server errors #100
