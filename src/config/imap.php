@@ -17,7 +17,9 @@ return [
     | IMAP default account
     |--------------------------------------------------------------------------
     |
-    | The default account identifier
+    | The default account identifier. It will be used as default for any missing account parameters.
+    | If however the default account is missing a parameter the package default will be used.
+    | Set to 'false' [boolean] to disable this functionality.
     |
     */
     'default' => env('IMAP_DEFAULT_ACCOUNT', 'default'),
@@ -36,7 +38,7 @@ return [
         'default' => [// account identifier
             'host'  => env('IMAP_HOST', 'localhost'),
             'port'  => env('IMAP_PORT', 993),
-            'protocol'  => env('IMAP_PROTOCOL', 'imap'), //might also use imap, pop3 or nntp (untested)
+            'protocol'  => env('IMAP_PROTOCOL', 'imap'), //might also use imap, [pop3 or nntp (untested)]
             'encryption'    => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls'
             'validate_cert' => env('IMAP_VALIDATE_CERT', true),
             'username' => env('IMAP_USERNAME', 'root@example.com'),
