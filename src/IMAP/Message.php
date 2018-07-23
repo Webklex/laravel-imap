@@ -719,14 +719,13 @@ class Message {
      * Move the Message into an other Folder
      *
      * @param string  $mailbox
-     * @param integer $options [optional]
      *
      * @return bool
      */
-    public function moveToFolder($mailbox = 'INBOX', $options = 0) {
+    public function moveToFolder($mailbox = 'INBOX') {
         $this->client->createFolder($mailbox);
 
-        return imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox, $options);
+        return imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, CP_UID);
     }
 
     /**
