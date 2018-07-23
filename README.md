@@ -14,6 +14,17 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
+    - [Basic usage example](#basic-usage-example)
+    - [Facade](#facade)
+    - [Folder / Mailbox](#folder--mailbox)
+    - [Search](#search-for-messages)
+    - [Result limiting](#result-limiting)
+    - [Pagination](#pagination)
+    - [Fetch a specific message](#fetch-a-specific-message)
+    - [Message flags](#message-flags)
+    - [Attachments](#attachments)
+    - [Advanced fetching](#advanced-fetching)
+    - [Specials](#specials)
 - [Documentation](#documentation)
   - [Client::class](#clientclass)
   - [Message::class](#messageclass)
@@ -246,7 +257,7 @@ Further information:
 - https://tools.ietf.org/html/rfc1064
 - https://tools.ietf.org/html/rfc822
 
-#### Result limit
+#### Result limiting
 Limiting the request emails:
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
@@ -297,7 +308,7 @@ Don't mark all messages as "read" while fetching:
 $aMessage = $oFolder->query()->text('Hello world')->leaveUnread()->get();
 ```
 
-#### Attachment
+#### Attachments
 Save message attachments:
 ``` php
 /** @var \Webklex\IMAP\Message $oMessage */
