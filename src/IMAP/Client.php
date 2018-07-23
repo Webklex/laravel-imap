@@ -317,7 +317,7 @@ class Client {
         if ($this->activeFolder !== $folder) {
             $this->activeFolder = $folder;
 
-            imap_reopen($this->connection, $folder->path, $this->getOptions(), $attempts);
+            imap_reopen($this->getConnection(), $folder->path, $this->getOptions(), $attempts);
         }
     }
 
@@ -330,7 +330,7 @@ class Client {
      */
     public function createFolder($name) {
         $this->checkConnection();
-        return imap_createmailbox($this->connection, $this->getAddress() . imap_utf7_encode($name));
+        return imap_createmailbox($this->getConnection(), $this->getAddress() . imap_utf7_encode($name));
     }
     
     /**
@@ -343,7 +343,7 @@ class Client {
      */
     public function renameFolder($old_name, $new_name) {
         $this->checkConnection();
-        return imap_renamemailbox($this->connection, $this->getAddress() . imap_utf7_encode($old_name), $this->getAddress() . imap_utf7_encode($new_name));
+        return imap_renamemailbox($this->getConnection(), $this->getAddress() . imap_utf7_encode($old_name), $this->getAddress() . imap_utf7_encode($new_name));
     }
     
      /**
@@ -355,7 +355,7 @@ class Client {
      */
     public function deleteFolder($name) {
         $this->checkConnection();
-        return imap_deletemailbox($this->connection, $this->getAddress() . imap_utf7_encode($name));
+        return imap_deletemailbox($this->getConnection(), $this->getAddress() . imap_utf7_encode($name));
     }
 
     /**
@@ -459,7 +459,7 @@ class Client {
      */
     public function getQuota() {
         $this->checkConnection();
-        return imap_get_quota($this->connection, 'user.'.$this->username);
+        return imap_get_quota($this->getConnection(), 'user.'.$this->username);
     }
 
     /**
@@ -472,7 +472,7 @@ class Client {
      */
     public function getQuotaRoot($quota_root = 'INBOX') {
         $this->checkConnection();
-        return imap_get_quotaroot($this->connection, $quota_root);
+        return imap_get_quotaroot($this->getConnection(), $quota_root);
     }
 
     /**
