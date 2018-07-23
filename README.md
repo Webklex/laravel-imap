@@ -79,6 +79,7 @@ IMAP_VALIDATE_CERT=true
 IMAP_USERNAME=root@example.com
 IMAP_PASSWORD=secret
 IMAP_DEFAULT_ACCOUNT=default
+IMAP_PROTOCOL=imap
 ```
 
 The following encryption methods are supported:
@@ -89,7 +90,7 @@ The following encryption methods are supported:
 Detailed [config/imap.php](src/config/imap.php) configuration:
  - `default` &mdash; used default account
  - `accounts` &mdash; all available accounts
-   - `default` &mdash; default account identifier
+   - `default` &mdash; The default account identifier. It will be used as default for any missing account parameters. If however the default account is missing a parameter the package default will be used. Set to `false` to disable this functionality.
      - `host` &mdash; imap host
      - `port` &mdash; imap port
      - `encryption` &mdash; desired encryption method
