@@ -82,15 +82,20 @@ IMAP_DEFAULT_ACCOUNT=default
 IMAP_PROTOCOL=imap
 ```
 
+Supported protocols:
+- `imap` &mdash; Use IMAP [default]
+- `pop3` &mdash; Use POP3
+- `nntp` &mdash; Use NNTP
+
 The following encryption methods are supported:
 - `false` &mdash; Disable encryption 
 - `ssl` &mdash; Use SSL
 - `tls` &mdash; Use TLS
 
 Detailed [config/imap.php](src/config/imap.php) configuration:
- - `default` &mdash; used default account
+ - `default` &mdash; used default account. It will be used as default for any missing account parameters. If however the default account is missing a parameter the package default will be used. Set to `false` to disable this functionality.
  - `accounts` &mdash; all available accounts
-   - `default` &mdash; The default account identifier. It will be used as default for any missing account parameters. If however the default account is missing a parameter the package default will be used. Set to `false` to disable this functionality.
+   - `default` &mdash; The account identifier (in this case `default` but could also be `fooBar` etc).
      - `host` &mdash; imap host
      - `port` &mdash; imap port
      - `encryption` &mdash; desired encryption method
@@ -109,7 +114,7 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
      - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
 
 ## Usage
-
+#### Basic usage example
 This is a basic example, which will echo out all Mails within all imap folders
 and will move every message into INBOX.read. Please be aware that this should not ben
 tested in real live but it gives an impression on how things work.
@@ -160,6 +165,7 @@ foreach($aFolder as $oFolder){
 }
 ```
 
+#### Facade
 If you use the Facade [\Webklex\IMAP\Facades\Client::class](src/IMAP/Facades/Client.php) please select an account first:
 
 ``` php
@@ -169,6 +175,7 @@ $oClient = Client::account('default');
 $oClient->connect();
 ```
 
+#### Folder / Mailbox
 There is an experimental function available to get a Folder instance by name. 
 For an easier access please take a look at the new config option `imap.options.delimiter` however the `getFolder` 
 method takes three options: the required (string) $folder_name and two optional variables. An integer $attributes which 
@@ -181,6 +188,7 @@ else) and a delimiter which if it isn't set will use the default option configur
 $oFolder = $oClient->getFolder('INBOX.name');
 ```
 
+#### Search for messages
 Search for specific emails:
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
@@ -204,15 +212,7 @@ $aMessage = $oFolder->query()->Text('hello world')->Since('15.03.2018')->get();
 $aMessage = $oFolder->query()->whereText('hello world')->whereSince('15.03.2018')->get();
 $aMessage = $oFolder->query()->where([['TEXT', 'Hello world'], ['SINCE', \Carbon::parse('15.03.2018')]])->get();
 ```
-
-Limiting the request emails:
-``` php
-/** @var \Webklex\IMAP\Folder $oFolder */
-
-//Get all messages for page 2 since march 15 2018 where each apge contains 10 messages
-/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->query()->since('15.03.2018')->limit(10, 2)->get();
-```
+All available query / search methods can be found here: [Query::class](src/IMAP/WhereQuery.php)
 
 Available search criteria:
 - `ALL` &mdash; return all messages matching the rest of the criteria
@@ -245,7 +245,18 @@ Further information:
 - https://tools.ietf.org/html/rfc1176
 - https://tools.ietf.org/html/rfc1064
 - https://tools.ietf.org/html/rfc822
-     
+
+#### Result limit
+Limiting the request emails:
+``` php
+/** @var \Webklex\IMAP\Folder $oFolder */
+
+//Get all messages for page 2 since march 15 2018 where each apge contains 10 messages
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->since('15.03.2018')->limit(10, 2)->get();
+```
+
+#### Pagination
 Paginate a message collection:
 ``` php
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
@@ -253,7 +264,9 @@ Paginate a message collection:
 /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
 $paginator = $aMessage->paginate();
 ```
+> You can also paginate a Folder-, Attachment- or FlagCollection instance.
 
+#### Fetch a specific message
 Get a specific message by uid (Please note that the uid is not unique and can change):
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
@@ -262,6 +275,7 @@ Get a specific message by uid (Please note that the uid is not unique and can ch
 $oMessage = $oFolder->getMessage($uid = 1);
 ```
 
+#### Message flags
 Flag or "unflag" a message:
 ``` php
 /** @var \Webklex\IMAP\Message $oMessage */
@@ -283,6 +297,7 @@ Don't mark all messages as "read" while fetching:
 $aMessage = $oFolder->query()->text('Hello world')->leaveUnread()->get();
 ```
 
+#### Attachment
 Save message attachments:
 ``` php
 /** @var \Webklex\IMAP\Message $oMessage */
@@ -296,6 +311,7 @@ $aAttachment->each(function ($oAttachment) {
 });
 ```
 
+#### Advanced fetching
 Fetch messages without body fetching (decrease load):
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
@@ -318,6 +334,7 @@ $aMessage = $oFolder->query()->whereText('Hello world')->setFetchBody(false)->se
 $aMessage = $oFolder->query()->whereAll()->setFetchBody(false)->setFetchAttachment(false)->get();
 ```
 
+#### Specials
 Find the folder containing a message:
 ``` php
 $oFolder = $aMessage->getContainingFolder();
