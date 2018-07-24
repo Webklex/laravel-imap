@@ -220,6 +220,9 @@ $aMessage = $oFolder->query()->unseen()->text('hello world')->get();
 //Extended custom search query for all messages containing "hello world" and have been received since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->text('hello world')->since('15.03.2018')->get();
+$aMessage = $oFolder->search()->text('hello world')->since('15.03.2018')->get();
+$aMessage = $oFolder->messages()->text('hello world')->since('15.03.2018')->get();
+
 $aMessage = $oFolder->query()->Text('hello world')->Since('15.03.2018')->get();
 $aMessage = $oFolder->query()->whereText('hello world')->whereSince('15.03.2018')->get();
 $aMessage = $oFolder->query()->where([['TEXT', 'Hello world'], ['SINCE', \Carbon::parse('15.03.2018')]])->get();
@@ -468,6 +471,8 @@ if you're just wishing a feature ;)
 | appendMessage     | string $message, string $options, string $internal_date                             | bool              | Append a string message to the current mailbox |
 | getClient         |                                                                                     | Client            | Get the current Client instance                |
 | query             | string $charset = 'UTF-8'                                                           | WhereQuery        | Get the current Client instance                |
+| messages          | string $charset = 'UTF-8'                                                           | WhereQuery        | Alias for Folder::query()                      |
+| search            | string $charset = 'UTF-8'                                                           | WhereQuery        | Alias for Folder::query()                      |
       
 ### [Query::class](src/IMAP/WhereQuery.php)
 | Method             | Arguments                         | Return            | Description                                    |
