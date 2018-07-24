@@ -138,6 +138,20 @@ class Folder {
     }
 
     /**
+     * @inheritdoc self::query($charset = 'UTF-8')
+     */
+    public function search($charset = 'UTF-8'){
+        return $this->query($charset);
+    }
+
+    /**
+     * @inheritdoc self::query($charset = 'UTF-8')
+     */
+    public function messages($charset = 'UTF-8'){
+        return $this->query($charset);
+    }
+
+    /**
      * Determine if folder has children.
      *
      * @return bool
