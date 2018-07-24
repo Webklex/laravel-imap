@@ -19,6 +19,31 @@ use Webklex\IMAP\Exceptions\MethodNotFoundException;
  * Class Query
  *
  * @package Webklex\IMAP\Query
+ * 
+ * @method WhereQuery all()
+ * @method WhereQuery answered()
+ * @method WhereQuery deleted()
+ * @method WhereQuery new()
+ * @method WhereQuery old()
+ * @method WhereQuery recent()
+ * @method WhereQuery seen()
+ * @method WhereQuery unanswered()
+ * @method WhereQuery undeleted()
+ * @method WhereQuery unflagged()
+ * @method WhereQuery unseen()
+ * @method WhereQuery unkeyword($value)
+ * @method WhereQuery to($value)
+ * @method WhereQuery text($value)
+ * @method WhereQuery subject($value)
+ * @method WhereQuery since($date)
+ * @method WhereQuery on($date)
+ * @method WhereQuery keyword($value)
+ * @method WhereQuery from($value)
+ * @method WhereQuery flagged()
+ * @method WhereQuery cc($value)
+ * @method WhereQuery body($value)
+ * @method WhereQuery before($date)
+ * @method WhereQuery bcc($value)
  */
 class WhereQuery extends Query {
 
