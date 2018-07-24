@@ -232,12 +232,14 @@ $aMessage = $oFolder->query()->unseen()->text('hello world')->get();
 //Extended custom search query for all messages containing "hello world" and have been received since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->text('hello world')->since('15.03.2018')->get();
-
 $aMessage = $oFolder->query()->Text('hello world')->Since('15.03.2018')->get();
-/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->whereText('hello world')->whereSince('15.03.2018')->get();
+
+// Build a custom search query
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->query()->where([['TEXT', 'Hello world'], ['SINCE', \Carbon::parse('15.03.2018')]])->get();
+$aMessage = $oFolder->query()
+->where([['TEXT', 'Hello world'], ['SINCE', \Carbon::parse('15.03.2018')]])
+->get();
 ```
 
 Available search aliases for a better code reading:
