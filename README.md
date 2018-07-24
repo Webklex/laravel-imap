@@ -354,7 +354,7 @@ $oFolder = $aMessage->getContainingFolder();
 
 ## Support
 If you encounter any problems or if you find a bug, please don't hesitate to create a new [issue](https://github.com/Webklex/laravel-imap/issues).
-However please be aware that it might take some time to get an answer :)
+However please be aware that it might take some time to get an answer.
 
 If you need **immediate** or **commercial** support, feel free to send me a mail at github@webklex.com. 
 
