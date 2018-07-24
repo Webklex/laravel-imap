@@ -159,7 +159,7 @@ foreach($aFolder as $oFolder){
 
     //Get all Messages of the current Mailbox $oFolder
     /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-    $aMessage = $oFolder->getMessages();
+    $aMessage = $oFolder->messages()->all()->get();
     
     /** @var \Webklex\IMAP\Message $oMessage */
     foreach($aMessage as $oMessage){
@@ -205,9 +205,21 @@ Search for specific emails:
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
 
+//Get all messages
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->all()->get();
+
+//Get all messages from example@domain.com
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->from('example@domain.com')->get();
+
 //Get all messages since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->since('15.03.2018')->get();
+
+//Get all messages within the last 5 days
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->since(now()->subDays(5))->get();
 
 //Get all messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
@@ -220,12 +232,24 @@ $aMessage = $oFolder->query()->unseen()->text('hello world')->get();
 //Extended custom search query for all messages containing "hello world" and have been received since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->text('hello world')->since('15.03.2018')->get();
-$aMessage = $oFolder->search()->text('hello world')->since('15.03.2018')->get();
-$aMessage = $oFolder->messages()->text('hello world')->since('15.03.2018')->get();
 
 $aMessage = $oFolder->query()->Text('hello world')->Since('15.03.2018')->get();
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->whereText('hello world')->whereSince('15.03.2018')->get();
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->where([['TEXT', 'Hello world'], ['SINCE', \Carbon::parse('15.03.2018')]])->get();
+```
+
+Available search aliases for a better code reading:
+``` php
+// Folder::search() is just an alias for Folder::query()
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->search()->text('hello world')->since('15.03.2018')->get();
+
+// Folder::messages() is just an alias for Folder::query()
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->messages()->text('hello world')->since('15.03.2018')->get();
+
 ```
 All available query / search methods can be found here: [Query::class](src/IMAP/WhereQuery.php)
 
@@ -338,15 +362,23 @@ $aMessage = $oFolder->query()->whereText('Hello world')->setFetchBody(false)->ge
 $aMessage = $oFolder->query()->whereAll()->setFetchBody(false)->setFetchAttachment();
 ```
 
-Fetch messages without body and attachment fetching (decrease load):
+Fetch messages without body, flag and attachment fetching (decrease load):
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
 
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->query()->whereText('Hello world')->setFetchBody(false)->setFetchAttachment(false)->get();
+$aMessage = $oFolder->query()->whereText('Hello world')
+->setFetchFlags(false)
+->setFetchBody(false)
+->setFetchAttachment(false)
+->get();
 
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->query()->whereAll()->setFetchBody(false)->setFetchAttachment(false)->get();
+$aMessage = $oFolder->query()->whereAll()
+->setFetchFlags(false)
+->setFetchBody(false)
+->setFetchAttachment(false)
+->get();
 ```
 
 #### Specials
@@ -423,7 +455,7 @@ if you're just wishing a feature ;)
 | restore         |                               |                      | Restore a deleted Message              |
 | copy            | string $mailbox, int $options |                      | Copy the current Messages to a mailbox |
 | move            | string $mailbox, int $options |                      | Move the current Messages to a mailbox |
-| getContainingFolder | Folder or null $folder    | null|Folder          | Get the folder containing the message  |
+| getContainingFolder | Folder or null $folder    | Folder or null       | Get the folder containing the message  |
 | moveToFolder    | string $mailbox, int $options |                      | Move the Message into an other Folder  |
 | setFlag         | string or array $flag         | boolean              | Set one or many flags                  |
 | unsetFlag       | string or array $flag         | boolean              | Unset one or many flags                |
