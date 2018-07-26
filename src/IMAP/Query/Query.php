@@ -165,7 +165,7 @@ class Query {
                 }
 
                 $available_messages->forPage($this->page, $this->limit)->each(function($msgno, $msglist) use(&$messages, $options) {
-                    $oMessage = new Message($msgno, $msglist, $this->getClient(), $this->getFetchOptions(), $this->getFetchBody(), $this->getFetchAttachment());
+                    $oMessage = new Message($msgno, $msglist, $this->getClient(), $this->getFetchOptions(), $this->getFetchBody(), $this->getFetchAttachment(), $this->getFetchFlags());
                     switch ($options['message_key']){
                         case 'number':
                             $message_key = $oMessage->getMessageNo();
