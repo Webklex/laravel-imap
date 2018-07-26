@@ -104,6 +104,7 @@ class Message {
      * @var string  $in_reply_to
      * @var array   $sender
      * @var array   $flags
+     * @var array   $priority
      */
     public $message_id = '';
     public $message_no = null;
@@ -117,6 +118,7 @@ class Message {
     public $reply_to = [];
     public $in_reply_to = '';
     public $sender = [];
+    public $priority = 0;
 
     /**
      * Message body components
@@ -151,6 +153,13 @@ class Message {
     const ENC_BASE64 = 3;
     const ENC_QUOTED_PRINTABLE = 4;
     const ENC_OTHER = 5;
+
+    const PRIORITY_UNKNOWN = 0;
+    const PRIORITY_HIGHEST = 1;
+    const PRIORITY_HIGH = 2;
+    const PRIORITY_NORMAL = 3;
+    const PRIORITY_LOW = 4;
+    const PRIORITY_LOWEST = 5;
 
     /**
      * Message constructor.
@@ -279,6 +288,33 @@ class Message {
             $header = imap_rfc822_parse_headers($this->header);
         }
 
+        if(preg_match('/x\-priority\:.*([0-9]{1,2})/i', $this->header, $priority)){
+            $priority = isset($priority[1]) ? (int) $priority[1] : 0;
+            switch($priority){
+                case self::PRIORITY_HIGHEST;
+                    $this->priority = self::PRIORITY_HIGHEST;
+                    break;
+                case self::PRIORITY_HIGH;
+                    $this->priority = self::PRIORITY_HIGH;
+                    break;
+                case self::PRIORITY_NORMAL;
+                    $this->priority = self::PRIORITY_NORMAL;
+                    break;
+                case self::PRIORITY_LOW;
+                    $this->priority = self::PRIORITY_LOW;
+                    break;
+                case self::PRIORITY_LOWEST;
+                    $this->priority = self::PRIORITY_LOWEST;
+                    break;
+                default:
+                    $this->priority = self::PRIORITY_UNKNOWN;
+                    break;
+            }
+        }
+
+        if (property_exists($header, 'subject')) {
+            $this->subject = imap_utf8($header->subject);
+        }
         if (property_exists($header, 'subject')) {
             $this->subject = imap_utf8($header->subject);
         }
@@ -833,6 +869,13 @@ class Message {
      */
     public function getFetchBodyOption() {
         return $this->fetch_body;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPriority() {
+        return $this->priority;
     }
 
     /**
