@@ -141,6 +141,7 @@ $oClient = new Client([
     'validate_cert' => true,
     'username'      => 'username',
     'password'      => 'password',
+    'protocol'      => 'imap'
 ]);
 /* Alternative by using the Facade
 $oClient = Webklex\IMAP\Facades\Client::account('default');
@@ -163,7 +164,7 @@ foreach($aFolder as $oFolder){
     
     /** @var \Webklex\IMAP\Message $oMessage */
     foreach($aMessage as $oMessage){
-        echo $oMessage->subject.'<br />';
+        echo $oMessage->getSubject().'<br />';
         echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
         echo $oMessage->getHTMLBody(true);
         
@@ -200,6 +201,15 @@ else) and a delimiter which if it isn't set will use the default option configur
 $oFolder = $oClient->getFolder('INBOX.name');
 ```
 
+List all available folders:
+``` php
+/** @var \Webklex\IMAP\Client $oClient */
+
+/** @var \Webklex\IMAP\Support\FolderCollection $aFolder */
+$aFolder = $oClient->getFolders();
+```
+
+
 #### Search for messages
 Search for specific emails:
 ``` php
@@ -220,6 +230,8 @@ $aMessage = $oFolder->query()->since('15.03.2018')->get();
 //Get all messages within the last 5 days
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->since(now()->subDays(5))->get();
+//Or for older laravel versions..
+$aMessage = $oFolder->query()->since(\Carbon::now()->subDays(5))->get();
 
 //Get all messages containing "hello world"
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
@@ -229,7 +241,8 @@ $aMessage = $oFolder->query()->text('hello world')->get();
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->unseen()->text('hello world')->get();
 
-//Extended custom search query for all messages containing "hello world" and have been received since march 15 2018
+//Extended custom search query for all messages containing "hello world" 
+//and have been received since march 15 2018
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->text('hello world')->since('15.03.2018')->get();
 $aMessage = $oFolder->query()->Text('hello world')->Since('15.03.2018')->get();
