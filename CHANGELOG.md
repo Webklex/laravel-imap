@@ -14,6 +14,20 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.2.4] - 2018-07-26
+### Fixed
+- fetch_flags default set to true on all methods
+- Missing fetch_flags attribute added
+
+### Added
+- Folder::query() aliases added
+- Priority fetching added
+
+### Affected Classes
+- [Folder::class](src/IMAP/Folder.php)
+- [Message::class](src/IMAP/Message.php)
+- [Query::class](src/IMAP/Query/Query.php)
+
 ## [1.2.3] - 2018-07-23
 ### Fixed
 - Config loading fixed and moved to a custom solution
