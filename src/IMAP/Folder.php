@@ -185,7 +185,7 @@ class Folder {
      *
      * @return Message|null
      */
-    public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = false) {
+    public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = true) {
         if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
             return new Message($uid, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
         }
@@ -210,7 +210,7 @@ class Folder {
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      */
-    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false, $limit = null, $page = 1, $charset = "UTF-8") {
+    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = true, $limit = null, $page = 1, $charset = "UTF-8") {
 
         return $this->query($charset)->where($criteria)->setFetchOptions($fetch_options)->setFetchBody($fetch_body)
             ->setFetchAttachment($fetch_attachment)->setFetchFlags($fetch_flags)
@@ -237,7 +237,7 @@ class Folder {
      * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::getMessages('UNSEEN') instead
      * @see Folder::getMessages()
      */
-    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false, $limit = null, $page = 1, $charset = "UTF-8") {
+    public function getUnseenMessages($criteria = 'UNSEEN', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = true, $limit = null, $page = 1, $charset = "UTF-8") {
         return $this->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags, $limit, $page, $charset);
     }
 
@@ -308,7 +308,7 @@ class Folder {
      * @deprecated 1.2.1:2.0.0 No longer needed. Use Folder::query() instead
      * @see Folder::query()
      */
-    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true,  $fetch_attachment = true, $fetch_flags = false, $limit = null, $page = 1, $charset = "UTF-8") {
+    public function searchMessages(array $where, $fetch_options = null, $fetch_body = true,  $fetch_attachment = true, $fetch_flags = true, $limit = null, $page = 1, $charset = "UTF-8") {
         $this->getClient()->checkConnection();
 
         return $this->query($charset)->where($where)->setFetchOptions($fetch_options)->setFetchBody($fetch_body)
