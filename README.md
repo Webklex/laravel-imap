@@ -305,6 +305,45 @@ Paginate a message collection:
 /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
 $paginator = $aMessage->paginate();
 ```
+Blade example for a paginated list:
+``` php
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+
+/** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
+$paginator = $oFolder->search()
+->since(\Carbon::now()->subDays(14))->get()
+->paginate($perPage = 5, $page = null, $pageName = 'imap_blade_example');
+```
+``` html
+<table>
+    <thead>
+        <tr>
+            <th>UID</th>
+            <th>Subject</th>
+            <th>From</th>
+            <th>Attachments</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if($paginator->count() > 0)
+            @foreach($paginator as $oMessage)
+                <tr>
+                    <td>{{$oMessage->getUid()}}</td>
+                    <td>{{$oMessage->getSubject()}}</td>
+                    <td>{{$oMessage->getFrom()[0]->mail}}</td>
+                    <td>{{$oMessage->getAttachments()->count() > 0 ? 'yes' : 'no'}}</td>
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="4">No messages found</td>
+            </tr>
+        @endif
+    </tbody>
+</tabel>
+
+{{$paginator->links()}}
+```
 > You can also paginate a Folder-, Attachment- or FlagCollection instance.
 
 #### Fetch a specific message
