@@ -6,13 +6,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Message subjects and attachment  names will now be decoded with a guessed encoding #97 #107
 
 ### Added
 - NaN
 
 ### Affected Classes
-- NaN
+- [Message::class](src/IMAP/Message.php)
+- [Attachment::class](src/IMAP/Attachment.php)
 
 ## [1.2.5] - 2018-07-30
 ### Fixed
