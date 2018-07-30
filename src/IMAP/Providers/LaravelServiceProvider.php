@@ -66,7 +66,7 @@ class LaravelServiceProvider extends ServiceProvider {
         $vendor_config = require $path;
         $config = $this->app['config']->get($config_key, []);
 
-        $this->app['config']->set($config_key, array_merge($vendor_config, $config));
+        $this->app['config']->set($config_key, $this->array_merge_recursive_distinct($vendor_config, $config));
 
         $config = $this->app['config']->get($config_key);
 
@@ -90,4 +90,56 @@ class LaravelServiceProvider extends ServiceProvider {
 
         $this->app['config']->set($config_key, $config);
     }
+
+    /**
+     * Marge arrays recursively and distinct
+     *
+     * Merges any number of arrays / parameters recursively, replacing
+     * entries with string keys with values from latter arrays.
+     * If the entry or the next value to be assigned is an array, then it
+     * automatically treats both arguments as an array.
+     * Numeric entries are appended, not replaced, but only if they are
+     * unique
+     *
+     * @param  array $array1 Initial array to merge.
+     * @param  array ...     Variable list of arrays to recursively merge.
+     *
+     * @return array|mixed
+     *
+     * @link   http://www.php.net/manual/en/function.array-merge-recursive.php#96201
+     * @author Mark Roduner <mark.roduner@gmail.com>
+     */
+    private function array_merge_recursive_distinct() {
+
+        $arrays = func_get_args();
+        $base = array_shift($arrays);
+
+        if(!is_array($base)) $base = empty($base) ? array() : array($base);
+
+        foreach($arrays as $append) {
+
+            if(!is_array($append)) $append = array($append);
+
+            foreach($append as $key => $value) {
+
+                if(!array_key_exists($key, $base) and !is_numeric($key)) {
+                    $base[$key] = $append[$key];
+                    continue;
+                }
+
+                if(is_array($value) or is_array($base[$key])) {
+                    $base[$key] = $this->array_merge_recursive_distinct($base[$key], $append[$key]);
+                } else if(is_numeric($key)) {
+                    if(!in_array($value, $base)) $base[] = $value;
+                } else {
+                    $base[$key] = $value;
+                }
+
+            }
+
+        }
+
+        return $base;
+    }
+    
 }

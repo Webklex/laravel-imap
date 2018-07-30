@@ -48,7 +48,7 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
 1) Install the php-imap library if it isn't already installed:
 
 ``` shell
-sudo apt-get install php*-imap && sudo apache2ctl graceful
+sudo apt-get install php*-imap php*-mbstring php*-mcrypt && sudo apache2ctl graceful
 ```
 
 You might also want to check `phpinfo()` if the extension is enabled.

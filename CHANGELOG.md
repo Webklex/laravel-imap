@@ -14,6 +14,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.2.5] - 2018-07-30
+### Fixed
+- Fixing undefined index error if associative config array isn't properly filled #131
+
+### Affected Classes
+- [LaravelServiceProvider::class](src/IMAP/Providers/LaravelServiceProvider.php)
+
 ## [1.2.4] - 2018-07-26
 ### Fixed
 - fetch_flags default set to true on all methods
