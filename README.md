@@ -353,7 +353,7 @@ $paginator = $oFolder->search()
             </tr>
         @endif
     </tbody>
-</tabel>
+</table>
 
 {{$paginator->links()}}
 ```
