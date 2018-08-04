@@ -6,12 +6,24 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Message subjects and attachment  names will now be decoded with a guessed encoding #97 #107
+- NaN
 
 ### Added
 - NaN
 
 ### Affected Classes
+- NaN
+
+## [1.2.6] - 2018-08-04
+### Fixed
+- Message subjects and attachment  names will now be decoded with a guessed encoding #97 #107
+
+### Added
+- Expunge option added to critical imap operations
+
+### Affected Classes
+- [Folder::class](src/IMAP/Folder.php)
+- [Client::class](src/IMAP/Client.php)
 - [Message::class](src/IMAP/Message.php)
 - [Attachment::class](src/IMAP/Attachment.php)
 
