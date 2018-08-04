@@ -320,7 +320,7 @@ $paginator = $aMessage->paginate();
 ```
 Blade example for a paginated list:
 ``` php
-/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+/** @var \Webklex\IMAP\Folder $oFolder */
 
 /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
 $paginator = $oFolder->search()
