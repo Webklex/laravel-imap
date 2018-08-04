@@ -81,6 +81,8 @@ class Attachment {
      * @param Message   $oMessage
      * @param object    $structure
      * @param integer   $part_number
+     *
+     * @throws Exceptions\ConnectionFailedException
      */
     public function __construct(Message $oMessage, $structure, $part_number = 1) {
         $this->oMessage = $oMessage;
@@ -128,6 +130,8 @@ class Attachment {
 
     /**
      * Fetch the given attachment
+     *
+     * @throws Exceptions\ConnectionFailedException
      */
     protected function fetch() {
 
