@@ -9,6 +9,8 @@
 
 Laravel IMAP is an easy way to integrate the native php imap library into your **Laravel** app.
 
+> If you want to use this library outside of Laravel, please head over to [webklex/php-imap](https://github.com/Webklex/php-imap)
+
 ## Table of Contents
 
 - [Installation](#installation)
