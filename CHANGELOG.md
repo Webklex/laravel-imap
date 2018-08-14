@@ -14,6 +14,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.2.8] - 2018-08-06
+### Fixed
+- Folder delimiter check added #137
+
+### Affected Classes
+- [Folder::class](src/IMAP/Folder.php)
+
+
 ## [1.2.7] - 2018-08-06
 ### Fixed
 - Broken non-latin characters in subjects and attachments  #133
