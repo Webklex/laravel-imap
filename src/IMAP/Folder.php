@@ -187,6 +187,11 @@ class Folder {
      * @param boolean      $fetch_flags
      *
      * @return Message|null
+     *
+     * @throws Exceptions\ConnectionFailedException
+     * @throws Exceptions\InvalidWhereQueryCriteriaException
+     * @throws GetMessagesFailedException
+     * @throws MessageSearchValidationException
      */
     public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = true) {
         if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
@@ -210,8 +215,8 @@ class Folder {
      *
      * @return MessageCollection
      * @throws Exceptions\ConnectionFailedException
+     * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
-     * @throws MessageSearchValidationException
      */
     public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = true, $limit = null, $page = 1, $charset = "UTF-8") {
 
@@ -234,6 +239,7 @@ class Folder {
      *
      * @return MessageCollection
      * @throws Exceptions\ConnectionFailedException
+     * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *
@@ -270,8 +276,8 @@ class Folder {
      * @return MessageCollection
      *
      * @throws Exceptions\ConnectionFailedException
+     * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
-     * @throws MessageSearchValidationException
      *
      * @doc http://php.net/manual/en/function.imap-search.php
      *      imap_search() only supports IMAP2 search criterias, because the function mail_criteria() (from c-client lib)
@@ -404,6 +410,7 @@ class Folder {
      *                  SA_ALL          - set all of the above
      *
      * @return object
+     * @throws Exceptions\ConnectionFailedException
      */
     public function getStatus($options) {
         return imap_status($this->client->getConnection(), $this->path, $options);
@@ -417,6 +424,7 @@ class Folder {
      * @param string $internal_date
      *
      * @return bool
+     * @throws Exceptions\ConnectionFailedException
      */
     public function appendMessage($message, $options = null, $internal_date = null) {
         return imap_append($this->client->getConnection(), $this->path, $message, $options, $internal_date);

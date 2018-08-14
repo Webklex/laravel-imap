@@ -382,6 +382,7 @@ class Client {
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
+     * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *
@@ -403,6 +404,7 @@ class Client {
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
+     * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *
@@ -425,6 +427,7 @@ class Client {
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
+     * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
      * @throws MessageSearchValidationException
      *
