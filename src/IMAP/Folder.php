@@ -111,17 +111,17 @@ class Folder {
      *
      * @param \Webklex\IMAP\Client $client
      *
-     * @param object $folder
+     * @param object $structure
      */
-    public function __construct(Client $client, $folder) {
+    public function __construct(Client $client, $structure) {
         $this->client = $client;
 
-        $this->delimiter = $folder->delimiter;
-        $this->path      = $folder->name;
-        $this->fullName  = $this->decodeName($folder->name);
+        $this->setDelimiter($structure->delimiter);
+        $this->path      = $structure->name;
+        $this->fullName  = $this->decodeName($structure->name);
         $this->name      = $this->getSimpleName($this->delimiter, $this->fullName);
 
-        $this->parseAttributes($folder->attributes);
+        $this->parseAttributes($structure->attributes);
     }
 
     /**
@@ -437,5 +437,16 @@ class Folder {
      */
     public function getClient() {
         return $this->client;
+    }
+
+    /**
+     * @param $delimiter
+     */
+    public function setDelimiter($delimiter){
+        if(in_array($delimiter, [null, '', ' ', false]) === true) {
+            $delimiter = config('imap.options.delimiter', '/');
+        }
+
+        $this->delimiter = $delimiter;
     }
 }
