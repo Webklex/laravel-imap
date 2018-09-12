@@ -488,7 +488,11 @@ class Message {
                 foreach ($part->parameters as $parameter)  {
                     if($parameter->attribute == "charset")  {
                         $encoding = $parameter->value;
-                        $parameter->value = preg_replace('/Content-Transfer-Encoding/', '', $encoding);
+
+                        $encoding = preg_replace('/Content-Transfer-Encoding/', '', $encoding);
+                        $encoding = preg_replace('/iso-8859-8-i/', 'iso-8859-8', $encoding);
+
+                        $parameter->value = $encoding;
                     }
                 }
             }
