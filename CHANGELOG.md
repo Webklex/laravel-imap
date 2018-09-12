@@ -6,13 +6,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Removed "-i" from "iso-8859-8-i" in Message::parseBody #146
 
 ### Added
 - NaN
 
 ### Affected Classes
-- NaN
+- [Message::class](src/IMAP/Message.php)
 
 ## [1.2.8] - 2018-08-06
 ### Fixed
