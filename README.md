@@ -22,6 +22,7 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
     - [Search](#search-for-messages)
     - [Result limiting](#result-limiting)
     - [Pagination](#pagination)
+    - [View examples](#view-examples)
     - [Fetch a specific message](#fetch-a-specific-message)
     - [Message flags](#message-flags)
     - [Attachments](#attachments)
@@ -360,6 +361,9 @@ $paginator = $oFolder->search()
 {{$paginator->links()}}
 ```
 > You can also paginate a Folder-, Attachment- or FlagCollection instance.
+
+#### View examples
+You can find a few blade examples under [/examples](/Webklex/laravel-imap/examples).
 
 #### Fetch a specific message
 Get a specific message by uid (Please note that the uid is not unique and can change):
