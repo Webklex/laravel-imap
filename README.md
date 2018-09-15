@@ -363,7 +363,7 @@ $paginator = $oFolder->search()
 > You can also paginate a Folder-, Attachment- or FlagCollection instance.
 
 #### View examples
-You can find a few blade examples under [/examples](/Webklex/laravel-imap/examples).
+You can find a few blade examples under [/examples](https://github.com/Webklex/laravel-imap/tree/master/examples).
 
 #### Fetch a specific message
 Get a specific message by uid (Please note that the uid is not unique and can change):
