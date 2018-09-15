@@ -269,7 +269,7 @@ $aMessage = $oFolder->search()->text('hello world')->since('15.03.2018')->get();
 $aMessage = $oFolder->messages()->text('hello world')->since('15.03.2018')->get();
 
 ```
-All available query / search methods can be found here: [Query::class](src/IMAP/WhereQuery.php)
+All available query / search methods can be found here: [Query::class](src/IMAP/Query/WhereQuery.php)
 
 Available search criteria:
 - `ALL` &mdash; return all messages matching the rest of the criteria
@@ -567,7 +567,7 @@ if you're just wishing a feature ;)
 | messages          | string $charset = 'UTF-8'                                                           | WhereQuery        | Alias for Folder::query()                      |
 | search            | string $charset = 'UTF-8'                                                           | WhereQuery        | Alias for Folder::query()                      |
       
-### [Query::class](src/IMAP/WhereQuery.php)
+### [Query::class](src/IMAP/Query/WhereQuery.php)
 | Method             | Arguments                         | Return            | Description                                    |
 | ------------------ | --------------------------------- | :---------------: | ---------------------------------------------- |
 | where              | mixed $criteria, $value = null    | WhereQuery        | Add new criteria to the current query |
