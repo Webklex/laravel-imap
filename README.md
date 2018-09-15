@@ -567,8 +567,8 @@ if you're just wishing a feature ;)
 | Method             | Arguments                         | Return            | Description                                    |
 | ------------------ | --------------------------------- | :---------------: | ---------------------------------------------- |
 | where              | mixed $criteria, $value = null    | WhereQuery        | Add new criteria to the current query |
-| orWhere            | Closure $$closure                 | WhereQuery        | If supported you can perform extended search requests |
-| andWhere           | Closure $$closure                 | WhereQuery        | If supported you can perform extended search requests |
+| orWhere            | Closure $closure                  | WhereQuery        | If supported you can perform extended search requests |
+| andWhere           | Closure $closure                  | WhereQuery        | If supported you can perform extended search requests |
 | all                |                                   | WhereQuery        | Select all available messages |
 | answered           |                                   | WhereQuery        | Select answered messages |
 | answered           |                                   | WhereQuery        | Select answered messages |
