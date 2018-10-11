@@ -461,7 +461,12 @@ class Message {
                 $address->personal = false;
             }
 
-            $address->personal = imap_utf8($address->personal);
+            $personalParts = imap_mime_header_decode($address->personal);
+            
+            $address->personal = '';
+            foreach ($personalParts as $p) {
+                $address->personal .= $p->text;
+            }
 
             $address->mail = ($address->mailbox && $address->host) ? $address->mailbox.'@'.$address->host : false;
             $address->full = ($address->personal) ? $address->personal.' <'.$address->mail.'>' : $address->mail;
