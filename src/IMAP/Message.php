@@ -526,21 +526,7 @@ class Message {
 
                 $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | FT_UID);
                 $content = $this->decodeString($content, $structure->encoding);
-
-                // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
-                //     ASCII is a subset of UTF-8, so all ASCII files are already UTF-8 encoded
-                //     https://stackoverflow.com/a/11303410
-                // 
-                // us-ascii is the same as ASCII:
-                //     ASCII is the traditional name for the encoding system; the Internet Assigned Numbers Authority (IANA) 
-                //     prefers the updated name US-ASCII, which clarifies that this system was developed in the US and 
-                //     based on the typographical symbols predominantly in use there.
-                //     https://en.wikipedia.org/wiki/ASCII
-                //
-                // convertEncoding() function basically means convertToUtf8(), so when we convert ASCII string into UTF-8 it gets broken.
-                if ($encoding != 'us-ascii') {
-                    $content = $this->convertEncoding($content, $encoding);
-                }
+                $content = $this->convertEncoding($content, $encoding);
 
                 $body = new \stdClass;
                 $body->type = "text";
@@ -559,9 +545,7 @@ class Message {
 
                 $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | FT_UID);
                 $content = $this->decodeString($content, $structure->encoding);
-                if ($encoding != 'us-ascii') {
-                    $content = $this->convertEncoding($content, $encoding);
-                }
+                $content = $this->convertEncoding($content, $encoding);
 
                 $body = new \stdClass;
                 $body->type = "html";
@@ -717,6 +701,21 @@ class Message {
 
         $from = EncodingAliases::get($from);
         $to = EncodingAliases::get($to);
+
+        // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
+        //     ASCII is a subset of UTF-8, so all ASCII files are already UTF-8 encoded
+        //     https://stackoverflow.com/a/11303410
+        // 
+        // us-ascii is the same as ASCII:
+        //     ASCII is the traditional name for the encoding system; the Internet Assigned Numbers Authority (IANA) 
+        //     prefers the updated name US-ASCII, which clarifies that this system was developed in the US and 
+        //     based on the typographical symbols predominantly in use there.
+        //     https://en.wikipedia.org/wiki/ASCII
+        //
+        // convertEncoding() function basically means convertToUtf8(), so when we convert ASCII string into UTF-8 it gets broken.
+        if (strtolower($from) == 'us-ascii' && $to == 'UTF-8') {
+            return $str;
+        }
 
         if (function_exists('iconv') && $from != 'UTF-7' && $to != 'UTF-7') {
             return iconv($from, $to.'//IGNORE', $str);
