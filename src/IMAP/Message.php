@@ -318,7 +318,7 @@ class Message {
         }
 
         if (property_exists($header, 'subject')) {
-            $this->subject = mb_decode_mimeheader($header->subject);
+            $this->subject = imap_utf8(mb_decode_mimeheader($header->subject));
         }
 
         if (property_exists($header, 'date')) {
