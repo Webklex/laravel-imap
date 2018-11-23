@@ -318,7 +318,7 @@ class Message {
         }
 
         if (property_exists($header, 'subject')) {
-            $this->subject = mb_decode_mimeheader($header->subject);
+            $this->subject = $header->subject;
         }
 
         if (property_exists($header, 'date')) {
