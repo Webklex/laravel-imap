@@ -288,7 +288,7 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     private function parseHeader() {
-        $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, FT_UID);
+        $this->header = $header = imap_utf8(imap_fetchheader($this->client->getConnection(), $this->uid, FT_UID));
         if ($this->header) {
             $header = imap_rfc822_parse_headers($this->header);
         }
@@ -318,7 +318,7 @@ class Message {
         }
 
         if (property_exists($header, 'subject')) {
-            $this->subject = mb_decode_mimeheader($header->subject);
+            $this->subject = $header->subject;
         }
 
         if (property_exists($header, 'date')) {
