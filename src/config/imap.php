@@ -102,7 +102,7 @@ return [
     */
     'options' => [
         'delimiter' => '/',
-        'fetch' => FT_UID,
+        'fetch' => (defined('FT_UID') ? FT_UID : 0),
         'fetch_body' => true,
         'fetch_attachment' => true,
         'fetch_flags' => true,
