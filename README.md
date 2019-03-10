@@ -531,7 +531,7 @@ if you're just wishing a feature ;)
 | getMsglist      |                               | integer              | Get the current message list           |
 | getHeaderInfo   |                               | object               | Get the current header_info object     |
 | getHeader       |                               | string               | Get the current raw header             |
-| getMessageId    |                               | integer              | Get the current message ID             |
+| getMessageId    |                               | string               | Get the current message ID             |
 | getMessageNo    |                               | integer              | Get the current message number         |
 | getPriority     |                               | integer              | Get the current message priority       |
 | getSubject      |                               | string               | Get the current subject                |
