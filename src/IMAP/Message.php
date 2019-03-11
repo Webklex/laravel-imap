@@ -13,6 +13,7 @@
 namespace Webklex\IMAP;
 
 use Carbon\Carbon;
+use Webklex\IMAP\Exceptions\InvalidMessageDateException;
 use Webklex\IMAP\Support\AttachmentCollection;
 use Webklex\IMAP\Support\FlagCollection;
 
@@ -286,6 +287,7 @@ class Message {
      *
      * @return void
      * @throws Exceptions\ConnectionFailedException
+     * @throws InvalidMessageDateException
      */
     private function parseHeader() {
         $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, FT_UID);
