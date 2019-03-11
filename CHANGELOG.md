@@ -14,6 +14,19 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.3.0] - 2019-03-11
+### Fixed
+- Fix sender name in non-latin emails sent from Gmail (#155)
+- Fix broken non-latin characters in body in ASCII (us-ascii) charset #156
+- Message::getMessageId() returns wrong value #197
+- Message date validation extended #45 #192
+
+### Added
+- Invalid message date exception added 
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
 ## [1.2.9] - 2018-09-15
 ### Fixed
 - Removed "-i" from "iso-8859-8-i" in Message::parseBody #146
