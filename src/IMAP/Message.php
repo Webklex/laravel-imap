@@ -280,8 +280,9 @@ class Message {
         $body = $this->bodies['html']->content;
         if ($replaceImages) {
             $this->attachments->each(function($oAttachment) use(&$body) {
-                if ($oAttachment->id && isset($oAttachment->img_src)) {
-                    $body = str_replace('cid:'.$oAttachment->id, $oAttachment->img_src, $body);
+                /** @var Attachment $oAttachment */
+                if ($oAttachment->id && $oAttachment->getImgSrc() != null) {
+                    $body = str_replace('cid:'.$oAttachment->id, $oAttachment->getImgSrc(), $body);
                 }
             });
         }
@@ -801,6 +802,7 @@ class Message {
      *
      * @return null|Folder
      * @throws Exceptions\ConnectionFailedException
+     * @throws InvalidMessageDateException
      */
     public function getContainingFolder(Folder $folder = null) {
         $folder = $folder ?: $this->client->getFolders()->first();

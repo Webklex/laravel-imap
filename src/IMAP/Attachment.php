@@ -176,10 +176,6 @@ class Attachment {
                 }
             }
         }
-
-        if ($this->type == 'image') {
-            $this->img_src = 'data:'.$this->content_type.';base64,'.base64_encode($this->content);
-        }
     }
 
     /**
@@ -256,6 +252,9 @@ class Attachment {
      * @return null|string
      */
     public function getImgSrc() {
+        if ($this->type == 'image' && $this->img_src == null) {
+            $this->img_src = 'data:'.$this->content_type.';base64,'.base64_encode($this->content);
+        }
         return $this->img_src;
     }
 
