@@ -14,6 +14,7 @@ namespace Webklex\IMAP;
 
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
+use Webklex\IMAP\Exceptions\InvalidImapTimeoutTypeException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
 use Webklex\IMAP\Support\FolderCollection;
 use Webklex\IMAP\Support\MessageCollection;
@@ -114,6 +115,18 @@ class Client {
      * @var array $validConfigKeys
      */
     protected $validConfigKeys = ['host', 'port', 'encryption', 'validate_cert', 'username', 'password','protocol'];
+
+    /**
+     * All available timeout types
+     *
+     * @var array $timeout_type
+     */
+    protected $timeout_type = [
+        'IMAP_OPENTIMEOUT' => 1,
+        'IMAP_READTIMEOUT' => 2,
+        'IMAP_WRITETIMEOUT' => 3,
+        'IMAP_CLOSETIMEOUT' => 4
+    ];
 
     /**
      * Client constructor.
@@ -568,5 +581,44 @@ class Client {
     public function checkCurrentMailbox() {
         $this->checkConnection();
         return imap_check($this->connection);
+    }
+
+    /**
+     * Set the imap timeout for a given operation type
+     * @param $type
+     * @param $timeout
+     *
+     * @return mixed
+     * @throws InvalidImapTimeoutTypeException
+     */
+    public function setTimeout($type, $timeout) {
+        if(is_numeric($type)) {
+            $type = (int) $type;
+        }elseif (isset($this->timeout_type[$type])){
+            $type = $this->timeout_type[$type];
+        }else{
+            throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
+        }
+
+        return imap_timeout($type, $timeout);
+    }
+
+    /**
+     * Get the timeout for a certain operation
+     * @param $type
+     *
+     * @return mixed
+     * @throws InvalidImapTimeoutTypeException
+     */
+    public function getTimeout($type){
+        if(is_numeric($type)) {
+            $type = (int) $type;
+        }elseif (isset($this->timeout_type[$type])){
+            $type = $this->timeout_type[$type];
+        }else{
+            throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
+        }
+
+        return imap_timeout($type);
     }
 }
