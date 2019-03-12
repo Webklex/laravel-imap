@@ -31,6 +31,9 @@ class Message {
      */
     private $client = Client::class;
 
+    /** @var array $config */
+    protected $config = [];
+
     /**
      * U ID
      *
@@ -174,8 +177,12 @@ class Message {
      * @param boolean       $fetch_flags
      *
      * @throws Exceptions\ConnectionFailedException
+     * @throws InvalidMessageDateException
      */
     public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = false) {
+
+        $this->config = config('imap.options');
+
         $this->setFetchOption($fetch_options);
         $this->setFetchBodyOption($fetch_body);
         $this->setFetchAttachmentOption($fetch_attachment);
@@ -320,7 +327,11 @@ class Message {
         }
 
         if (property_exists($header, 'subject')) {
-            $this->subject = mb_decode_mimeheader($header->subject);
+            if($this->config['decoder']['message']['subject'] === 'utf-8') {
+                $this->subject = imap_utf8($header->subject);
+            }else{
+                $this->subject = mb_decode_mimeheader($header->subject);
+            }
         }
         if (property_exists($header, 'from')) {
             $this->from = $this->parseAddresses($header->from);

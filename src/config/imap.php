@@ -98,6 +98,9 @@ return [
     |                               error: "Kerberos error: No credentials cache
     |                               file found (try running kinit) (...)"
     |                               or ['GSSAPI','PLAIN'] if you are using outlook mail
+    |   -Decoder options (currently only the message subject and attachment name decoder can be set)
+    |       'utf-8' - Uses imap_utf8($string) to decode a string
+    |       'mimeheader' - Uses mb_decode_mimeheader($string) to decode a string
     |
     */
     'options' => [
@@ -110,6 +113,14 @@ return [
         'fetch_order' => 'asc',
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
+        ],
+        'decoder' => [
+            'message' => [
+                'subject' => 'utf-8' // mimeheader
+            ],
+            'attachment' => [
+                'name' => 'utf-8' // mimeheader
+            ]
         ]
     ]
 ];

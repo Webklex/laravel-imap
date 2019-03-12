@@ -25,6 +25,9 @@ class Attachment {
     /** @var Message $oMessage */
     protected $oMessage;
 
+    /** @var array $config */
+    protected $config = [];
+
     /** @var object $structure */
     protected $structure;
 
@@ -85,6 +88,8 @@ class Attachment {
      * @throws Exceptions\ConnectionFailedException
      */
     public function __construct(Message $oMessage, $structure, $part_number = 1) {
+        $this->config = config('imap.options');
+
         $this->oMessage = $oMessage;
         $this->structure = $structure;
         $this->part_number = ($part_number) ? $part_number : $this->part_number;
@@ -226,7 +231,11 @@ class Attachment {
      * @param $name
      */
     public function setName($name) {
-        $this->name = mb_decode_mimeheader($name);
+        if($this->config['decoder']['message']['subject'] === 'utf-8') {
+            $this->name = imap_utf8($name);
+        }else{
+            $this->name = mb_decode_mimeheader($name);
+        }
     }
 
     /**
