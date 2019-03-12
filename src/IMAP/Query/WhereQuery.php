@@ -56,7 +56,7 @@ class WhereQuery extends Query {
     protected $available_criteria = [
         'OR', 'AND',
         'ALL', 'ANSWERED', 'BCC', 'BEFORE', 'BODY', 'CC', 'DELETED', 'FLAGGED', 'FROM', 'KEYWORD',
-        'NEW', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
+        'NEW', 'NOT', 'OLD', 'ON', 'RECENT', 'SEEN', 'SINCE', 'SUBJECT', 'TEXT', 'TO',
         'UNANSWERED', 'UNDELETED', 'UNFLAGGED', 'UNKEYWORD', 'UNSEEN'
     ];
 
@@ -249,6 +249,14 @@ class WhereQuery extends Query {
      */
     public function whereNew() {
         return $this->where('NEW');
+    }
+
+    /**
+     * @return WhereQuery
+     * @throws InvalidWhereQueryCriteriaException
+     */
+    public function whereNot() {
+        return $this->where('NOT');
     }
 
     /**
