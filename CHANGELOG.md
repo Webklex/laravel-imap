@@ -14,6 +14,20 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.3.1] - 2019-03-12
+### Fixed
+- Replace embedded image with URL #151
+
+### Added
+- Imap client timeout can be modified and read #186
+- Decoder config options added #175
+- Message search criteria "NOT" added #181
+
+### Affected Classes
+- [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
+- [Attachment::class](src/IMAP/Attachment.php)
+
 ## [1.3.0] - 2019-03-11
 ### Fixed
 - Fix sender name in non-latin emails sent from Gmail (#155)
