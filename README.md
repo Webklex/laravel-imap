@@ -127,6 +127,7 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
    - `fetch_order` &mdash; Message fetch order
    - `open` &mdash; special configuration for imap_open()
      - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
+   - `decoder` &mdash; Currently only the message subject and attachment name decoder can be set
 
 ## Usage
 #### Basic usage example
@@ -283,6 +284,7 @@ Available search criteria:
 - `FROM` "string" &mdash; match messages with "string" in the From: field
 - `KEYWORD` "string" &mdash; match messages with "string" as a keyword
 - `NEW` &mdash; match new messages
+- `NOT` &mdash; not matching
 - `OLD` &mdash; match old messages
 - `ON` "date" &mdash; match messages with Date: matching "date"
 - `RECENT` &mdash; match messages with the \\RECENT flag set
@@ -494,9 +496,9 @@ if you're just wishing a feature ;)
 | createFolder        | string $name                                                                    | boolean           | Create a new folder.                                                                                                          |
 | renameFolder        | string $old_name, string $new_name                                              | boolean           | Rename a folder. |
 | deleteFolder        | string $name                                                                    | boolean           | Delete a folder. |
-| getMessages         | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags      | MessageCollection | Get messages from folder.                                                                                                     |
-| getUnseenMessages   | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags      | MessageCollection | Get Unseen messages from folder.                                                                                              |
-| searchMessages      | array $where, Folder $folder, $fetch_options, bool $fetch_body, string $charset, bool $fetch_attachment, bool $fetch_flags | MessageCollection | Get specific messages from a given folder.                                                                                    |
+| getMessages         | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags       | MessageCollection | Get messages from folder.                                                                                 |
+| getUnseenMessages   | Folder $folder, string $criteria, bool $fetch_body, bool $fetch_attachment, bool $fetch_flags       | MessageCollection | Get Unseen messages from folder.                                                                          |
+| searchMessages      | array $where, Folder $folder, $fetch_options, bool $fetch_body, string $charset, bool $fetch_attachment, bool $fetch_flags | MessageCollection | Get specific messages from a given folder.                                         |
 | getQuota            |                                                                                 | array             | Retrieve the quota level settings, and usage statics per mailbox                                                              |
 | getQuotaRoot        | string $quota_root                                                              | array             | Retrieve the quota settings per user                                                                                          |
 | countMessages       |                                                                                 | int               | Gets the number of messages in the current mailbox                                                                            |
@@ -506,6 +508,8 @@ if you're just wishing a feature ;)
 | getLastError        |                                                                                 | string            | Gets the last IMAP error that occurred during this page request                                                               |
 | expunge             |                                                                                 | bool              | Delete all messages marked for deletion                                                                                       |
 | checkCurrentMailbox |                                                                                 | object            | Check current mailbox                                                                                                         |
+| setTimeout          | string or int $type, int $timeout                                               | boolean           | Set the timeout for certain imap operations: 1: Open, 2: Read, 3: Write, 4: Close                                             |
+| getTimeout          | string or int $type                                                             | int               | Check current mailbox                                                                                                         |
 
 ### [Message::class](src/IMAP/Message.php)
 | Method          | Arguments                     | Return               | Description                            |
@@ -578,6 +582,7 @@ if you're just wishing a feature ;)
 | answered           |                                   | WhereQuery        | Select answered messages |
 | deleted            |                                   | WhereQuery        | Select deleted messages |
 | new                |                                   | WhereQuery        | Select new messages |
+| not                |                                   | WhereQuery        | Not select messages |
 | old                |                                   | WhereQuery        | Select old messages |
 | recent             |                                   | WhereQuery        | Select recent messages |
 | seen               |                                   | WhereQuery        | Select seen messages |
