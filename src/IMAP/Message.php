@@ -320,22 +320,32 @@ class Message {
 
     /**
      * Get the Message html body
+     * If $replaceImages is callable it should expect string $body as first parameter, $oAttachment as second and return
+     * the resulting $body.
      *
-     * @var bool $replaceImages
+     * @var bool|callable $replaceImages
      *
-     * @return mixed
+     * @return string|null
+     *
+     * @deprecated 1.4.0:2.0.0 No longer needed. Use AttachmentMask::getImageSrc() instead
      */
     public function getHTMLBody($replaceImages = false) {
         if (!isset($this->bodies['html'])) {
-            return false;
+            return null;
         }
 
         $body = $this->bodies['html']->content;
-        if ($replaceImages) {
-            $this->attachments->each(function($oAttachment) use(&$body) {
+        if ($replaceImages !== false) {
+            $this->attachments->each(function($oAttachment) use(&$body, $replaceImages) {
                 /** @var Attachment $oAttachment */
-                if ($oAttachment->id && $oAttachment->getImgSrc() != null) {
-                    $body = str_replace('cid:'.$oAttachment->id, $oAttachment->getImgSrc(), $body);
+                if(is_callable($replaceImages)) {
+                    $body = $replaceImages($body, $oAttachment);
+                }elseif(is_string($replaceImages)) {
+                    call_user_func($replaceImages, [$body, $oAttachment]);
+                }else{
+                    if ($oAttachment->id && $oAttachment->getImgSrc() != null) {
+                        $body = str_replace('cid:'.$oAttachment->id, $oAttachment->getImgSrc(), $body);
+                    }
                 }
             });
         }
