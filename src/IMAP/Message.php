@@ -157,8 +157,11 @@ class Message {
     public $flags = [];
 
     /**
+     * A list of all available and supported flags
      *
+     * @var array $available_flags
      */
+    private $available_flags = ['recent', 'flagged', 'answered', 'deleted', 'seen', 'draft'];
 
     /**
      * Message constructor.
@@ -486,29 +489,33 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     private function parseFlags() {
-        $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, FT_UID);
+        $this->flags = FlagCollection::make([]);
+
+        $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if (is_array($flags) && isset($flags[0])) {
-            if (property_exists($flags[0], 'recent')) {
-                $this->flags->put('recent', $flags[0]->recent);
+            foreach($this->available_flags as $flag) {
+                $this->parseFlag($flags, $flag);
             }
-            if (property_exists($flags[0], 'flagged')) {
-                $this->flags->put('flagged', $flags[0]->flagged);
-            }
-            if (property_exists($flags[0], 'answered')) {
-                $this->flags->put('answered', $flags[0]->answered);
-            }
-            if (property_exists($flags[0], 'deleted')) {
-                $this->flags->put('deleted', $flags[0]->deleted);
-            }
-            if (property_exists($flags[0], 'seen')) {
-                $this->flags->put('seen', $flags[0]->seen);
-            }
-            if (property_exists($flags[0], 'draft')) {
-                $this->flags->put('draft', $flags[0]->draft);
-            }  
         }
     }
-    
+
+    /**
+     * Extract a possible flag information from a given array
+     * @param array $flags
+     * @param string $flag
+     */
+    private function parseFlag($flags, $flag) {
+        $flag = strtolower($flag);
+
+        if (property_exists($flags[0], strtoupper($flag))) {
+            $this->flags->put($flag, $flags[0]->{strtoupper($flag)});
+        } elseif (property_exists($flags[0], ucfirst($flag))) {
+            $this->flags->put($flag, $flags[0]->{ucfirst($flag)});
+        } elseif (property_exists($flags[0], $flag)) {
+            $this->flags->put($flag, $flags[0]->$flag);
+        }
+    }
+
     /**
      * Get the current Message header info
      *
