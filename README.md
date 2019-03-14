@@ -552,8 +552,10 @@ if you're just wishing a feature ;)
 | getRawBody      |                               | mixed                | Get the current raw message body       |
 | getFlags        |                               | FlagCollection       | Get the current message flags          |
 | is              |                               | boolean              | Does this message match another one?   |
+| getStructure    |                               | object               | The raw message structure              |
 
 ### [Folder::class](src/IMAP/Folder.php)
+
 | Method            | Arguments                                                                           | Return            | Description                                    |
 | ----------------- | ----------------------------------------------------------------------------------- | :---------------: | ---------------------------------------------- |
 | hasChildren       |                                                                                     | bool              | Determine if folder has children.              |

@@ -123,6 +123,8 @@ class Message {
     public $in_reply_to = '';
     public $sender = [];
     public $priority = 0;
+    /** @var null $structure */
+    protected $structure = null;
 
     /**
      * Message body components
@@ -463,10 +465,10 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function parseBody() {
-        $structure = imap_fetchstructure($this->client->getConnection(), $this->uid, FT_UID);
+        $this->structure = imap_fetchstructure($this->client->getConnection(), $this->uid, IMAP::FT_UID);
 
-        if(property_exists($structure, 'parts')){
-            $parts = $structure->parts;
+        if(property_exists($this->structure, 'parts')){
+            $parts = $this->structure->parts;
 
             foreach ($parts as $part)  {
                 foreach ($part->parameters as $parameter)  {
@@ -482,7 +484,7 @@ class Message {
             }
         }
 
-        $this->fetchStructure($structure);
+        $this->fetchStructure($this->structure);
 
         return $this;
     }
@@ -980,6 +982,8 @@ class Message {
      */
     public function getReferences() {
         return $this->references;
+    public function getStructure(){
+        return $this->structure;
     }
 
     /**
