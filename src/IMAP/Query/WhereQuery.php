@@ -32,6 +32,7 @@ use Webklex\IMAP\Exceptions\MessageSearchValidationException;
  * @method WhereQuery undeleted()
  * @method WhereQuery unflagged()
  * @method WhereQuery unseen()
+ * @method WhereQuery not()
  * @method WhereQuery unkeyword($value)
  * @method WhereQuery to($value)
  * @method WhereQuery text($value)
@@ -387,5 +388,41 @@ class WhereQuery extends Query {
      */
     public function whereUnseen() {
         return $this->where('UNSEEN');
+    }
+
+    /**
+     * @param $msg_id
+     *
+     * @return WhereQuery
+     * @throws InvalidWhereQueryCriteriaException
+     */
+    public function whereMessageId($msg_id) {
+        return $this->where("Message-ID <$msg_id>");
+    }
+
+    /**
+     * @return WhereQuery
+     * @throws InvalidWhereQueryCriteriaException
+     */
+    public function whereNoXSpam(){
+        return $this->where("X-Spam-Flag NO");
+    }
+
+    /**
+     * @return WhereQuery
+     * @throws InvalidWhereQueryCriteriaException
+     */
+    public function whereIsXSpam(){
+        return $this->where("X-Spam-Flag YES");
+    }
+
+    /**
+     * @param $country_code
+     *
+     * @return WhereQuery
+     * @throws InvalidWhereQueryCriteriaException
+     */
+    public function whereLanguage($country_code){
+        return $this->where("Content-Language $country_code");
     }
 }

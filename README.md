@@ -599,7 +599,11 @@ if you're just wishing a feature ;)
 | undeleted          |                                   | WhereQuery        | Select undeleted messages |
 | unflagged          |                                   | WhereQuery        | Select unflagged messages |
 | unseen             |                                   | WhereQuery        | Select unseen messages |
+| noXSpam            |                                   | WhereQuery        | Select as no xspam flagged messages |
+| isXSpam            |                                   | WhereQuery        | Select as xspam flagged messages |
+| language           | string $value                     | WhereQuery        | Select messages matching a given language |
 | unkeyword          | string $value                     | WhereQuery        | Select messages matching a given unkeyword |
+| messageId          | string $value                     | WhereQuery        | Select messages matching a given message id |
 | to                 | string $value                     | WhereQuery        | Select messages matching a given receiver (To:) |
 | text               | string $value                     | WhereQuery        | Select messages matching a given text body |
 | subject            | string $value                     | WhereQuery        | Select messages matching a given subject |
