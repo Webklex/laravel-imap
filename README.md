@@ -119,7 +119,7 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
      - `password` &mdash; imap account password
  - `options` &mdash; additional fetch options
    - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
-   - `fetch` &mdash; `FT_UID` (message marked as read by fetching the message) or `FT_PEEK` (fetch the message without setting the "read" flag)
+   - `fetch` &mdash; `IMAP::FT_UID` (message marked as read by fetching the message) or `IMAP::FT_PEEK` (fetch the message without setting the "read" flag)
    - `fetch_body` &mdash; If set to `false` all messages will be fetched without the body and any potential attachments
    - `fetch_attachment` &mdash;  If set to `false` all messages will be fetched without any attachments
    - `fetch_flags` &mdash;  If set to `false` all messages will be fetched without any flags
@@ -487,6 +487,7 @@ if you're just wishing a feature ;)
 
 ## Documentation
 ### [Client::class](src/IMAP/Client.php)
+
 | Method              | Arguments                                                                       | Return            | Description                                                                                                                   |
 | ------------------- | ------------------------------------------------------------------------------- | :---------------: | ----------------------------------------------------------------------------------------------------------------------------  |
 | setConfig           | array $config                                                                   | self              | Set the Client configuration. Take a look at `config/imap.php` for more inspiration.                                          |
@@ -519,6 +520,7 @@ if you're just wishing a feature ;)
 | getTimeout          | string or int $type                                                             | int               | Check current mailbox                                                                                                         |
 
 ### [Message::class](src/IMAP/Message.php)
+
 | Method          | Arguments                     | Return               | Description                            |
 | --------------- | ----------------------------- | :------------------: | -------------------------------------- |
 | parseBody       |                               | Message              | Parse the Message body                 |
@@ -581,6 +583,7 @@ if you're just wishing a feature ;)
 | search            | string $charset = 'UTF-8'                                                           | WhereQuery        | Alias for Folder::query()                      |
       
 ### [Query::class](src/IMAP/Query/WhereQuery.php)
+
 | Method             | Arguments                         | Return            | Description                                    |
 | ------------------ | --------------------------------- | :---------------: | ---------------------------------------------- |
 | where              | mixed $criteria, $value = null    | WhereQuery        | Add new criteria to the current query |
@@ -626,6 +629,7 @@ if you're just wishing a feature ;)
 | markAsRead         |                                   | WhereQuery        | Mark all messages as "read" while fetching |
            
 ### [Attachment::class](src/IMAP/Attachment.php)
+
 | Method         | Arguments                      | Return         | Description                                            |
 | -------------- | ------------------------------ | :------------: | ------------------------------------------------------ |
 | getContent     |                                | string or null | Get attachment content                                 |     
@@ -667,6 +671,7 @@ Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illum
 | paginate | int $perPage = 15, $page = null, $pageName = 'page' | LengthAwarePaginator | Paginate the current collection. |
 
 ### Known issues
+
 | Error                                                                     | Solution                                                   |
 | ------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | Kerberos error: No credentials cache file found (try running kinit) (...) | Uncomment "DISABLE_AUTHENTICATOR" inside `config/imap.php` | 

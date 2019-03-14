@@ -443,7 +443,7 @@ class Message {
             }
 
             $personalParts = imap_mime_header_decode($address->personal);
-            
+
             $address->personal = '';
             foreach ($personalParts as $p) {
                 $address->personal .= $p->text;
@@ -644,7 +644,7 @@ class Message {
 
         return $this;
     }
-    
+
     /**
      * Fail proof setter for $fetch_flags
      *
@@ -707,10 +707,10 @@ class Message {
         // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
         //     ASCII is a subset of UTF-8, so all ASCII files are already UTF-8 encoded
         //     https://stackoverflow.com/a/11303410
-        // 
+        //
         // us-ascii is the same as ASCII:
-        //     ASCII is the traditional name for the encoding system; the Internet Assigned Numbers Authority (IANA) 
-        //     prefers the updated name US-ASCII, which clarifies that this system was developed in the US and 
+        //     ASCII is the traditional name for the encoding system; the Internet Assigned Numbers Authority (IANA)
+        //     prefers the updated name US-ASCII, which clarifies that this system was developed in the US and
         //     based on the typographical symbols predominantly in use there.
         //     https://en.wikipedia.org/wiki/ASCII
         //

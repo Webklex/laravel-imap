@@ -93,7 +93,7 @@ class Client {
      *
      * @var Folder
      */
-    protected $activeFolder = false;
+    protected $active_folder = false;
 
     /**
      * Connected parameter
@@ -114,12 +114,9 @@ class Client {
      *
      * @var array $validConfigKeys
      */
-    protected $validConfigKeys = ['host', 'port', 'encryption', 'validate_cert', 'username', 'password','protocol'];
+    protected $valid_config_keys = ['host', 'port', 'encryption', 'validate_cert', 'username', 'password', 'protocol'];
 
     /**
-     * All available timeout types
-     *
-     * @var array $timeout_type
      */
 
     /**
@@ -146,11 +143,11 @@ class Client {
      * @return self
      */
     public function setConfig(array $config) {
-        $defaultAccount = config('imap.default');
-        $defaultConfig  = config("imap.accounts.$defaultAccount");
+        $default_account = config('imap.default');
+        $default_config  = config("imap.accounts.$default_account");
 
-        foreach ($this->validConfigKeys as $key) {
-            $this->$key = isset($config[$key]) ? $config[$key] : $defaultConfig[$key];
+        foreach ($this->valid_config_keys as $key) {
+            $this->$key = isset($config[$key]) ? $config[$key] : $default_config[$key];
         }
 
         return $this;
@@ -170,12 +167,12 @@ class Client {
     /**
      * Set read only property and reconnect if it's necessary.
      *
-     * @param bool $readOnly
+     * @param bool $read_only
      *
      * @return self
      */
-    public function setReadOnly($readOnly = true) {
-        $this->read_only = $readOnly;
+    public function setReadOnly($read_only = true) {
+        $this->read_only = $read_only;
 
         return $this;
     }
@@ -299,7 +296,7 @@ class Client {
             $folder = new Folder($this, $item);
 
             if ($hierarchical && $folder->hasChildren()) {
-                $pattern = $folder->fullName.$folder->delimiter.'%';
+                $pattern = $folder->full_name.$folder->delimiter.'%';
 
                 $children = $this->getFolders(true, $pattern);
                 $folder->setChildren($children);
@@ -322,8 +319,8 @@ class Client {
     public function openFolder(Folder $folder, $attempts = 3) {
         $this->checkConnection();
 
-        if ($this->activeFolder !== $folder) {
-            $this->activeFolder = $folder;
+        if ($this->active_folder !== $folder) {
+            $this->active_folder = $folder;
 
             imap_reopen($this->getConnection(), $folder->path, $this->getOptions(), $attempts);
         }
@@ -386,12 +383,12 @@ class Client {
      * @param int|null $fetch_options
      * @param boolean  $fetch_body
      * @param boolean  $fetch_attachment
+     * @param boolean  $fetch_flags
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
      * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
-     * @throws MessageSearchValidationException
      *
      * @deprecated 1.0.5.2:2.0.0 No longer needed. Use Folder::getMessages() instead
      * @see Folder::getMessages()
@@ -408,6 +405,7 @@ class Client {
      * @param int|null $fetch_options
      * @param boolean  $fetch_body
      * @param boolean  $fetch_attachment
+     * @param boolean  $fetch_flags
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
@@ -431,12 +429,12 @@ class Client {
      * @param boolean  $fetch_body
      * @param string   $charset
      * @param boolean  $fetch_attachment
+     * @param boolean  $fetch_flags
      *
      * @return MessageCollection
      * @throws ConnectionFailedException
      * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
-     * @throws MessageSearchValidationException
      *
      * @deprecated 1.0.5:2.0.0 No longer needed. Use Folder::searchMessages() instead
      * @see Folder::searchMessages()
