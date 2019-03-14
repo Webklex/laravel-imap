@@ -14,6 +14,35 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN
 
+## [1.4.0] - [UNRELEASED]
+### Fixed
+- iconv(): error supressor for //IGNORE added #184
+- Typo Folder attribute fullName changed to full_name
+
+### Added
+- Message structure accessor added #182
+- Shadow Imap const class added #188
+- Connectable "NOT" queries added
+- Additional where methods added
+- Message attribute handling changed
+- Attachment attribute handling changed
+- Message flag handling updated
+- Message::getHTMLBody($callback) extended
+- Masks added (take look at the examples for more information on masks)
+- More examples added
+
+### Affected Classes
+- [Folder::class](src/IMAP/Folder.php)
+- [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
+- [Attachment::class](src/IMAP/Attachment.php)
+- [Query::class](src/IMAP/Query/Query.php)
+- [WhereQuery::class](src/IMAP/Query/WhereQuery.php)
+
+### Breaking changes
+- Folder::fullName is now Folder::full_name
+- Attachment::image_src might no longer work as expected - use Attachment::getImageSrc() instead
+
 ## [1.3.1] - 2019-03-12
 ### Fixed
 - Replace embedded image with URL #151
