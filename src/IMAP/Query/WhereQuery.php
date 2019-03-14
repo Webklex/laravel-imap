@@ -61,20 +61,30 @@ class WhereQuery extends Query {
     ];
 
     /**
-     * Magic method in order to allow alias usage of all "where" methods
+     * Magic method in order to allow alias usage of all "where" methods in an optional connection with "NOT"
      * @param string $name
      * @param array|null $arguments
      *
      * @return mixed
+     * @throws InvalidWhereQueryCriteriaException
      * @throws MethodNotFoundException
      */
     public function __call($name, $arguments) {
-        $method = 'where'.ucfirst($name);
-        if(method_exists($this, $method) === true){
-            return call_user_func_array([$this, $method], $arguments);
+        $that = $this;
+
+        $name = camel_case($name);
+
+        if(strtolower(substr($name, 0, 3)) === 'not') {
+            $that = $that->whereNot();
+            $name = substr($name, 3);
         }
 
-        throw new MethodNotFoundException();
+        $method = 'where'.ucfirst($name);
+        if(method_exists($this, $method) === true){
+            return call_user_func_array([$that, $method], $arguments);
+        }
+
+        throw new MethodNotFoundException("Method ".self::class.'::'.$method.'() is not supported');
     }
 
     /**

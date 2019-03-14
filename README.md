@@ -257,6 +257,13 @@ $aMessage = $oFolder->query()->whereText('hello world')->whereSince('15.03.2018'
 $aMessage = $oFolder->query()
 ->where([['TEXT', 'Hello world'], ['SINCE', \Carbon::parse('15.03.2018')]])
 ->get();
+
+//!EXPERIMENTAL!
+//Get all messages NOT containing "hello world"
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->notText('hello world')->get();
+$aMessage = $oFolder->query()->not_text('hello world')->get();
+$aMessage = $oFolder->query()->not()->text('hello world')->get();
 ```
 
 Available search aliases for a better code reading:
