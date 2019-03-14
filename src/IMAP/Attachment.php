@@ -19,6 +19,30 @@ use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
  * Class Attachment
  *
  * @package Webklex\IMAP
+ * 
+ * @property integer part_number
+ * @property string content
+ * @property string type
+ * @property string content_type
+ * @property string id
+ * @property string name
+ * @property string disposition
+ * @property string img_src
+ *
+ * @method integer getPartNumber()
+ * @method integer setPartNumber(integer $part_number)
+ * @method string  getContent()
+ * @method string  setContent(string $content)
+ * @method string  getType()
+ * @method string  setType(string $type)
+ * @method string  getContentType()
+ * @method string  setContentType(string $content_type)
+ * @method string  getId()
+ * @method string  setId(string $id)
+ * @method string  getName()
+ * @method string  getDisposition()
+ * @method string  setDisposition(string $disposition)
+ * @method string  setImgSrc(string $img_src)
  */
 class Attachment {
 
@@ -30,30 +54,18 @@ class Attachment {
 
     /** @var object $structure */
     protected $structure;
-
-    /** @var int $part_number */
-    protected $part_number = 1;
-
-    /** @var null|string $content */
-    public $content = null;
-
-    /** @var null|string $type */
-    public $type = null;
-
-    /** @var null|string $content_type */
-    public $content_type = null;
-
-    /** @var null|string $id */
-    public $id = null;
-
-    /** @var null|string $name */
-    public $name = null;
-
-    /** @var null|string $disposition */
-    public $disposition = null;
-
-    /** @var null|string $img_src */
-    public $img_src = null;
+    
+    /** @var array $attributes */
+    protected $attributes = [
+        'part_number' => 1,
+        'content' => null,
+        'type' => null,
+        'content_type' => null,
+        'id' => null,
+        'name' => null,
+        'disposition' => null,
+        'img_src' => null,
+    ];
 
     /**
      */
@@ -76,6 +88,59 @@ class Attachment {
 
         $this->findType();
         $this->fetch();
+    }
+
+    /**
+     * Call dynamic attribute setter and getter methods
+     * @param string $method
+     * @param array $arguments
+     *
+     * @return mixed
+     * @throws MethodNotFoundException
+     */
+    public function __call($method, $arguments) {
+        if(strtolower(substr($method, 0, 3)) === 'get') {
+            $name = snake_case(substr($method, 3));
+
+            if(isset($this->attributes[$name])) {
+                return $this->attributes[$name];
+            }
+
+            return null;
+        }elseif (strtolower(substr($method, 0, 3)) === 'set') {
+            $name = snake_case(substr($method, 3));
+
+            $this->attributes[$name] = array_pop($arguments);
+
+            return $this->attributes[$name];
+        }
+
+        throw new MethodNotFoundException("Method ".self::class.'::'.$method.'() is not supported');
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function __set($name, $value) {
+        $this->attributes[$name] = $value;
+
+        return $this->attributes[$name];
+    }
+
+    /**
+     * @param $name
+     *
+     * @return mixed|null
+     */
+    public function __get($name) {
+        if(isset($this->attributes[$name])) {
+            return $this->attributes[$name];
+        }
+
+        return null;
     }
 
     /**
@@ -176,34 +241,6 @@ class Attachment {
     }
 
     /**
-     * @return null|string
-     */
-    public function getContent() {
-        return $this->content;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getType() {
-        return $this->type;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getContentType() {
-        return $this->content_type;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getId() {
-        return $this->id;
-    }
-
-    /**
      * @param $name
      */
     public function setName($name) {
@@ -216,20 +253,8 @@ class Attachment {
 
     /**
      * @return null|string
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getDisposition() {
-        return $this->disposition;
-    }
-
-    /**
-     * @return null|string
+     *
+     * @deprecated 1.4.0:2.0.0 No longer needed. Use AttachmentMask::getImageSrc() instead
      */
     public function getImgSrc() {
         if ($this->type == 'image' && $this->img_src == null) {
@@ -250,5 +275,32 @@ class Attachment {
      */
     public function getExtension(){
         return ExtensionGuesser::getInstance()->guess($this->getMimeType());
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes(){
+        return $this->attributes;
+    }
+
+    /**
+     * @return Message
+     */
+    public function getMessage(){
+        return $this->oMessage;
+    }
+
+    /**
+     */
+        }
+    }
+
+    /**
+     */
+    }
+
+    /**
+     */
     }
 }
