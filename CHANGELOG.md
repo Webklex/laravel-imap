@@ -4,16 +4,6 @@ All notable changes to `webklex/laravel-imap` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [UNRELEASED]
-### Fixed
-- NaN
-
-### Added
-- NaN
-
-### Affected Classes
-- NaN
-
 ## [1.4.0] - [UNRELEASED]
 ### Fixed
 - iconv(): error supressor for //IGNORE added #184
