@@ -76,8 +76,8 @@ return [
     |       This option is only used when calling $oClient->
     |       You can use any supported char such as ".", "/", (...)
     |   -Fetch option:
-    |       FT_UID  - Message marked as read by fetching the message
-    |       FT_PEEK - Fetch the message without setting the "read" flag
+    |       IMAP::FT_UID  - Message marked as read by fetching the message
+    |       IMAP::FT_PEEK - Fetch the message without setting the "read" flag
     |   -Body download option
     |       Default TRUE
     |   -Attachment download option
@@ -105,7 +105,7 @@ return [
     */
     'options' => [
         'delimiter' => '/',
-        'fetch' => FT_UID,
+        'fetch' => \Webklex\IMAP\IMAP::FT_UID,
         'fetch_body' => true,
         'fetch_attachment' => true,
         'fetch_flags' => true,

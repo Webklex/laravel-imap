@@ -136,34 +136,8 @@ class Message {
     public $flags = [];
 
     /**
-     * Message const
      *
-     * @const integer   TYPE_TEXT
-     * @const integer   TYPE_MULTIPART
-     *
-     * @const integer   ENC_7BIT
-     * @const integer   ENC_8BIT
-     * @const integer   ENC_BINARY
-     * @const integer   ENC_BASE64
-     * @const integer   ENC_QUOTED_PRINTABLE
-     * @const integer   ENC_OTHER
      */
-    const TYPE_TEXT = 0;
-    const TYPE_MULTIPART = 1;
-
-    const ENC_7BIT = 0;
-    const ENC_8BIT = 1;
-    const ENC_BINARY = 2;
-    const ENC_BASE64 = 3;
-    const ENC_QUOTED_PRINTABLE = 4;
-    const ENC_OTHER = 5;
-
-    const PRIORITY_UNKNOWN = 0;
-    const PRIORITY_HIGHEST = 1;
-    const PRIORITY_HIGH = 2;
-    const PRIORITY_NORMAL = 3;
-    const PRIORITY_LOW = 4;
-    const PRIORITY_LOWEST = 5;
 
     /**
      * Message constructor.
@@ -194,11 +168,11 @@ class Message {
         $this->msglist = $msglist;
         $this->client = $client;
 
-        $this->uid =  ($this->fetch_options == FT_UID) ? $uid : $uid;
-        $this->msgn = ($this->fetch_options == FT_UID) ? imap_msgno($this->client->getConnection(), $uid) : $uid;
+        $this->uid =  ($this->fetch_options == IMAP::FT_UID) ? $uid : $uid;
+        $this->msgn = ($this->fetch_options == IMAP::FT_UID) ? imap_msgno($this->client->getConnection(), $uid) : $uid;
 
         $this->parseHeader();
-        
+
         if ($this->getFetchFlagsOption() === true) {
             $this->parseFlags();
         }
@@ -298,33 +272,12 @@ class Message {
      * @throws InvalidMessageDateException
      */
     private function parseHeader() {
-        $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, FT_UID);
+        $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, IMAP::FT_UID);
+
+        $this->priority = $this->extractPriority($this->header);
+
         if ($this->header) {
             $header = imap_rfc822_parse_headers($this->header);
-        }
-
-        if(preg_match('/x\-priority\:.*([0-9]{1,2})/i', $this->header, $priority)){
-            $priority = isset($priority[1]) ? (int) $priority[1] : 0;
-            switch($priority){
-                case self::PRIORITY_HIGHEST;
-                    $this->priority = self::PRIORITY_HIGHEST;
-                    break;
-                case self::PRIORITY_HIGH;
-                    $this->priority = self::PRIORITY_HIGH;
-                    break;
-                case self::PRIORITY_NORMAL;
-                    $this->priority = self::PRIORITY_NORMAL;
-                    break;
-                case self::PRIORITY_LOW;
-                    $this->priority = self::PRIORITY_LOW;
-                    break;
-                case self::PRIORITY_LOWEST;
-                    $this->priority = self::PRIORITY_LOWEST;
-                    break;
-                default:
-                    $this->priority = self::PRIORITY_UNKNOWN;
-                    break;
-            }
         }
 
         if (property_exists($header, 'subject')) {
@@ -363,7 +316,7 @@ class Message {
         }
         if (property_exists($header, 'Msgno')) {
             $messageNo = (int) trim($header->Msgno);
-            $this->message_no = ($this->fetch_options == FT_UID) ? $messageNo : imap_msgno($this->client->getConnection(), $messageNo);
+            $this->message_no = ($this->fetch_options == IMAP::FT_UID) ? $messageNo : imap_msgno($this->client->getConnection(), $messageNo);
         } else {
             $this->message_no = imap_msgno($this->client->getConnection(), $this->getUid());
         }
@@ -543,7 +496,7 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     private function fetchStructure($structure, $partNumber = null) {
-        if ($structure->type == self::TYPE_TEXT &&
+        if ($structure->type == IMAP::MESSAGE_TYPE_TEXT &&
             ($structure->ifdisposition == 0 ||
                 ($structure->ifdisposition == 1 && !isset($structure->parts) && $partNumber == null)
             )
@@ -555,16 +508,16 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | FT_UID);
+                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
                 $content = $this->decodeString($content, $structure->encoding);
 
                 // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
                 //     ASCII is a subset of UTF-8, so all ASCII files are already UTF-8 encoded
                 //     https://stackoverflow.com/a/11303410
-                // 
+                //
                 // us-ascii is the same as ASCII:
-                //     ASCII is the traditional name for the encoding system; the Internet Assigned Numbers Authority (IANA) 
-                //     prefers the updated name US-ASCII, which clarifies that this system was developed in the US and 
+                //     ASCII is the traditional name for the encoding system; the Internet Assigned Numbers Authority (IANA)
+                //     prefers the updated name US-ASCII, which clarifies that this system was developed in the US and
                 //     based on the typographical symbols predominantly in use there.
                 //     https://en.wikipedia.org/wiki/ASCII
                 //
@@ -588,7 +541,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | FT_UID);
+                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
                 $content = $this->decodeString($content, $structure->encoding);
                 if ($encoding != 'us-ascii') {
                     $content = $this->convertEncoding($content, $encoding);
@@ -600,7 +553,7 @@ class Message {
 
                 $this->bodies['html'] = $body;
             }
-        } elseif ($structure->type == self::TYPE_MULTIPART) {
+        } elseif ($structure->type == IMAP::MESSAGE_TYPE_MULTIPART) {
             foreach ($structure->parts as $index => $subStruct) {
                 $prefix = "";
                 if ($partNumber) {
@@ -647,7 +600,7 @@ class Message {
         if (is_long($option) === true) {
             $this->fetch_options = $option;
         } elseif (is_null($option) === true) {
-            $config = config('imap.options.fetch', FT_UID);
+            $config = config('imap.options.fetch', IMAP::FT_UID);
             $this->fetch_options = is_long($config) ? $config : 1;
         }
 
@@ -718,23 +671,23 @@ class Message {
      */
     public function decodeString($string, $encoding) {
         switch ($encoding) {
-            case self::ENC_7BIT:
+            case IMAP::MESSAGE_ENC_7BIT:
                 return $string;
-            case self::ENC_8BIT:
+            case IMAP::MESSAGE_ENC_8BIT:
                 return quoted_printable_decode(imap_8bit($string));
-            case self::ENC_BINARY:
+            case IMAP::MESSAGE_ENC_BINARY:
                 return imap_binary($string);
-            case self::ENC_BASE64:
+            case IMAP::MESSAGE_ENC_BASE64:
                 return imap_base64($string);
-            case self::ENC_QUOTED_PRINTABLE:
+            case IMAP::MESSAGE_ENC_QUOTED_PRINTABLE:
                 return quoted_printable_decode($string);
-            case self::ENC_OTHER:
+            case IMAP::MESSAGE_ENC_OTHER:
                 return $string;
             default:
                 return $string;
         }
     }
-    
+
     /**
      * Convert the encoding
      *
@@ -811,7 +764,7 @@ class Message {
         // Try finding the message by uid in the current folder
         $client = new Client;
         $client->openFolder($folder);
-        $uidMatches = imap_fetch_overview($client->getConnection(), $this->uid, FT_UID);
+        $uidMatches = imap_fetch_overview($client->getConnection(), $this->uid, IMAP::FT_UID);
         $uidMatch = count($uidMatches)
             ? new Message($uidMatches[0]->uid, $uidMatches[0]->msgno, $client)
             : null;
@@ -847,7 +800,7 @@ class Message {
     public function moveToFolder($mailbox = 'INBOX') {
         $this->client->createFolder($mailbox);
 
-        return imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, CP_UID);
+        return imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
     }
 
     /**
@@ -858,7 +811,7 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function delete($expunge = true) {
-        $status = imap_delete($this->client->getConnection(), $this->uid, FT_UID);
+        $status = imap_delete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if($expunge) $this->client->expunge();
 
         return $status;
@@ -872,7 +825,7 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function restore($expunge = true) {
-        $status = imap_undelete($this->client->getConnection(), $this->uid, FT_UID);
+        $status = imap_undelete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if($expunge) $this->client->expunge();
 
         return $status;
@@ -932,7 +885,7 @@ class Message {
      */
     public function getRawBody() {
         if ($this->raw_body === null) {
-            $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '', $this->fetch_options | FT_UID);
+            $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '', $this->fetch_options | IMAP::FT_UID);
         }
 
         return $this->raw_body;

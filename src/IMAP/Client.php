@@ -121,12 +121,6 @@ class Client {
      *
      * @var array $timeout_type
      */
-    protected $timeout_type = [
-        'IMAP_OPENTIMEOUT' => 1,
-        'IMAP_READTIMEOUT' => 2,
-        'IMAP_WRITETIMEOUT' => 3,
-        'IMAP_CLOSETIMEOUT' => 4
-    ];
 
     /**
      * Client constructor.
@@ -254,7 +248,7 @@ class Client {
     public function disconnect() {
         if ($this->isConnected() && $this->connection !== false && is_integer($this->connection) === false) {
             $this->errors = array_merge($this->errors, imap_errors() ?: []);
-            $this->connected = !imap_close($this->connection, CL_EXPUNGE);
+            $this->connected = !imap_close($this->connection, IMAP::CL_EXPUNGE);
         }
 
         return $this;
@@ -459,7 +453,7 @@ class Client {
      * @return int
      */
     protected function getOptions() {
-        return ($this->isReadOnly()) ? OP_READONLY : 0;
+        return ($this->isReadOnly()) ? IMAP::OP_READONLY : 0;
     }
 
     /**
@@ -592,15 +586,11 @@ class Client {
      * @throws InvalidImapTimeoutTypeException
      */
     public function setTimeout($type, $timeout) {
-        if(is_numeric($type)) {
-            $type = (int) $type;
-        }elseif (isset($this->timeout_type[$type])){
-            $type = $this->timeout_type[$type];
-        }else{
-            throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
+        if(0 <= $type && $type <= 4) {
+            return imap_timeout($type, $timeout);
         }
 
-        return imap_timeout($type, $timeout);
+        throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
     }
 
     /**
@@ -611,14 +601,11 @@ class Client {
      * @throws InvalidImapTimeoutTypeException
      */
     public function getTimeout($type){
-        if(is_numeric($type)) {
-            $type = (int) $type;
-        }elseif (isset($this->timeout_type[$type])){
-            $type = $this->timeout_type[$type];
-        }else{
-            throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
+        if(0 <= $type && $type <= 4) {
+            return imap_timeout($type);
         }
 
-        return imap_timeout($type);
+        throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
     }
+
 }

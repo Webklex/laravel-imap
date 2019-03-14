@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Webklex\IMAP\Client;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
+use Webklex\IMAP\IMAP;
 use Webklex\IMAP\Message;
 use Webklex\IMAP\Support\MessageCollection;
 
@@ -64,7 +65,7 @@ class Query {
     public function __construct(Client $client, $charset = 'UTF-8') {
         $this->setClient($client);
 
-        if(config('imap.options.fetch') === FT_PEEK) $this->leaveUnread();
+        if(config('imap.options.fetch') === IMAP::FT_PEEK) $this->leaveUnread();
 
         $this->charset = $charset;
         $this->query = collect();
@@ -117,7 +118,7 @@ class Query {
      * @return $this
      */
     public function leaveUnread() {
-        $this->setFetchOptions(FT_PEEK);
+        $this->setFetchOptions(IMAP::FT_PEEK);
 
         return $this;
     }
@@ -128,7 +129,7 @@ class Query {
      * @return $this
      */
     public function markAsRead() {
-        $this->setFetchOptions(FT_UID);
+        $this->setFetchOptions(IMAP::FT_UID);
 
         return $this;
     }
@@ -150,9 +151,9 @@ class Query {
              * @see https://github.com/Webklex/laravel-imap/issues/100
              */
             if($this->getCharset() === null){
-                $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), SE_UID);
+                $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID);
             }else{
-                $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), SE_UID, $this->getCharset());
+                $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID, $this->getCharset());
             }
 
             if ($available_messages !== false) {

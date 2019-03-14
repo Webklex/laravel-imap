@@ -56,27 +56,7 @@ class Attachment {
     public $img_src = null;
 
     /**
-     * Attachment const
-     *
-     * @const integer   TYPE_TEXT
-     * @const integer   TYPE_MULTIPART
-     * @const integer   TYPE_MESSAGE
-     * @const integer   TYPE_APPLICATION
-     * @const integer   TYPE_AUDIO
-     * @const integer   TYPE_IMAGE
-     * @const integer   TYPE_VIDEO
-     * @const integer   TYPE_MODEL
-     * @const integer   TYPE_OTHER
      */
-    const TYPE_TEXT = 0;
-    const TYPE_MULTIPART = 1;
-    const TYPE_MESSAGE = 2;
-    const TYPE_APPLICATION = 3;
-    const TYPE_AUDIO = 4;
-    const TYPE_IMAGE = 5;
-    const TYPE_VIDEO = 6;
-    const TYPE_MODEL = 7;
-    const TYPE_OTHER = 8;
 
     /**
      * Attachment constructor.
@@ -103,28 +83,28 @@ class Attachment {
      */
     protected function findType() {
         switch ($this->structure->type) {
-            case self::TYPE_MESSAGE:
+            case IMAP::ATTACHMENT_TYPE_MESSAGE:
                 $this->type = 'message';
                 break;
-            case self::TYPE_APPLICATION:
+            case IMAP::ATTACHMENT_TYPE_APPLICATION:
                 $this->type = 'application';
                 break;
-            case self::TYPE_AUDIO:
+            case IMAP::ATTACHMENT_TYPE_AUDIO:
                 $this->type = 'audio';
                 break;
-            case self::TYPE_IMAGE:
+            case IMAP::ATTACHMENT_TYPE_IMAGE:
                 $this->type = 'image';
                 break;
-            case self::TYPE_VIDEO:
+            case IMAP::ATTACHMENT_TYPE_VIDEO:
                 $this->type = 'video';
                 break;
-            case self::TYPE_MODEL:
+            case IMAP::ATTACHMENT_TYPE_MODEL:
                 $this->type = 'model';
                 break;
-            case self::TYPE_TEXT:
+            case IMAP::ATTACHMENT_TYPE_TEXT:
                 $this->type = 'text';
                 break;
-            case self::TYPE_MULTIPART:
+            case IMAP::ATTACHMENT_TYPE_MULTIPART:
                 $this->type = 'multipart';
                 break;
             default:
@@ -159,7 +139,7 @@ class Attachment {
             }
         }
 
-        if (self::TYPE_MESSAGE == $this->structure->type) {
+        if (IMAP::ATTACHMENT_TYPE_MESSAGE == $this->structure->type) {
             if ($this->structure->ifdescription) {
                 $this->setName($this->structure->description);
             } else {
