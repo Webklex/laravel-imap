@@ -51,7 +51,7 @@ class Folder {
      *
      * @var string
      */
-    public $fullName;
+    public $full_name;
 
     /**
      * Children folders
@@ -118,8 +118,8 @@ class Folder {
 
         $this->setDelimiter($structure->delimiter);
         $this->path      = $structure->name;
-        $this->fullName  = $this->decodeName($structure->name);
-        $this->name      = $this->getSimpleName($this->delimiter, $this->fullName);
+        $this->full_name  = $this->decodeName($structure->name);
+        $this->name      = $this->getSimpleName($this->delimiter, $this->full_name);
 
         $this->parseAttributes($structure->attributes);
     }
@@ -187,11 +187,8 @@ class Folder {
      * @param boolean      $fetch_flags
      *
      * @return Message|null
-     *
      * @throws Exceptions\ConnectionFailedException
-     * @throws Exceptions\InvalidWhereQueryCriteriaException
-     * @throws GetMessagesFailedException
-     * @throws MessageSearchValidationException
+     * @throws Exceptions\InvalidMessageDateException
      */
     public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = true) {
         if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
@@ -343,12 +340,12 @@ class Folder {
      * Get simple name (without parent folders).
      *
      * @param $delimiter
-     * @param $fullName
+     * @param $full_name
      *
      * @return mixed
      */
-    protected function getSimpleName($delimiter, $fullName) {
-        $arr = explode($delimiter, $fullName);
+    protected function getSimpleName($delimiter, $full_name) {
+        $arr = explode($delimiter, $full_name);
 
         return end($arr);
     }
