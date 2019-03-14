@@ -680,6 +680,7 @@ Extends [Illuminate\Support\Collection::class](https://laravel.com/api/5.4/Illum
 | DateTime::__construct(): Failed to parse time string (...)                | Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)  | 
 | imap_open(): Couldn't open (...) Please log in your web browser: (...)    | In order to use IMAP on some services (such as Gmail) you need to enable it first. [Google help page]( https://support.google.com/mail/answer/7126229?hl=en) |
 | imap_headerinfo(): Bad message number                                     | This happens if no Message number is available. Please make sure Message::parseHeader() has run before |
+| imap_open(): Couldn't open stream {outlook.office365.com:993/imap/s (...) | Can be caused by a lot of things: head over to these issues for more information: [#153](https://github.com/Webklex/laravel-imap/issues/153) [#100](https://github.com/Webklex/laravel-imap/issues/100) [#78](https://github.com/Webklex/laravel-imap/issues/78)  |
 
 ## Milestones & upcoming features
 * Wiki!!
