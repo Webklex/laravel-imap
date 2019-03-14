@@ -21,6 +21,56 @@ use Webklex\IMAP\Support\FlagCollection;
  * Class Message
  *
  * @package Webklex\IMAP
+ *
+ * @property integer msglist
+ * @property integer uid
+ * @property integer msgn
+ * @property integer priority
+ * @property string subject
+ * @property string message_id
+ * @property string message_no
+ * @property string references
+ * @property carbon date
+ * @property array from
+ * @property array to
+ * @property array cc
+ * @property array bcc
+ * @property array reply_to
+ * @property array in_reply_to
+ * @property array sender
+ *
+ * @method integer getMsglist()
+ * @method integer setMsglist(integer $msglist)
+ * @method integer getUid()
+ * @method integer setUid(integer $uid)
+ * @method integer getMsgn()
+ * @method integer setMsgn(integer $msgn)
+ * @method integer getPriority()
+ * @method integer setPriority(integer $priority)
+ * @method string getSubject()
+ * @method string setSubject(string $subject)
+ * @method string getMessageId()
+ * @method string setMessageId(string $message_id)
+ * @method string getMessageNo()
+ * @method string setMessageNo(string $message_no)
+ * @method string getReferences()
+ * @method string setReferences(string $references)
+ * @method carbon getDate()
+ * @method carbon setDate(carbon $date)
+ * @method array getFrom()
+ * @method array setFrom(array $from)
+ * @method array getTo()
+ * @method array setTo(array $to)
+ * @method array getCc()
+ * @method array setCc(array $cc)
+ * @method array getBcc()
+ * @method array setBcc(array $bcc)
+ * @method array getReplyTo()
+ * @method array setReplyTo(array $reply_to)
+ * @method array getInReplyTo()
+ * @method array setInReplyTo(array $in_reply_to)
+ * @method array getSender()
+ * @method array setSender(array $sender)
  */
 class Message {
 
@@ -34,12 +84,22 @@ class Message {
     /** @var array $config */
     protected $config = [];
 
-    /**
-     * U ID
-     *
-     * @var integer
-     */
-    public $uid = '';
+    /** @var array $attributes */
+    protected $attributes = [
+        'message_id' => '',
+        'message_no' => null,
+        'subject' => '',
+        'references' => null,
+        'date' => null,
+        'from' => [],
+        'to' => [],
+        'cc' => [],
+        'bcc' => [],
+        'reply_to' => [],
+        'in_reply_to' => '',
+        'sender' => [],
+        'priority' => 0,
+    ];
 
     /**
      * Fetch body options
@@ -68,16 +128,6 @@ class Message {
      * @var bool
      */
     public $fetch_flags = null;
-    
-    /**
-     * @var int $msglist
-     */
-    public $msglist = 1;
-
-    /**
-     * @var int $msgn
-     */
-    public $msgn = null;
 
     /**
      * @var string $header
@@ -92,37 +142,6 @@ class Message {
     /** @var null|string $raw_body */
     public $raw_body = null;
 
-    /**
-     * Message header components
-     *
-     * @var string  $message_id
-     * @var mixed   $message_no
-     * @var string  $subject
-     * @var mixed   $references
-     * @var mixed   $date
-     * @var array   $from
-     * @var array   $to
-     * @var array   $cc
-     * @var array   $bcc
-     * @var array   $reply_to
-     * @var string  $in_reply_to
-     * @var array   $sender
-     * @var array   $flags
-     * @var array   $priority
-     */
-    public $message_id = '';
-    public $message_no = null;
-    public $subject = '';
-    public $references = null;
-    public $date = null;
-    public $from = [];
-    public $to = [];
-    public $cc = [];
-    public $bcc = [];
-    public $reply_to = [];
-    public $in_reply_to = '';
-    public $sender = [];
-    public $priority = 0;
     /** @var null $structure */
     protected $structure = null;
 
@@ -182,6 +201,61 @@ class Message {
         if ($this->getFetchBodyOption() === true) {
             $this->parseBody();
         }
+    }
+
+    /**
+     * Call dynamic attribute setter and getter methods
+     * @param string $method
+     * @param array $arguments
+     *
+     * @return mixed
+     * @throws MethodNotFoundException
+     */
+    public function __call($method, $arguments) {
+        if(strtolower(substr($method, 0, 3)) === 'get') {
+            $name = snake_case(substr($method, 3));
+
+            if(isset($this->attributes[$name])) {
+                return $this->attributes[$name];
+            }
+
+        }elseif (strtolower(substr($method, 0, 3)) === 'set') {
+            $name = snake_case(substr($method, 3));
+
+            if(isset($this->attributes[$name])) {
+                $this->attributes[$name] = array_pop($arguments);
+
+                return $this->attributes[$name];
+            }
+
+        }
+
+        throw new MethodNotFoundException("Method ".self::class.'::'.$method.'() is not supported');
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function __set($name, $value) {
+        $this->attributes[$name] = $value;
+
+        return $this->attributes[$name];
+    }
+
+    /**
+     * @param $name
+     *
+     * @return mixed|null
+     */
+    public function __get($name) {
+        if(isset($this->attributes[$name])) {
+            return $this->attributes[$name];
+        }
+
+        return null;
     }
 
     /**
@@ -289,29 +363,16 @@ class Message {
                 $this->subject = mb_decode_mimeheader($header->subject);
             }
         }
-        if (property_exists($header, 'from')) {
-            $this->from = $this->parseAddresses($header->from);
+
+        foreach(['from', 'to', 'cc', 'bcc', 'reply_to', 'sender'] as $part){
+            $this->extractHeaderAddressPart($header, $part);
         }
-        if (property_exists($header, 'to')) {
-            $this->to = $this->parseAddresses($header->to);
-        }
-        if (property_exists($header, 'cc')) {
-            $this->cc = $this->parseAddresses($header->cc);
-        }
-        if (property_exists($header, 'bcc')) {
-            $this->bcc = $this->parseAddresses($header->bcc);
-        }
+
         if (property_exists($header, 'references')) {
             $this->references = $header->references;
         }
-        if (property_exists($header, 'reply_to')) {
-            $this->reply_to = $this->parseAddresses($header->reply_to);
-        }
         if (property_exists($header, 'in_reply_to')) {
             $this->in_reply_to = str_replace(['<', '>'], '', $header->in_reply_to);
-        }
-        if (property_exists($header, 'sender')) {
-            $this->sender = $this->parseAddresses($header->sender);
         }
         if (property_exists($header, 'message_id')) {
             $this->message_id = str_replace(['<', '>'], '', $header->message_id);
@@ -323,26 +384,68 @@ class Message {
             $this->message_no = imap_msgno($this->client->getConnection(), $this->getUid());
         }
 
+        $this->date = $this->parseDate($header);
+    }
+
+    /**
+     * Try to extract the priority from a given raw header string
+     * @param string $header
+     *
+     * @return int|null
+     */
+    private function extractPriority($header) {
+        if(preg_match('/x\-priority\:.*([0-9]{1,2})/i', $header, $priority)){
+            $priority = isset($priority[1]) ? (int) $priority[1] : 0;
+            switch($priority){
+                case IMAP::MESSAGE_PRIORITY_HIGHEST;
+                    $priority = IMAP::MESSAGE_PRIORITY_HIGHEST;
+                    break;
+                case IMAP::MESSAGE_PRIORITY_HIGH;
+                    $priority = IMAP::MESSAGE_PRIORITY_HIGH;
+                    break;
+                case IMAP::MESSAGE_PRIORITY_NORMAL;
+                    $priority = IMAP::MESSAGE_PRIORITY_NORMAL;
+                    break;
+                case IMAP::MESSAGE_PRIORITY_LOW;
+                    $priority = IMAP::MESSAGE_PRIORITY_LOW;
+                    break;
+                case IMAP::MESSAGE_PRIORITY_LOWEST;
+                    $priority = IMAP::MESSAGE_PRIORITY_LOWEST;
+                    break;
+                default:
+                    $priority = IMAP::MESSAGE_PRIORITY_UNKNOWN;
+                    break;
+            }
+        }
+
+        return $priority;
+    }
+
+    /**
+     * Exception handling for invalid dates
+     *
+     * Currently known invalid formats:
+     * ^ Datetime                                   ^ Problem                           ^ Cause
+     * | Mon, 20 Nov 2017 20:31:31 +0800 (GMT+8:00) | Double timezone specification     | A Windows feature
+     * | Thu, 8 Nov 2018 08:54:58 -0200 (-02)       |
+     * |                                            | and invalid timezone (max 6 char) |
+     * | 04 Jan 2018 10:12:47 UT                    | Missing letter "C"                | Unknown
+     * | Thu, 31 May 2018 18:15:00 +0800 (added by) | Non-standard details added by the | Unknown
+     * |                                            | mail server                       |
+     * | Sat, 31 Aug 2013 20:08:23 +0580            | Invalid timezone                  | PHPMailer bug https://sourceforge.net/p/phpmailer/mailman/message/6132703/
+     *
+     * Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)
+     *
+     * @param object $header
+     *
+     * @return Carbon|null
+     * @throws InvalidMessageDateException
+     */
+    private function parseDate($header) {
+        $parsed_date = null;
 
         if (property_exists($header, 'date')) {
             $date = $header->date;
-
-            /**
-             * Exception handling for invalid dates
-             * Will be extended in the future
-             *
-             * Currently known invalid formats:
-             * ^ Datetime                                   ^ Problem                           ^ Cause
-             * | Mon, 20 Nov 2017 20:31:31 +0800 (GMT+8:00) | Double timezone specification     | A Windows feature
-             * | Thu, 8 Nov 2018 08:54:58 -0200 (-02)       |
-             * |                                            | and invalid timezone (max 6 char) |
-             * | 04 Jan 2018 10:12:47 UT                    | Missing letter "C"                | Unknown
-             * | Thu, 31 May 2018 18:15:00 +0800 (added by) | Non-standard details added by the | Unknown
-             * |                                            | mail server                       |
-             * | Sat, 31 Aug 2013 20:08:23 +0580            | Invalid timezone                  | PHPMailer bug https://sourceforge.net/p/phpmailer/mailman/message/6132703/
-             *
-             * Please report any new invalid timestamps to [#45](https://github.com/Webklex/laravel-imap/issues/45)
-             */
 
             if(preg_match('/\+0580/', $date)) {
                 $date = str_replace('+0580', '+0530', $date);
@@ -350,7 +453,7 @@ class Message {
 
             $date = trim(rtrim($date));
             try {
-                $this->date = Carbon::parse($date);
+                $parsed_date = Carbon::parse($date);
             } catch (\Exception $e) {
                 switch (true) {
                     case preg_match('/([A-Z]{2,3}[\,|\ \,]\ [0-9]{1,2}\ [A-Z]{2,3}\ [0-9]{4}\ [0-9]{1,2}\:[0-9]{1,2}\:[0-9]{1,2}.*)+$/i', $date) > 0:
@@ -366,12 +469,14 @@ class Message {
                         break;
                 }
                 try{
-                    $this->date = Carbon::parse($date);
+                    $parsed_date = Carbon::parse($date);
                 } catch (\Exception $_e) {
                     throw new InvalidMessageDateException("Invalid message date. ID:".$this->getMessageId(), 1000, $e);
                 }
             }
         }
+
+        return $parsed_date;
     }
 
     /**
@@ -417,6 +522,17 @@ class Message {
         }
 
         return $this->header_info;
+    }
+
+    /**
+     * Extract a given part as address array from a given header
+     * @param object $header
+     * @param string $part
+     */
+    private function extractHeaderAddressPart($header, $part) {
+        if (property_exists($header, $part)) {
+            $this->$part = $this->parseAddresses($header->$part);
+        }
     }
 
     /**
@@ -910,13 +1026,6 @@ class Message {
     /**
      * @return integer
      */
-    public function getUid() {
-        return $this->uid;
-    }
-
-    /**
-     * @return integer
-     */
     public function getFetchOptions() {
         return $this->fetch_options;
     }
@@ -926,13 +1035,6 @@ class Message {
      */
     public function getFetchBodyOption() {
         return $this->fetch_body;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getPriority() {
-        return $this->priority;
     }
 
     /**
@@ -950,99 +1052,6 @@ class Message {
     }
 
     /**
-     * @return int
-     */
-    public function getMsglist() {
-        return $this->msglist;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMessageId() {
-        return $this->message_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMessageNo() {
-        return $this->message_no;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSubject() {
-        return $this->subject;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getReferences() {
-        return $this->references;
-    public function getStructure(){
-        return $this->structure;
-    }
-
-    /**
-     * @return Carbon|null
-     */
-    public function getDate() {
-        return $this->date;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFrom() {
-        return $this->from;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTo() {
-        return $this->to;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCc() {
-        return $this->cc;
-    }
-
-    /**
-     * @return array
-     */
-    public function getBcc() {
-        return $this->bcc;
-    }
-
-    /**
-     * @return array
-     */
-    public function getReplyTo() {
-        return $this->reply_to;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getInReplyTo() {
-        return $this->in_reply_to;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSender() {
-        return $this->sender;
-    }
-
-    /**
      * @return mixed
      */
     public function getBodies() {
@@ -1057,11 +1066,18 @@ class Message {
     }
 
     /**
+     * @return object|null
+     */
+    public function getStructure(){
+        return $this->structure;
+    }
+
+    /**
      * Does this message match another one?
      *
      * A match means same uid, message id, subject and date/time.
      *
-     * @param  null|static $message
+     * @param  null|Message $message
      * @return boolean
      */
     public function is(Message $message = null) {
@@ -1073,5 +1089,29 @@ class Message {
             && $this->message_id == $message->message_id
             && $this->subject == $message->subject
             && $this->date->eq($message->date);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes(){
+        return $this->attributes;
+    }
+
+    /**
+     */
+
+    }
+
+    /**
+     * @return string
+     */
+    }
+
+    /**
+     *
+     */
+        }
+
     }
 }
