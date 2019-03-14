@@ -122,5 +122,23 @@ return [
                 'name' => 'utf-8' // mimeheader
             ]
         ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available masking options
+    |--------------------------------------------------------------------------
+    |
+    | By using your own custom masks you can implement your own methods for
+    | a better and faster access and less code to write.
+    |
+    | Checkout the two examples custom_attachment_mask and custom_message_mask
+    | for a quick start.
+    |
+    | The provided masks below are used as the default masks.
+     */
+    'masks' => [
+        'message' => \Webklex\IMAP\Support\Masks\MessageMask::class,
+        'attachment' => \Webklex\IMAP\Support\Masks\AttachmentMask::class
     ]
 ];

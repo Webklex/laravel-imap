@@ -14,6 +14,9 @@ namespace Webklex\IMAP;
 
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
+use Webklex\IMAP\Exceptions\MaskNotFoundException;
+use Webklex\IMAP\Exceptions\MethodNotFoundException;
+use Webklex\IMAP\Support\Masks\AttachmentMask;
 
 /**
  * Class Attachment
@@ -68,7 +71,10 @@ class Attachment {
     ];
 
     /**
+     * Default mask
+     * @var string $mask
      */
+    protected $mask = AttachmentMask::class;
 
     /**
      * Attachment constructor.
@@ -85,6 +91,11 @@ class Attachment {
         $this->oMessage = $oMessage;
         $this->structure = $structure;
         $this->part_number = ($part_number) ? $part_number : $this->part_number;
+
+        $default_mask = $this->oMessage->getClient()->getDefaultAttachmentMask();
+        if($default_mask != null) {
+            $this->mask = $default_mask;
+        }
 
         $this->findType();
         $this->fetch();
@@ -292,15 +303,37 @@ class Attachment {
     }
 
     /**
+     * @param $mask
+     * @return $this
      */
+    public function setMask($mask){
+        if(class_exists($mask)){
+            $this->mask = $mask;
         }
+
+        return $this;
     }
 
     /**
+     * @return string
      */
+    public function getMask(){
+        return $this->mask;
     }
 
     /**
+     * Get a masked instance by providing a mask name
+     * @param string|null $mask
+     *
+     * @return mixed
+     * @throws MaskNotFoundException
      */
+    public function mask($mask = null){
+        $mask = $mask !== null ? $mask : $this->mask;
+        if(class_exists($mask)){
+            return new $mask($this);
+        }
+
+        throw new MaskNotFoundException("Unknown mask provided: ".$mask);
     }
 }

@@ -15,8 +15,11 @@ namespace Webklex\IMAP;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\InvalidImapTimeoutTypeException;
+use Webklex\IMAP\Exceptions\MaskNotFoundException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
 use Webklex\IMAP\Support\FolderCollection;
+use Webklex\IMAP\Support\Masks\AttachmentMask;
+use Webklex\IMAP\Support\Masks\MessageMask;
 use Webklex\IMAP\Support\MessageCollection;
 
 /**
@@ -117,15 +120,24 @@ class Client {
     protected $valid_config_keys = ['host', 'port', 'encryption', 'validate_cert', 'username', 'password', 'protocol'];
 
     /**
+     * @var string $default_message_mask
      */
+    protected $default_message_mask = MessageMask::class;
+
+    /**
+     * @var string $default_attachment_mask
+     */
+    protected $default_attachment_mask = AttachmentMask::class;
 
     /**
      * Client constructor.
-     *
      * @param array $config
+     *
+     * @throws MaskNotFoundException
      */
     public function __construct($config = []) {
         $this->setConfig($config);
+        $this->setMaskFromConfig($config);
     }
 
     /**
@@ -151,6 +163,58 @@ class Client {
         }
 
         return $this;
+    }
+
+    /**
+     * Look for a possible mask in any available config
+     * @param $config
+     *
+     * @throws MaskNotFoundException
+     */
+    protected function setMaskFromConfig($config) {
+        $default_config  = config("imap.masks");
+
+        if(isset($config['masks'])){
+            if(isset($config['masks']['message'])) {
+                if(class_exists($config['masks']['message'])) {
+                    $this->default_message_mask = $config['masks']['message'];
+                }else{
+                    throw new MaskNotFoundException("Unknown mask provided: ".$config['masks']['message']);
+                }
+            }else{
+                if(class_exists($default_config['message'])) {
+                    $this->default_message_mask = $default_config['message'];
+                }else{
+                    throw new MaskNotFoundException("Unknown mask provided: ".$default_config['message']);
+                }
+            }
+            if(isset($config['masks']['attachment'])) {
+                if(class_exists($config['masks']['attachment'])) {
+                    $this->default_message_mask = $config['masks']['attachment'];
+                }else{
+                    throw new MaskNotFoundException("Unknown mask provided: ".$config['masks']['attachment']);
+                }
+            }else{
+                if(class_exists($default_config['attachment'])) {
+                    $this->default_message_mask = $default_config['attachment'];
+                }else{
+                    throw new MaskNotFoundException("Unknown mask provided: ".$default_config['attachment']);
+                }
+            }
+        }else{
+            if(class_exists($default_config['message'])) {
+                $this->default_message_mask = $default_config['message'];
+            }else{
+                throw new MaskNotFoundException("Unknown mask provided: ".$default_config['message']);
+            }
+
+            if(class_exists($default_config['attachment'])) {
+                $this->default_message_mask = $default_config['attachment'];
+            }else{
+                throw new MaskNotFoundException("Unknown mask provided: ".$default_config['attachment']);
+            }
+        }
+
     }
 
     /**
@@ -606,4 +670,49 @@ class Client {
         throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
     }
 
+    /**
+     * @return string
+     */
+    public function getDefaultMessageMask(){
+        return $this->default_message_mask;
+    }
+
+    /**
+     * @param $mask
+     *
+     * @return $this
+     * @throws MaskNotFoundException
+     */
+    public function setDefaultMessageMask($mask) {
+        if(class_exists($mask)) {
+            $this->default_message_mask = $mask;
+
+            return $this;
+        }
+
+        throw new MaskNotFoundException("Unknown mask provided: ".$mask);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultAttachmentMask(){
+        return $this->default_attachment_mask;
+    }
+
+    /**
+     * @param $mask
+     *
+     * @return $this
+     * @throws MaskNotFoundException
+     */
+    public function setDefaultAttachmentMask($mask) {
+        if(class_exists($mask)) {
+            $this->default_attachment_mask = $mask;
+
+            return $this;
+        }
+
+        throw new MaskNotFoundException("Unknown mask provided: ".$mask);
+    }
 }

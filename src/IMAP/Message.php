@@ -14,8 +14,11 @@ namespace Webklex\IMAP;
 
 use Carbon\Carbon;
 use Webklex\IMAP\Exceptions\InvalidMessageDateException;
+use Webklex\IMAP\Exceptions\MaskNotFoundException;
+use Webklex\IMAP\Exceptions\MethodNotFoundException;
 use Webklex\IMAP\Support\AttachmentCollection;
 use Webklex\IMAP\Support\FlagCollection;
+use Webklex\IMAP\Support\Masks\MessageMask;
 
 /**
  * Class Message
@@ -80,6 +83,12 @@ class Message {
      * @var Client
      */
     private $client = Client::class;
+
+    /**
+     * Default mask
+     * @var string $mask
+     */
+    protected $mask = MessageMask::class;
 
     /** @var array $config */
     protected $config = [];
@@ -178,6 +187,11 @@ class Message {
      * @throws InvalidMessageDateException
      */
     public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = false) {
+
+        $default_mask = $client->getDefaultMessageMask();
+        if($default_mask != null) {
+            $this->mask = $default_mask;
+        }
 
         $this->config = config('imap.options');
 
@@ -891,6 +905,7 @@ class Message {
      * @return null|Folder
      * @throws Exceptions\ConnectionFailedException
      * @throws InvalidMessageDateException
+     * @throws MaskNotFoundException
      */
     public function getContainingFolder(Folder $folder = null) {
         $folder = $folder ?: $this->client->getFolders()->first();
@@ -1116,19 +1131,37 @@ class Message {
     }
 
     /**
+     * @param $mask
+     * @return $this
      */
+    public function setMask($mask){
+        if(class_exists($mask)){
+            $this->mask = $mask;
+        }
 
+        return $this;
     }
 
     /**
      * @return string
      */
+    public function getMask(){
+        return $this->mask;
     }
 
     /**
+     * Get a masked instance by providing a mask name
+     * @param string|null $mask
      *
+     * @return mixed
+     * @throws MaskNotFoundException
      */
+    public function mask($mask = null){
+        $mask = $mask !== null ? $mask : $this->mask;
+        if(class_exists($mask)){
+            return new $mask($this);
         }
 
+        throw new MaskNotFoundException("Unknown mask provided: ".$mask);
     }
 }
