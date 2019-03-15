@@ -41,13 +41,4 @@ class AttachmentMask extends Mask {
     public function getImageSrc() {
         return 'data:'.$this->parent->content_type.';base64,'.$this->getContentBase64Encoded();
     }
-
-    /**
-     * Alias method for better code reading
-     *
-     * @return Attachment
-     */
-    public function getAttachment(){
-        return $this->parent;
-    }
 }

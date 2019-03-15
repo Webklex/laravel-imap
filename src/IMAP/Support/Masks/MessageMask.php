@@ -40,6 +40,7 @@ class MessageMask extends Mask {
 
     /**
      * Get the Message html body filtered by an optional callback
+     * @param callable|bool $callback
      *
      * @return string|null
      */
@@ -107,14 +108,4 @@ class MessageMask extends Mask {
             return $body;
         });
     }
-
-    /**
-     * Alias method for better code reading
-     *
-     * @return Message
-     */
-    public function getMessage(){
-        return $this->parent;
-    }
-
 }
