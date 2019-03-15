@@ -165,8 +165,10 @@ class Query {
                     $available_messages = $available_messages->reverse();
                 }
 
-                $available_messages->forPage($this->page, $this->limit)->each(function($msgno, $msglist) use(&$messages, $options) {
-                    $oMessage = new Message($msgno, $msglist, $this->getClient(), $this->getFetchOptions(), $this->getFetchBody(), $this->getFetchAttachment(), $this->getFetchFlags());
+                $query =& $this;
+
+                $available_messages->forPage($this->page, $this->limit)->each(function($msgno, $msglist) use(&$messages, $options, $query) {
+                    $oMessage = new Message($msgno, $msglist, $query->getClient(), $query->getFetchOptions(), $query->getFetchBody(), $query->getFetchAttachment(), $query->getFetchFlags());
                     switch ($options['message_key']){
                         case 'number':
                             $message_key = $oMessage->getMessageNo();
@@ -185,9 +187,7 @@ class Query {
 
             return $messages;
         } catch (\Exception $e) {
-            $message = $e->getMessage();
-
-            throw new GetMessagesFailedException($message);
+            throw new GetMessagesFailedException($e->getMessage());
         }
     }
 
