@@ -8,6 +8,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Fixed
 - iconv(): error suppressor for //IGNORE added #184
 - Typo Folder attribute fullName changed to full_name
+- Query scope error fixed #153
 
 ### Added
 - Message structure accessor added #182
