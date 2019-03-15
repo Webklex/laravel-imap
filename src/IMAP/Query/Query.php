@@ -192,6 +192,22 @@ class Query {
     }
 
     /**
+     * Paginate the current query
+     * @param int $per_page
+     * @param null $page
+     * @param string $page_name
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @throws GetMessagesFailedException
+     */
+    public function paginate($per_page = 5, $page = null, $page_name = 'imap_page'){
+        $this->page = $page > $this->page ? $page : $this->page;
+        $this->limit = $per_page;
+
+        return $this->get()->paginate($per_page = 5, $this->page, $page_name);
+    }
+
+    /**
      * Get the raw IMAP search query
      *
      * @return string

@@ -331,6 +331,13 @@ $aMessage = $oFolder->query()->since('15.03.2018')->limit(10, 2)->get();
 ```
 
 #### Pagination
+Paginate a query:
+``` php
+/** @var \Webklex\IMAP\Folder $oFolder */
+
+/** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
+$paginator = $oFolder->query()->since('15.03.2018')->paginate();
+```
 Paginate a message collection:
 ``` php
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
@@ -700,6 +707,8 @@ if you're just wishing a feature ;)
 | setFetchFlags      | boolean $fetch_flags              | WhereQuery        | Set the fetch flags option |
 | leaveUnread        |                                   | WhereQuery        | Don't mark all messages as "read" while fetching:  |
 | markAsRead         |                                   | WhereQuery        | Mark all messages as "read" while fetching |  
+| paginate           | int $perPage = 5, $page = null, $pageName = 'imap_page' | LengthAwarePaginator | Paginate the current query. |
+     
            
 ### [Attachment::class](src/IMAP/Attachment.php)
 

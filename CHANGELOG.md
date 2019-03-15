@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [1.4.0] - [UNRELEASED]
 ### Fixed
-- iconv(): error supressor for //IGNORE added #184
+- iconv(): error suppressor for //IGNORE added #184
 - Typo Folder attribute fullName changed to full_name
 
 ### Added
@@ -20,6 +20,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Message::getHTMLBody($callback) extended
 - Masks added (take look at the examples for more information on masks)
 - More examples added
+- Query::paginate() method added
 
 ### Affected Classes
 - [Folder::class](src/IMAP/Folder.php)
