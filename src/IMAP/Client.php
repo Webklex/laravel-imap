@@ -531,6 +531,7 @@ class Client {
         if (in_array($this->encryption,['tls','ssl'])) {
             $address .= '/'.$this->encryption;
         }
+
         $address .= '}';
 
         return $address;
