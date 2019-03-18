@@ -468,20 +468,24 @@ $aMessage = $oFolder->query()->whereAll()
 #### Masking
 Laravel-IMAP already comes with two default masks [MessageMask::class](#messagemaskclass) and [AttachmentMask::class](#attachmentmaskclass).
 
-In order to save some resources, the mask has to be applied manually:
+The masked instance has to be called manually and is designed to add custom functionality.
+
+You can call the default mask by calling the mask method without any arguments.
 ``` php
 /** @var \Webklex\IMAP\Message $oMessage */
 $mask = $oMessage->mask();
 ```
-In this case the default mask gets called. 
+
 There are several methods available to set the default mask:
 ``` php
 /** @var \Webklex\IMAP\Client $oClient */
 /** @var \Webklex\IMAP\Message $oMessage */
 
-$oClient->setDefaultMessageMask(\Webklex\IMAP\Support\Masks\MessageMask::class);
-$oMessage->setMask(\Webklex\IMAP\Support\Masks\MessageMask::class);
-$mask = $oMessage->mask(\Webklex\IMAP\Support\Masks\MessageMask::class);
+$message_mask = \Webklex\IMAP\Support\Masks\MessageMask::class;
+
+$oClient->setDefaultMessageMask($message_mask);
+$oMessage->setMask($message_mask);
+$mask = $oMessage->mask($message_mask);
 ```
 The last one wont set the mask but generate a masked instance using the provided mask.
 
@@ -491,14 +495,15 @@ You can also apply a mask on [attachments](#attachmentclass):
 ``` php
 /** @var \Webklex\IMAP\Client $oClient */
 /** @var \Webklex\IMAP\Attachment $oAttachment */
+$attachment_mask = \Webklex\IMAP\Support\Masks\AttachmentMask::class;
 
-$oClient->setDefaultAttachmentMask(\Webklex\IMAP\Support\Masks\AttachmentMask::class);
-$oAttachment->setMask(\Webklex\IMAP\Support\Masks\AttachmentMask::class);
-$mask = $oAttachment->mask(\Webklex\IMAP\Support\Masks\AttachmentMask::class);
+$oClient->setDefaultAttachmentMask($attachment_mask);
+$oAttachment->setMask($attachment_mask);
+$mask = $oAttachment->mask($attachment_mask);
 ```
 
-If you want to implement your own shortcuts using a mask just extend [MessageMask::class](#messagemaskclass), [AttachmentMask::class](#attachmentmaskclass)
-or [Mask::class](#maskclass) and implement your required logic:
+If you want to implement your own mask just extend [MessageMask::class](#messagemaskclass), [AttachmentMask::class](#attachmentmaskclass)
+or [Mask::class](#maskclass) and implement your desired logic:
 
 ``` php
 /** @var \Webklex\IMAP\Message $oMessage */
@@ -732,7 +737,7 @@ if you're just wishing a feature ;)
 | Method         | Arguments                      | Return         | Description                                            |
 | -------------- | ------------------------------ | :------------: | ------------------------------------------------------ |
 | getParent      |                                | Masked parent  | Get the masked parent object                           |     
-| getAttributes  |                                | array          | Get the cloned attachments                             |  
+| getAttributes  |                                | array          | Get all cloned attributes                              |  
 | __get          |                                | mixed          | Access any cloned parent attribute                     |  
 | __set          |                                | mixed          | Set any cloned parent attribute                        |  
 | __inherit      |                                | mixed          | All public methods of the given parent are callable    |
