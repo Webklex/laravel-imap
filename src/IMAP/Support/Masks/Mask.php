@@ -41,8 +41,14 @@ class Mask {
         if(method_exists($this->parent, 'getAttributes')){
             $this->attributes = array_merge($this->attributes, $this->parent->getAttributes());
         }
+
+        $this->boot();
     }
 
+    /**
+     * Boot method made to be used by any custom mask
+     */
+    protected function boot(){}
 
     /**
      * Call dynamic attribute setter and getter methods and inherit the parent calls
