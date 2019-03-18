@@ -4,7 +4,14 @@ All notable changes to `webklex/laravel-imap` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [1.4.0] - [UNRELEASED]
+## [UNRELEASED]
+### Fixed
+- NaN
+
+### Added
+- NaN
+
+## [1.4.0] - 2019-03-18
 ### Fixed
 - iconv(): error suppressor for //IGNORE added #184
 - Typo Folder attribute fullName changed to full_name
