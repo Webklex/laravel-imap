@@ -9,7 +9,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN
 
 ### Added
-- NaN
+- Mailbox fetching exception added #201
 
 ## [1.4.0] - 2019-03-18
 ### Fixed

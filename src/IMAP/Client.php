@@ -15,6 +15,7 @@ namespace Webklex\IMAP;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\InvalidImapTimeoutTypeException;
+use Webklex\IMAP\Exceptions\MailboxFetchingException;
 use Webklex\IMAP\Exceptions\MaskNotFoundException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
 use Webklex\IMAP\Support\FolderCollection;
@@ -348,6 +349,7 @@ class Client {
      *
      * @return FolderCollection
      * @throws ConnectionFailedException
+     * @throws MailboxFetchingException
      */
     public function getFolders($hierarchical = true, $parent_folder = null) {
         $this->checkConnection();
@@ -356,20 +358,24 @@ class Client {
         $pattern = $parent_folder.($hierarchical ? '%' : '*');
 
         $items = imap_getmailboxes($this->connection, $this->getAddress(), $pattern);
-        foreach ($items as $item) {
-            $folder = new Folder($this, $item);
+        if(is_array($items)){
+            foreach ($items as $item) {
+                $folder = new Folder($this, $item);
 
-            if ($hierarchical && $folder->hasChildren()) {
-                $pattern = $folder->full_name.$folder->delimiter.'%';
+                if ($hierarchical && $folder->hasChildren()) {
+                    $pattern = $folder->full_name.$folder->delimiter.'%';
 
-                $children = $this->getFolders(true, $pattern);
-                $folder->setChildren($children);
+                    $children = $this->getFolders(true, $pattern);
+                    $folder->setChildren($children);
+                }
+
+                $folders->push($folder);
             }
 
-            $folders->push($folder);
+            return $folders;
+        }else{
+            throw new MailboxFetchingException($this->getLastError());
         }
-
-        return $folders;
     }
 
     /**
