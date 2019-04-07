@@ -850,6 +850,10 @@ class Message {
 
         $from = EncodingAliases::get($from);
         $to = EncodingAliases::get($to);
+        
+        if ($from === $to) {
+            return $str;
+        }
 
         // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
         //     ASCII is a subset of UTF-8, so all ASCII files are already UTF-8 encoded
