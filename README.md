@@ -676,7 +676,6 @@ if you're just wishing a feature ;)
 | andWhere           | Closure $closure                  | WhereQuery        | If supported you can perform extended search requests |
 | all                |                                   | WhereQuery        | Select all available messages |
 | answered           |                                   | WhereQuery        | Select answered messages |
-| answered           |                                   | WhereQuery        | Select answered messages |
 | deleted            |                                   | WhereQuery        | Select deleted messages |
 | new                |                                   | WhereQuery        | Select new messages |
 | not                |                                   | WhereQuery        | Not select messages |
