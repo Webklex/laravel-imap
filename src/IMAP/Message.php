@@ -232,14 +232,14 @@ class Message {
         if(strtolower(substr($method, 0, 3)) === 'get') {
             $name = snake_case(substr($method, 3));
 
-            if(in_array($name, $this->attributes)) {
+            if(in_array($name, array_keys($this->attributes))) {
                 return $this->attributes[$name];
             }
 
         }elseif (strtolower(substr($method, 0, 3)) === 'set') {
             $name = snake_case(substr($method, 3));
 
-            if(in_array($name, $this->attributes)) {
+            if(in_array($name, array_keys($this->attributes))) {
                 $this->attributes[$name] = array_pop($arguments);
 
                 return $this->attributes[$name];
