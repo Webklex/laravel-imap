@@ -947,12 +947,15 @@ class Message {
     /**
      * Move the Message into an other Folder
      * @param string $mailbox
+     * @param bool $expunge
+     * @param bool $create_folder
      *
      * @return bool
      * @throws Exceptions\ConnectionFailedException
      */
-    public function moveToFolder($mailbox = 'INBOX') {
-        $this->client->createFolder($mailbox);
+    public function moveToFolder($mailbox = 'INBOX', $expunge = false, $create_folder = true) {
+
+        if($create_folder) $this->client->createFolder($mailbox, true);
 
         return imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
     }
