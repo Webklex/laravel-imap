@@ -578,7 +578,7 @@ if you're just wishing a feature ;)
 | disconnect                |                                                                                 |                   | Disconnect from server.                                                                                                       |
 | getFolder                 | string $folder_name, int $attributes = 32, int or null $delimiter               | Folder            | Get a Folder instance by name                                                                                                 |
 | getFolders                | bool $hierarchical, string or null $parent_folder                               | FolderCollection  | Get folders list. If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.  |
-| openFolder                | Folder $folder, integer $attempts                                               |                   | Open a given folder.                                                                                                          |
+| openFolder                | string or Folder $folder, integer $attempts                                     |                   | Open a given folder.                                                                                                          |
 | createFolder              | string $name                                                                    | boolean           | Create a new folder.                                                                                                          |
 | renameFolder              | string $old_name, string $new_name                                              | boolean           | Rename a folder. |
 | deleteFolder              | string $name                                                                    | boolean           | Delete a folder. |
@@ -600,6 +600,7 @@ if you're just wishing a feature ;)
 | getDefaultMessageMask     |                                                                                 | string            | Get the current default message mask class name                                                                               | 
 | setDefaultAttachmentMask  | string $mask                                                                    | self              | Set the default attachment mask class                                                                                         |
 | getDefaultAttachmentMask  |                                                                                 | string            | Get the current default attachment mask class name                                                                            | 
+| getFolderPath             |                                                                                 | string            | Get the current folder path                                                                                                   | 
 
 ### [Message::class](src/IMAP/Message.php)
 

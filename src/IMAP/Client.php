@@ -381,18 +381,22 @@ class Client {
     /**
      * Open folder.
      *
-     * @param Folder $folder
-     * @param int    $attempts
+     * @param string|Folder $folder_path
+     * @param int           $attempts
      *
      * @throws ConnectionFailedException
      */
-    public function openFolder(Folder $folder, $attempts = 3) {
+    public function openFolder($folder_path, $attempts = 3) {
         $this->checkConnection();
 
-        if ($this->active_folder !== $folder) {
-            $this->active_folder = $folder;
+        if(property_exists($folder_path, 'path')) {
+            $folder_path = $folder_path->path;
+        }
 
-            imap_reopen($this->getConnection(), $folder->path, $this->getOptions(), $attempts);
+        if ($this->active_folder !== $folder_path) {
+            $this->active_folder = $folder_path;
+
+            imap_reopen($this->getConnection(), $folder_path, $this->getOptions(), $attempts);
         }
     }
 
@@ -721,5 +725,14 @@ class Client {
         }
 
         throw new MaskNotFoundException("Unknown mask provided: ".$mask);
+    }
+
+    /**
+     * Get the current active folder
+     *
+     * @return Folder
+     */
+    public function getFolderPath(){
+        return $this->active_folder;
     }
 }

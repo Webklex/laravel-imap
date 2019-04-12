@@ -111,6 +111,13 @@ class Message {
     ];
 
     /**
+     * The message folder path
+     *
+     * @var string $folder_path
+     */
+    protected $folder_path;
+
+    /**
      * Fetch body options
      *
      * @var integer
@@ -192,6 +199,8 @@ class Message {
         if($default_mask != null) {
             $this->mask = $default_mask;
         }
+
+        $this->folder_path = $client->getFolderPath();
 
         $this->config = config('imap.options');
 
@@ -285,6 +294,7 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function copy($mailbox, $options = 0) {
+        $this->client->openFolder($this->folder_path);
         return imap_mail_copy($this->client->getConnection(), $this->msglist, $mailbox, $options);
     }
 
@@ -298,6 +308,7 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function move($mailbox, $options = 0) {
+        $this->client->openFolder($this->folder_path);
         return imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox, $options);
     }
 
@@ -375,6 +386,7 @@ class Message {
      * @throws InvalidMessageDateException
      */
     private function parseHeader() {
+        $this->client->openFolder($this->folder_path);
         $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, IMAP::FT_UID);
 
         $this->priority = $this->extractPriority($this->header);
@@ -515,6 +527,7 @@ class Message {
     private function parseFlags() {
         $this->flags = FlagCollection::make([]);
 
+        $this->client->openFolder($this->folder_path);
         $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if (is_array($flags) && isset($flags[0])) {
             foreach($this->available_flags as $flag) {
@@ -548,7 +561,7 @@ class Message {
      */
     public function getHeaderInfo() {
         if ($this->header_info == null) {
-            $this->header_info =
+            $this->client->openFolder($this->folder_path);
             $this->header_info = imap_headerinfo($this->client->getConnection(), $this->getMessageNo());
         }
 
@@ -568,7 +581,6 @@ class Message {
 
     /**
      * Parse Addresses
-     *
      * @param $list
      *
      * @return array
@@ -612,6 +624,7 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function parseBody() {
+        $this->client->openFolder($this->folder_path);
         $this->structure = imap_fetchstructure($this->client->getConnection(), $this->uid, IMAP::FT_UID);
 
         if(property_exists($this->structure, 'parts')){
@@ -645,6 +658,8 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     private function fetchStructure($structure, $partNumber = null) {
+        $this->client->openFolder($this->folder_path);
+
         if ($structure->type == IMAP::MESSAGE_TYPE_TEXT &&
             ($structure->ifdisposition == 0 ||
                 ($structure->ifdisposition == 1 && !isset($structure->parts) && $partNumber == null)
@@ -917,7 +932,7 @@ class Message {
 
         // Try finding the message by uid in the current folder
         $client = new Client;
-        $client->openFolder($folder);
+        $client->openFolder($folder->path);
         $uidMatches = imap_fetch_overview($client->getConnection(), $this->uid, IMAP::FT_UID);
         $uidMatch = count($uidMatches)
             ? new Message($uidMatches[0]->uid, $uidMatches[0]->msgno, $client)
@@ -961,10 +976,12 @@ class Message {
         $target_folder = $this->client->getFolder($mailbox);
         $target_status = $target_folder->getStatus(IMAP::SA_ALL);
 
+        $this->client->openFolder($this->folder_path);
         $status = imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
+
         if($status === true){
             if($expunge) $this->client->expunge();
-            $this->client->openFolder($target_folder);
+            $this->client->openFolder($target_folder->path);
 
             return $target_folder->getMessage($target_status->uidnext);
         }
@@ -980,6 +997,8 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function delete($expunge = true) {
+        $this->client->openFolder($this->folder_path);
+
         $status = imap_delete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if($expunge) $this->client->expunge();
 
@@ -994,6 +1013,8 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function restore($expunge = true) {
+        $this->client->openFolder($this->folder_path);
+
         $status = imap_undelete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if($expunge) $this->client->expunge();
 
@@ -1026,6 +1047,8 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function setFlag($flag) {
+        $this->client->openFolder($this->folder_path);
+
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
         $status = imap_setflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
         $this->parseFlags();
@@ -1041,6 +1064,8 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      */
     public function unsetFlag($flag) {
+        $this->client->openFolder($this->folder_path);
+
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
         $status = imap_clearflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
         $this->parseFlags();
@@ -1054,6 +1079,8 @@ class Message {
      */
     public function getRawBody() {
         if ($this->raw_body === null) {
+            $this->client->openFolder($this->folder_path);
+
             $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '', $this->fetch_options | IMAP::FT_UID);
         }
 

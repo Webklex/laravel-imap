@@ -8,6 +8,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Fixed
 - Problem with Message::moveToFolder() and multiple moves #31
 - Problem with encoding conversion #203
+- Message null value attribute problem fixed
+- Client connection path handling changed to be handled inside the calling method #31
 
 ### Added
 - Mailbox fetching exception added #201
@@ -15,6 +17,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ### Affected Classes
 - [Message::class](src/IMAP/Message.php)
+- [Folder::class](src/IMAP/Folder.php)
+- [Client::class](src/IMAP/Client.php)
 
 ### Breaking changes
 - Message::moveToFolder() returns either a Message::class instance or null and not a boolean

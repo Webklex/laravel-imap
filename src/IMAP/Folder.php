@@ -133,7 +133,7 @@ class Folder {
      */
     public function query($charset = 'UTF-8'){
         $this->getClient()->checkConnection();
-        $this->getClient()->openFolder($this);
+        $this->getClient()->openFolder($this->path);
 
         return new WhereQuery($this->getClient(), $charset);
     }
@@ -191,6 +191,7 @@ class Folder {
      * @throws Exceptions\InvalidMessageDateException
      */
     public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = true) {
+        $this->client->openFolder($this->path);
         if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
             return new Message($uid, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
         }
