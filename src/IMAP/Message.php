@@ -950,14 +950,25 @@ class Message {
      * @param bool $expunge
      * @param bool $create_folder
      *
-     * @return bool
+     * @return Message
      * @throws Exceptions\ConnectionFailedException
+     * @throws InvalidMessageDateException
      */
     public function moveToFolder($mailbox = 'INBOX', $expunge = false, $create_folder = true) {
 
         if($create_folder) $this->client->createFolder($mailbox, true);
 
-        return imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
+        $target_folder = $this->client->getFolder($mailbox);
+        $target_status = $target_folder->getStatus(IMAP::SA_ALL);
+
+        $status = imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
+        if($status === true){
+            if($expunge) $this->client->expunge();
+
+            return $target_folder->getMessage($target_status->uidnext);
+        }
+
+        return null;
     }
 
     /**
