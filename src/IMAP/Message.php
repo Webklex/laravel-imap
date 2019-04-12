@@ -232,14 +232,14 @@ class Message {
         if(strtolower(substr($method, 0, 3)) === 'get') {
             $name = snake_case(substr($method, 3));
 
-            if(isset($this->attributes[$name])) {
+            if(in_array($name, $this->attributes)) {
                 return $this->attributes[$name];
             }
 
         }elseif (strtolower(substr($method, 0, 3)) === 'set') {
             $name = snake_case(substr($method, 3));
 
-            if(isset($this->attributes[$name])) {
+            if(in_array($name, $this->attributes)) {
                 $this->attributes[$name] = array_pop($arguments);
 
                 return $this->attributes[$name];
@@ -950,7 +950,7 @@ class Message {
      * @param bool $expunge
      * @param bool $create_folder
      *
-     * @return Message
+     * @return null|Message
      * @throws Exceptions\ConnectionFailedException
      * @throws InvalidMessageDateException
      */
@@ -964,6 +964,7 @@ class Message {
         $status = imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
         if($status === true){
             if($expunge) $this->client->expunge();
+            $this->client->openFolder($target_folder);
 
             return $target_folder->getMessage($target_status->uidnext);
         }
