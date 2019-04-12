@@ -903,11 +903,11 @@ class Message {
 
     /**
      * Find the folder containing this message.
-     *
      * @param null|Folder $folder where to start searching from (top-level inbox by default)
      *
-     * @return null|Folder
+     * @return mixed|null|Folder
      * @throws Exceptions\ConnectionFailedException
+     * @throws Exceptions\MailboxFetchingException
      * @throws InvalidMessageDateException
      * @throws MaskNotFoundException
      */
