@@ -606,12 +606,12 @@ if you're just wishing a feature ;)
 | Method          | Arguments                     | Return               | Description                            |
 | --------------- | ----------------------------- | :------------------: | -------------------------------------- |
 | parseBody       |                               | Message              | Parse the Message body                 |
-| delete          |                               |                      | Delete the current Message             |
-| restore         |                               |                      | Restore a deleted Message              |
-| copy            | string $mailbox, int $options |                      | Copy the current Messages to a mailbox |
-| move            | string $mailbox, int $options |                      | Move the current Messages to a mailbox |
+| delete          | boolean $expunge              | boolean              | Delete the current Message             |
+| restore         | boolean $expunge              | boolean              | Restore a deleted Message              |
+| copy            | string $mailbox, int $options | boolean              | Copy the current Messages to a mailbox |
+| move            | string $mailbox, int $options | boolean              | Move the current Messages to a mailbox |
 | getContainingFolder | Folder or null $folder    | Folder or null       | Get the folder containing the message  |
-| moveToFolder    | string $mailbox, int $options |                      | Move the Message into an other Folder  |
+| moveToFolder    | string $mailbox, boolean $expunge, boolean $create_folder | Message | Move the Message into an other Folder  |
 | setFlag         | string or array $flag         | boolean              | Set one or many flags                  |
 | unsetFlag       | string or array $flag         | boolean              | Unset one or many flags                |
 | hasTextBody     |                               |                      | Check if the Message has a text body   |
