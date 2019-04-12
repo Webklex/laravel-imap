@@ -6,10 +6,18 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Problem with Message::moveToFolder() and multiple moves #31
+- Problem with encoding conversion #203
 
 ### Added
 - Mailbox fetching exception added #201
+- Message::moveToFolder() fetches new Message::class afterwards #31
+
+### Affected Classes
+- [Message::class](src/IMAP/Message.php)
+
+### Breaking changes
+- Message::moveToFolder() returns either a Message::class instance or null and not a boolean
 
 ## [1.4.0] - 2019-03-18
 ### Fixed
