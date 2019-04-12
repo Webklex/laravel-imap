@@ -6,6 +6,19 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
+- NaN
+
+### Added
+- NaN
+
+### Affected Classes
+- NaN
+
+### Breaking changes
+- NaN
+
+## [1.4.1] - 2019-04-13
+### Fixed
 - Problem with Message::moveToFolder() and multiple moves #31
 - Problem with encoding conversion #203
 - Message null value attribute problem fixed
