@@ -983,7 +983,7 @@ class Message {
             if($expunge) $this->client->expunge();
             $this->client->openFolder($target_folder->path);
 
-            return $target_folder->getMessage($target_status->uidnext);
+            return $target_folder->getMessage($target_status->uidnext, $this->msglist, $this->fetch_options, $this->fetch_body, $this->fetch_attachment, $this->fetch_flags);
         }
 
         return null;
