@@ -204,7 +204,7 @@ class Query {
         $this->page = $page > $this->page ? $page : $this->page;
         $this->limit = $per_page;
 
-        return $this->get()->paginate($per_page = 5, $this->page, $page_name);
+        return $this->get()->paginate($per_page, $this->page, $page_name);
     }
 
     /**
