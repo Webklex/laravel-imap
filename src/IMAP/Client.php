@@ -58,7 +58,7 @@ class Client {
 
     /**
      * Server encryption.
-     * Supported: none, ssl or tls.
+     * Supported: none, ssl, tls, or notls.
      *
      * @var string
      */
@@ -538,7 +538,7 @@ class Client {
         if (!$this->validate_cert) {
             $address .= '/novalidate-cert';
         }
-        if (in_array($this->encryption,['tls','ssl'])) {
+        if (in_array($this->encryption,['tls', 'notls', 'ssl'])) {
             $address .= '/'.$this->encryption;
         }
 
