@@ -121,6 +121,7 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
      - `validate_cert` &mdash; decide weather you want to verify the certificate or not
      - `username` &mdash; imap account username
      - `password` &mdash; imap account password
+ - `date_format` &mdash; The default date format is used to convert any given Carbon::class object into a valid date string. (`d-M-Y`, `d-M-y`, `d M y`)
  - `options` &mdash; additional fetch options
    - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
    - `fetch` &mdash; `IMAP::FT_UID` (message marked as read by fetching the message) or `IMAP::FT_PEEK` (fetch the message without setting the "read" flag)

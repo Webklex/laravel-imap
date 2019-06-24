@@ -26,6 +26,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default date format
+    |--------------------------------------------------------------------------
+    |
+    | The default date format is used to convert any given Carbon::class object into a valid date string.
+    | These are currently known working formats: "d-M-Y", "d-M-y", "d M y"
+    |
+    */
+    'date_format' => 'd-M-Y',
+
+    /*
+    |--------------------------------------------------------------------------
     | Available IMAP accounts
     |--------------------------------------------------------------------------
     |

@@ -57,6 +57,9 @@ class Query {
     /** @var int $fetch_flags */
     protected $fetch_flags = true;
 
+    /** @var string $date_format */
+    protected $date_format;
+
     /**
      * Query constructor.
      * @param Client $client
@@ -66,6 +69,8 @@ class Query {
         $this->setClient($client);
 
         if(config('imap.options.fetch') === IMAP::FT_PEEK) $this->leaveUnread();
+
+        $this->date_format = config('imap.date_format', 'd M y');
 
         $this->charset = $charset;
         $this->query = collect();
@@ -86,7 +91,7 @@ class Query {
     protected function parse_value($value){
         switch(true){
             case $value instanceof \Carbon\Carbon:
-                $value = $value->format('d M y');
+                $value = $value->format($this->date_format);
                 break;
         }
 
