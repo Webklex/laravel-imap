@@ -6,13 +6,16 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Pagination count total bug #213
+- Changed internal message move and copy methods #210
+- Query::since() query returning empty response #215
 
 ### Added
-- NaN
+- Message::getFolder() method
 
 ### Affected Classes
-- NaN
+- [Message::class](src/IMAP/Message.php)
+- [Query::class](src/IMAP/Query/Query.php)
 
 ### Breaking changes
 - NaN
