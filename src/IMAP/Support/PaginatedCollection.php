@@ -23,6 +23,9 @@ use Illuminate\Pagination\Paginator;
  */
 class PaginatedCollection extends Collection {
 
+    /** @var int $total */
+    protected $total;
+
     /**
      * Paginate the current collection.
      *
@@ -35,7 +38,9 @@ class PaginatedCollection extends Collection {
     public function paginate($per_page = 15, $page = null, $page_name = 'page') {
         $page = $page ?: Paginator::resolveCurrentPage($page_name);
 
-        $results = ($total = $this->count()) ? $this->forPage($page, $per_page) : $this->all();
+        $total = $this->total ? $this->total : $this->count();
+
+        $results = $total ? $this->forPage($page, $per_page) : $this->all();
 
         return $this->paginator($results, $total, $per_page, $page, [
             'path'      => Paginator::resolveCurrentPath(),
@@ -56,5 +61,18 @@ class PaginatedCollection extends Collection {
      */
     protected function paginator($items, $total, $per_page, $current_page, array $options) {
         return new LengthAwarePaginator($items, $total, $per_page, $current_page, $options);
+    }
+
+    /**
+     * @param null $total
+     *
+     * @return int|null
+     */
+    public function total($total = null) {
+        if($total === null) {
+            return $this->total;
+        }
+
+        return $this->total = $total;
     }
 }

@@ -135,6 +135,32 @@ class Query {
     }
 
     /**
+     * Perform an imap search request
+     *
+     * @return \Illuminate\Support\Collection
+     * @throws \Webklex\IMAP\Exceptions\ConnectionFailedException
+     */
+    protected function search(){
+        $this->generate_query();
+
+        /**
+         * Don't set the charset if it isn't used - prevent strange outlook mail server errors
+         * @see https://github.com/Webklex/laravel-imap/issues/100
+         */
+        if($this->getCharset() === null){
+            $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID);
+        }else{
+            $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID, $this->getCharset());
+        }
+
+        if ($available_messages !== false) {
+            return collect($available_messages);
+        }
+
+        return collect();
+    }
+
+    /**
      * Fetch the current query and return all found messages
      *
      * @return MessageCollection
@@ -144,21 +170,13 @@ class Query {
         $messages = MessageCollection::make([]);
 
         try {
-            $this->generate_query();
+            $available_messages = $this->search();
+            $available_messages_count = $available_messages->count();
 
-            /**
-             * Don't set the charset if it isn't used - prevent strange outlook mail server errors
-             * @see https://github.com/Webklex/laravel-imap/issues/100
-             */
-            if($this->getCharset() === null){
-                $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID);
-            }else{
-                $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID, $this->getCharset());
-            }
+            if ($available_messages_count > 0) {
 
-            if ($available_messages !== false) {
+                $messages->total($available_messages_count);
 
-                $available_messages = collect($available_messages);
                 $options = config('imap.options');
 
                 if(strtolower($options['fetch_order']) === 'desc'){
