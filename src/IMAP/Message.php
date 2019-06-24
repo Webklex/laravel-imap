@@ -295,7 +295,7 @@ class Message {
      */
     public function copy($mailbox, $options = 0) {
         $this->client->openFolder($this->folder_path);
-        return imap_mail_copy($this->client->getConnection(), $this->msglist, $mailbox, $options);
+        return imap_mail_copy($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
     }
 
     /**
@@ -309,7 +309,7 @@ class Message {
      */
     public function move($mailbox, $options = 0) {
         $this->client->openFolder($this->folder_path);
-        return imap_mail_move($this->client->getConnection(), $this->msglist, $mailbox, $options);
+        return imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
     }
 
     /**
@@ -983,7 +983,7 @@ class Message {
             if($expunge) $this->client->expunge();
             $this->client->openFolder($target_folder->path);
 
-            return $target_folder->getMessage($target_status->uidnext, $this->msglist, $this->fetch_options, $this->fetch_body, $this->fetch_attachment, $this->fetch_flags);
+            return $target_folder->getMessage($target_status->uidnext, null, $this->fetch_options, $this->fetch_body, $this->fetch_attachment, $this->fetch_flags);
         }
 
         return null;
