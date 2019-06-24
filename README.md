@@ -645,6 +645,7 @@ if you're just wishing a feature ;)
 | getFlags        |                               | FlagCollection       | Get the current message flags          |
 | is              |                               | boolean              | Does this message match another one?   |
 | getStructure    |                               | object               | The raw message structure              |
+| getFolder       |                               | Folder               | The current folder                     |
 | mask            | string $mask = null           | Mask                 | Get a masked instance                  |
 | setMask         | string $mask                  | Message              | Set the mask class                     |
 | getMask         |                               | string               | Get the current mask class name        |

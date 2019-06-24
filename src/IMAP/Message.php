@@ -959,6 +959,10 @@ class Message {
         return null;
     }
 
+    public function getFolder(){
+        return $this->client->getFolder($this->folder_path);
+    }
+
     /**
      * Move the Message into an other Folder
      * @param string $mailbox
