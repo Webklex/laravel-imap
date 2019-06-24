@@ -110,6 +110,7 @@ The following encryption methods are supported:
 - `false` &mdash; Disable encryption 
 - `ssl` &mdash; Use SSL
 - `tls` &mdash; Use TLS
+- `notls` &mdash; Use NoTLS
 
 Detailed [config/imap.php](src/config/imap.php) configuration:
  - `default` &mdash; used default account. It will be used as default for any missing account parameters. If however the default account is missing a parameter the package default will be used. Set to `false` to disable this functionality.
