@@ -9,6 +9,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Pagination count total bug #213
 - Changed internal message move and copy methods #210
 - Query::since() query returning empty response #215
+- Carbon Exception Parse Data #45
 
 ### Added
 - Message::getFolder() method
