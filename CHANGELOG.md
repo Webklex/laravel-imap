@@ -12,6 +12,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ### Added
 - Message::getFolder() method
+- Create a fast count method for queries #216
 
 ### Affected Classes
 - [Message::class](src/IMAP/Message.php)

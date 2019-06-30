@@ -166,6 +166,16 @@ class Query {
     }
 
     /**
+     * Count all available messages matching the current search criteria
+     *
+     * @return int
+     * @throws \Webklex\IMAP\Exceptions\ConnectionFailedException
+     */
+    public function count() {
+        return $this->search()->count();
+    }
+
+    /**
      * Fetch the current query and return all found messages
      *
      * @return MessageCollection

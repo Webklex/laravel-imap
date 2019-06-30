@@ -20,6 +20,7 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
     - [Facade](#facade)
     - [Folder / Mailbox](#folder--mailbox)
     - [Search](#search-for-messages)
+    - [Counting messages](#counting-messages)
     - [Result limiting](#result-limiting)
     - [Pagination](#pagination)
     - [View examples](#view-examples)
@@ -330,6 +331,19 @@ Limiting the request emails:
 //Get all messages for page 2 since march 15 2018 where each apge contains 10 messages
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->since('15.03.2018')->limit(10, 2)->get();
+```
+
+#### Counting messages
+Count all available messages matching the current search criteria:
+``` php
+/** @var \Webklex\IMAP\Folder $oFolder */
+
+//Count all messages
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$count = $oFolder->query()->all()->count();
+
+//Count all messages since march 15 2018
+$count = $oFolder->query()->since('15.03.2018')->count();
 ```
 
 #### Pagination
@@ -707,6 +721,7 @@ if you're just wishing a feature ;)
 | body               | string $value                     | WhereQuery        | Select messages matching a given HTML body |
 | before             | string $value                     | WhereQuery        | Select messages before a given date |
 | bcc                | string $value                     | WhereQuery        | Select messages matching a given receiver (BCC:) |
+| count              |                                   | integer           | Count all available messages matching the current search criteria |
 | get                |                                   | MessageCollection | Fetch messages with the current query |
 | limit              | integer $limit, integer $page = 1 | WhereQuery        | Limit the amount of messages being fetched |
 | setFetchOptions    | boolean $fetch_options            | WhereQuery        | Set the fetch options |
