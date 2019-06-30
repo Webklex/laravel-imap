@@ -540,6 +540,8 @@ class Client {
         }
         if (in_array($this->encryption,['tls', 'notls', 'ssl'])) {
             $address .= '/'.$this->encryption;
+        } elseif ($this->encryption === "starttls") {
+            $address .= '/tls';
         }
 
         $address .= '}';

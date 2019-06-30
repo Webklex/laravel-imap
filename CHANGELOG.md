@@ -13,10 +13,12 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Added
 - Message::getFolder() method
 - Create a fast count method for queries #216
+- STARTTLS encryption alias added
 
 ### Affected Classes
 - [Message::class](src/IMAP/Message.php)
 - [Query::class](src/IMAP/Query/Query.php)
+- [Client::class](src/IMAP/Client.php)
 
 ### Breaking changes
 - NaN
