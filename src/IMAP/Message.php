@@ -663,7 +663,7 @@ class Message {
 
         if ($structure->type == IMAP::MESSAGE_TYPE_TEXT &&
             ($structure->ifdisposition == 0 ||
-                ($structure->ifdisposition == 1 && !isset($structure->parts) && $partNumber == null)
+                ($structure->ifdisposition == 1 && !isset($structure->parts) && $partNumber != null)
             )
         ) {
             if ($structure->subtype == "PLAIN") {
