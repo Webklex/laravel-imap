@@ -6,10 +6,24 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
+- NaN
+
+### Added
+- NaN
+
+### Affected Classes
+- NaN
+
+### Breaking changes
+- NaN
+
+## [1.4.2] - 2019-07-02
+### Fixed
 - Pagination count total bug #213
 - Changed internal message move and copy methods #210
 - Query::since() query returning empty response #215
 - Carbon Exception Parse Data #45
+- Reading a blank body (text / html) but only from this sender #203
 
 ### Added
 - Message::getFolder() method
@@ -20,9 +34,6 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - [Message::class](src/IMAP/Message.php)
 - [Query::class](src/IMAP/Query/Query.php)
 - [Client::class](src/IMAP/Client.php)
-
-### Breaking changes
-- NaN
 
 ## [1.4.1] - 2019-04-13
 ### Fixed
