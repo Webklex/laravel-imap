@@ -717,6 +717,10 @@ class Message {
                 $body->content = $content;
 
                 $this->bodies['html'] = $body;
+            } elseif ($structure->disposition == 'attachment') {
+                if ($this->getFetchAttachmentOption() === true) {
+                    $this->fetchAttachment($structure, $partNumber);
+                }
             }
         } elseif ($structure->type == IMAP::MESSAGE_TYPE_MULTIPART) {
             foreach ($structure->parts as $index => $subStruct) {
