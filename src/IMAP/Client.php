@@ -324,15 +324,18 @@ class Client {
      * @param string        $folder_name
      * @param int           $attributes
      * @param null|string   $delimiter
+     * @param boolean       $prefix_address
      *
      * @return Folder
      */
-    public function getFolder($folder_name, $attributes = 32, $delimiter = null) {
+    public function getFolder($folder_name, $attributes = 32, $delimiter = null, $prefix_address = true) {
 
         $delimiter = $delimiter === null ? config('imap.options.delimiter', '/') : $delimiter;
 
+        $folder_name = $prefix_address ? $this->getAddress().$folder_name : $folder_name;
+
         $oFolder = new Folder($this, (object) [
-            'name'       => $this->getAddress().$folder_name,
+            'name'       => $folder_name,
             'attributes' => $attributes,
             'delimiter'  => $delimiter
         ]);

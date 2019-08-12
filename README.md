@@ -209,6 +209,7 @@ For an easier access please take a look at the new config option `imap.options.d
 method takes three options: the required (string) $folder_name and two optional variables. An integer $attributes which 
 seems to be sometimes 32 or 64 (I honestly have no clue what this number does, so feel free to enlighten me and anyone 
 else) and a delimiter which if it isn't set will use the default option configured inside the [config/imap.php](src/config/imap.php) file.
+> If you are using Exchange you might want to set all parameter and the last `$prefix_address` to `false` e.g. `$oClient->getFolder('name', 32, null, false)` #234
 ``` php
 /** @var \Webklex\IMAP\Client $oClient */
 
@@ -593,7 +594,7 @@ if you're just wishing a feature ;)
 | checkConnection           |                                                                                 |                   | Determine if connection was established and connect if not.                                                                   |
 | connect                   | int $attempts                                                                   |                   | Connect to server.                                                                                                            |
 | disconnect                |                                                                                 |                   | Disconnect from server.                                                                                                       |
-| getFolder                 | string $folder_name, int $attributes = 32, int or null $delimiter               | Folder            | Get a Folder instance by name                                                                                                 |
+| getFolder                 | string $folder_name, int $attributes = 32, int or null $delimiter, bool $prefix_address | Folder            | Get a Folder instance by name                                                                                                 |
 | getFolders                | bool $hierarchical, string or null $parent_folder                               | FolderCollection  | Get folders list. If hierarchical order is set to true, it will make a tree of folders, otherwise it will return flat array.  |
 | openFolder                | string or Folder $folder, integer $attempts                                     |                   | Open a given folder.                                                                                                          |
 | createFolder              | string $name                                                                    | boolean           | Create a new folder.                                                                                                          |

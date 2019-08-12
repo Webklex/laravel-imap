@@ -6,13 +6,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Path prefix option added to Client::getFolder() method #234
 
 ### Added
 - NaN
 
 ### Affected Classes
-- NaN
+- [Client::class](src/IMAP/Client.php)
 
 ### Breaking changes
 - NaN
