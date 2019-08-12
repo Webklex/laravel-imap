@@ -6,13 +6,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Path prefix option added to Client::getFolder() method #234
+- .csv attachement is not processed #231
 
 ### Added
-- NaN
+- Path prefix option added to Client::getFolder() method #234
 
 ### Affected Classes
 - [Client::class](src/IMAP/Client.php)
+- [Message::class](src/IMAP/Message.php)
 
 ### Breaking changes
 - NaN
