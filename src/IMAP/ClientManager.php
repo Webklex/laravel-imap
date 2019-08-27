@@ -48,6 +48,7 @@ class ClientManager {
      * @param  string  $name
      *
      * @return Client
+     * @throws Exceptions\MaskNotFoundException
      */
     public function account($name = null) {
         $name = $name ?: $this->getDefaultAccount();
@@ -64,10 +65,10 @@ class ClientManager {
 
     /**
      * Resolve a account.
-     *
      * @param  string  $name
      *
      * @return Client
+     * @throws Exceptions\MaskNotFoundException
      */
     protected function resolve($name) {
         $config = $this->getConfig($name);
@@ -117,6 +118,7 @@ class ClientManager {
      * @param  array   $parameters
      *
      * @return mixed
+     * @throws Exceptions\MaskNotFoundException
      */
     public function __call($method, $parameters) {
         $callable = [$this->account(), $method];
