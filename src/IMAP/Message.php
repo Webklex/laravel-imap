@@ -666,7 +666,7 @@ class Message {
                 ($structure->ifdisposition == 1 && !isset($structure->parts) && $partNumber != null)
             )
         ) {
-            if ($structure->subtype == "PLAIN" || $structure->subtype == "CSV") {
+            if (strtolower($structure->subtype) == "plain" || strtolower($structure->subtype) == "csv") {
                 if (!$partNumber) {
                     $partNumber = 1;
                 }
@@ -699,7 +699,7 @@ class Message {
 
                 $this->fetchAttachment($structure, $partNumber);
 
-            } elseif ($structure->subtype == "HTML") {
+            } elseif (strtolower($structure->subtype) == "html") {
                 if (!$partNumber) {
                     $partNumber = 1;
                 }
@@ -717,7 +717,7 @@ class Message {
                 $body->content = $content;
 
                 $this->bodies['html'] = $body;
-            } elseif ($structure->disposition == 'attachment') {
+            } elseif (strtolower($structure->disposition) == 'attachment') {
                 if ($this->getFetchAttachmentOption() === true) {
                     $this->fetchAttachment($structure, $partNumber);
                 }
@@ -870,7 +870,7 @@ class Message {
 
         $from = EncodingAliases::get($from);
         $to = EncodingAliases::get($to);
-        
+
         if ($from === $to) {
             return $str;
         }
@@ -1130,7 +1130,7 @@ class Message {
     public function getFetchAttachmentOption() {
         return $this->fetch_attachment;
     }
-    
+
     /**
      * @return boolean
      */
@@ -1144,7 +1144,7 @@ class Message {
     public function getBodies() {
         return $this->bodies;
     }
-    
+
     /**
      * @return FlagCollection
      */
