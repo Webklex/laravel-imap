@@ -7,6 +7,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ## [UNRELEASED]
 ### Fixed
 - .csv attachement is not processed #231
+- mail part structure property comparison changed to lowercase #241 #242
 
 ### Added
 - Path prefix option added to Client::getFolder() method #234
