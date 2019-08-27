@@ -1,5 +1,5 @@
 {
-    "name": "webklex/laravel-imap",
+    "name": "seedgabo/laravel-imap",
     "type": "library",
     "description": "Laravel IMAP client",
     "keywords": [
