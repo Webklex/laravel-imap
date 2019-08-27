@@ -717,7 +717,7 @@ class Message {
                 $body->content = $content;
 
                 $this->bodies['html'] = $body;
-            } elseif ($structure->disposition == 'attachment') {
+            } elseif ($structure->disposition == 'attachment' || $structure->disposition == "ATTACHMENT") {
                 if ($this->getFetchAttachmentOption() === true) {
                     $this->fetchAttachment($structure, $partNumber);
                 }
