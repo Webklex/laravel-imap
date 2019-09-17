@@ -6,8 +6,22 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
+- NaN
+
+### Added
+- NaN
+
+### Affected Classes
+- NaN
+
+### Breaking changes
+- NaN
+
+## [1.4.3] - 2019-09-15
+### Fixed
 - .csv attachement is not processed #231
 - mail part structure property comparison changed to lowercase #241 #242
+- Replace helper functions for Laravel 6.0 #250 (@koenhoeijmakers)
 
 ### Added
 - Path prefix option added to Client::getFolder() method #234
@@ -15,9 +29,9 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - [Client::class](src/IMAP/Client.php)
 - [Message::class](src/IMAP/Message.php)
-
-### Breaking changes
-- NaN
+- [Attachment::class](src/IMAP/Attachment.php)
+- [Query::class](src/IMAP/Query/WhereQuery.php)
+- [Mask::class](src/IMAP/Support/Masks/Mask.php)
 
 ## [1.4.2] - 2019-07-02
 ### Fixed
