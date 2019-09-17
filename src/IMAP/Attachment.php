@@ -13,6 +13,7 @@
 namespace Webklex\IMAP;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 use Webklex\IMAP\Exceptions\MaskNotFoundException;
 use Webklex\IMAP\Exceptions\MethodNotFoundException;
@@ -111,7 +112,7 @@ class Attachment {
      */
     public function __call($method, $arguments) {
         if(strtolower(substr($method, 0, 3)) === 'get') {
-            $name = snake_case(substr($method, 3));
+            $name = Str::snake(substr($method, 3));
 
             if(isset($this->attributes[$name])) {
                 return $this->attributes[$name];
@@ -119,7 +120,7 @@ class Attachment {
 
             return null;
         }elseif (strtolower(substr($method, 0, 3)) === 'set') {
-            $name = snake_case(substr($method, 3));
+            $name = Str::snake(substr($method, 3));
 
             $this->attributes[$name] = array_pop($arguments);
 
