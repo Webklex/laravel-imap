@@ -13,6 +13,7 @@
 namespace Webklex\IMAP;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Webklex\IMAP\Exceptions\InvalidMessageDateException;
 use Webklex\IMAP\Exceptions\MaskNotFoundException;
 use Webklex\IMAP\Exceptions\MethodNotFoundException;
@@ -239,14 +240,14 @@ class Message {
      */
     public function __call($method, $arguments) {
         if(strtolower(substr($method, 0, 3)) === 'get') {
-            $name = snake_case(substr($method, 3));
+            $name = Str::snake(substr($method, 3));
 
             if(in_array($name, array_keys($this->attributes))) {
                 return $this->attributes[$name];
             }
 
         }elseif (strtolower(substr($method, 0, 3)) === 'set') {
-            $name = snake_case(substr($method, 3));
+            $name = Str::snake(substr($method, 3));
 
             if(in_array($name, array_keys($this->attributes))) {
                 $this->attributes[$name] = array_pop($arguments);

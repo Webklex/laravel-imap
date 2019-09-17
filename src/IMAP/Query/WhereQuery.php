@@ -12,6 +12,7 @@
 
 namespace Webklex\IMAP\Query;
 
+use Illuminate\Support\Str;
 use Webklex\IMAP\Exceptions\InvalidWhereQueryCriteriaException;
 use Webklex\IMAP\Exceptions\MethodNotFoundException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
@@ -73,7 +74,7 @@ class WhereQuery extends Query {
     public function __call($name, $arguments) {
         $that = $this;
 
-        $name = camel_case($name);
+        $name = Str::camel($name);
 
         if(strtolower(substr($name, 0, 3)) === 'not') {
             $that = $that->whereNot();
