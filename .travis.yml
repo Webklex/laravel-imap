@@ -1,19 +1,32 @@
 language: php
 
 php:
-  - hhvm
-  - 7.0
   - 5.6
-  - 5.5
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+  - hhvm
 
 matrix:
-  fast_finish: true
+  fast_finish: true 
   allow_failures:
-    - php: hhvm
+   - php: 5.6
+   - php: 7.0
+   - php: 7.1
+   - php: hhvm
 
 sudo: false
 
-install: composer install --no-interaction
+before-install:
+ - composer self-update
+ - composer install --prefer-source --no-interaction --dev
+
+install: 
+ - composer install --no-interaction
+
+script:
+ - phpunit
 
 notifications:
   email:

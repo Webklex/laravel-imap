@@ -1,7 +1,7 @@
 <?php
 /*
 * File:     ClientManager.php
-* Category: Helper
+* Category: -
 * Author:   M. Goldenbaum
 * Created:  19.01.17 22:21
 * Updated:  -
@@ -16,6 +16,8 @@ namespace Webklex\IMAP;
  * Class ClientManager
  *
  * @package Webklex\IMAP
+ *
+ * @mixin Client
  */
 class ClientManager {
 
@@ -45,7 +47,8 @@ class ClientManager {
      *
      * @param  string  $name
      *
-     * @return \Webklex\IMAP\Client
+     * @return Client
+     * @throws Exceptions\MaskNotFoundException
      */
     public function account($name = null) {
         $name = $name ?: $this->getDefaultAccount();
@@ -53,7 +56,7 @@ class ClientManager {
         // If the connection has not been resolved yet we will resolve it now as all
         // of the connections are resolved when they are actually needed so we do
         // not make any unnecessary connection to the various queue end-points.
-        if (! isset($this->accounts[$name])) {
+        if (!isset($this->accounts[$name])) {
             $this->accounts[$name] = $this->resolve($name);
         }
 
@@ -62,10 +65,10 @@ class ClientManager {
 
     /**
      * Resolve a account.
-     *
      * @param  string  $name
      *
-     * @return \Webklex\IMAP\Client
+     * @return Client
+     * @throws Exceptions\MaskNotFoundException
      */
     protected function resolve($name) {
         $config = $this->getConfig($name);
@@ -115,6 +118,7 @@ class ClientManager {
      * @param  array   $parameters
      *
      * @return mixed
+     * @throws Exceptions\MaskNotFoundException
      */
     public function __call($method, $parameters) {
         $callable = [$this->account(), $method];
