@@ -12,6 +12,7 @@
 
 namespace Webklex\IMAP;
 
+use Carbon\Carbon;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
 use Webklex\IMAP\Query\WhereQuery;
@@ -425,7 +426,20 @@ class Folder {
      * @throws Exceptions\ConnectionFailedException
      */
     public function appendMessage($message, $options = null, $internal_date = null) {
-        return imap_append($this->client->getConnection(), $this->path, $message, $options, $internal_date);
+        /**
+         * Check if $internal_date is parsed. If it is null it should not be set. Otherwise the message can't be stored.
+         * If this parameter is set, it will set the INTERNALDATE on the appended message. The parameter should be a
+         * date string that conforms to the rfc2060 specifications for a date_time value or be a Carbon object.
+         */
+
+        if ($internal_date != null) {
+            if ($internal_date instanceof \Carbon\Carbon){
+                $internal_date = $internal_date->format('d-M-Y H:i:s O');
+            }
+            return imap_append($this->client->getConnection(), $this->path, $message, $options, $internal_date);
+        }
+
+        return imap_append($this->client->getConnection(), $this->path, $message, $options);
     }
 
     /**

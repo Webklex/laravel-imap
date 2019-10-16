@@ -7,12 +7,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ## [UNRELEASED]
 ### Fixed
 - NaN
+- Date handling in Folder::appendMessage() fixed #224
 
 ### Added
 - NaN
 
 ### Affected Classes
 - NaN
+- [Folder::class](src/IMAP/Folder.php)
 
 ### Breaking changes
 - NaN
