@@ -330,7 +330,7 @@ Limiting the request emails:
 ``` php
 /** @var \Webklex\IMAP\Folder $oFolder */
 
-//Get all messages for page 2 since march 15 2018 where each apge contains 10 messages
+//Get all messages for page 2 since march 15 2018 where each page contains 10 messages
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
 $aMessage = $oFolder->query()->since('15.03.2018')->limit(10, 2)->get();
 ```
