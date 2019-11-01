@@ -607,7 +607,13 @@ class Message {
 
             $address->personal = '';
             foreach ($personalParts as $p) {
-                $address->personal .= $p->text;
+                $text = $p->text;
+                
+                if ($p->charset != 'default') {
+                    $text = mb_convert_encoding($text, "UTF-8", $p->charset);
+                }
+
+                $address->personal .= $text;
             }
 
             $address->mail = ($address->mailbox && $address->host) ? $address->mailbox.'@'.$address->host : false;
