@@ -846,7 +846,7 @@ A special thanks to Jetbrains for supporting this project through their [open so
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/Webklex/laravel-imap.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/webklex/laravel-imap.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/Webklex/laravel-imap/master.svg?style=flat-square
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/Webklex/laravel-imap.svg?style=flat-square
