@@ -143,7 +143,7 @@ Detailed [config/imap.php](src/config/imap.php) configuration:
 ## Usage
 #### Basic usage example
 This is a basic example, which will echo out all Mails within all imap folders
-and will move every message into INBOX.read. Please be aware that this should not ben
+and will move every message into INBOX.read. Please be aware that this should not be
 tested in real live but it gives an impression on how things work.
 
 ``` php
