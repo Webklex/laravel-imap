@@ -6,16 +6,26 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Date handling in Folder::appendMessage() fixed #224
+- NaN
 
 ### Added
 - NaN
 
 ### Affected Classes
-- [Folder::class](src/IMAP/Folder.php)
+- NaN
 
 ### Breaking changes
 - NaN
+
+## [1.4.4] - 2019-11-29
+### Fixed
+- Date handling in Folder::appendMessage() fixed #224
+- Carbon Exception Parse Data #45
+- Convert sender name from non-utf8 to uf8 #260 (@hwilok) #259
+
+### Affected Classes
+- [Folder::class](src/IMAP/Folder.php)
+- [Folder::class](src/IMAP/Message.php)
 
 ## [1.4.3] - 2019-09-15
 ### Fixed
