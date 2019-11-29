@@ -602,13 +602,15 @@ class Message {
             }
             if (!property_exists($address, 'personal')) {
                 $address->personal = false;
-            }
+            } else {
+                $personalParts = imap_mime_header_decode($address->personal);
 
-            $personalParts = imap_mime_header_decode($address->personal);
-
-            $address->personal = '';
-            foreach ($personalParts as $p) {
-                $address->personal .= $p->text;
+                if(is_array($personalParts)) {
+                    $address->personal = '';
+                    foreach ($personalParts as $p) {
+                        $address->personal .= $p->text;
+                    }
+                }
             }
 
             $address->mail = ($address->mailbox && $address->host) ? $address->mailbox.'@'.$address->host : false;
