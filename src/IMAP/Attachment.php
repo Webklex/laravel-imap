@@ -25,6 +25,7 @@ use Webklex\IMAP\Support\Masks\AttachmentMask;
  * @package Webklex\IMAP
  * 
  * @property integer part_number
+ * @property integer size
  * @property string content
  * @property string type
  * @property string content_type
@@ -43,6 +44,8 @@ use Webklex\IMAP\Support\Masks\AttachmentMask;
  * @method string  setContentType(string $content_type)
  * @method string  getId()
  * @method string  setId(string $id)
+ * @method string  getSize()
+ * @method string  setSize(integer $size)
  * @method string  getName()
  * @method string  getDisposition()
  * @method string  setDisposition(string $disposition)
@@ -69,6 +72,7 @@ class Attachment {
         'name' => null,
         'disposition' => null,
         'img_src' => null,
+        'size' => null,
     ];
 
     /**
@@ -204,6 +208,10 @@ class Attachment {
 
         if (property_exists($this->structure, 'id')) {
             $this->id = str_replace(['<', '>'], '', $this->structure->id);
+        }
+
+        if (property_exists($this->structure, 'bytes')) {
+            $this->size = $this->structure->bytes;
         }
 
         if (property_exists($this->structure, 'dparameters')) {

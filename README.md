@@ -743,6 +743,7 @@ if you're just wishing a feature ;)
 | getMimeType    |                                | string or null | Get attachment mime type                               |     
 | getExtension   |                                | string or null | Get a guessed attachment extension                     |     
 | getName        |                                | string or null | Get attachment name                                    |        
+| setSize        |                                | int or null    | Get attachment size                                    |        
 | getType        |                                | string or null | Get attachment type                                    |        
 | getDisposition |                                | string or null | Get attachment disposition                             | 
 | getContentType |                                | string or null | Get attachment content type                            | 
