@@ -6,13 +6,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Convert encoding of personal data struct #272
 
 ### Added
-- NaN
+- Attachment size handling added #276
 
 ### Affected Classes
-- NaN
+- [Message::class](src/IMAP/Message.php)
+- [Attachment::class](src/IMAP/Attachment.php)
 
 ### Breaking changes
 - NaN
@@ -25,7 +26,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ### Affected Classes
 - [Folder::class](src/IMAP/Folder.php)
-- [Folder::class](src/IMAP/Message.php)
+- [Message::class](src/IMAP/Message.php)
 
 ## [1.4.3] - 2019-09-15
 ### Fixed
