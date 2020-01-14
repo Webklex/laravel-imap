@@ -742,7 +742,10 @@ if you're just wishing a feature ;)
 | getContent     |                                | string or null | Get attachment content                                 |     
 | getMimeType    |                                | string or null | Get attachment mime type                               |     
 | getExtension   |                                | string or null | Get a guessed attachment extension                     |     
+| getId          |                                | string or null | Get attachment id                                      |        
 | getName        |                                | string or null | Get attachment name                                    |        
+| getPartNumber  |                                | int or null    | Get attachment part number                             |        
+| getContent     |                                | string or null | Get attachment content                                 |        
 | setSize        |                                | int or null    | Get attachment size                                    |        
 | getType        |                                | string or null | Get attachment type                                    |        
 | getDisposition |                                | string or null | Get attachment disposition                             | 
