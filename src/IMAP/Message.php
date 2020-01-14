@@ -608,7 +608,8 @@ class Message {
                 if(is_array($personalParts)) {
                     $address->personal = '';
                     foreach ($personalParts as $p) {
-                        $address->personal .= $p->text;
+                        $encoding = $this->getEncoding($p->text);
+                        $address->personal .= $this->convertEncoding($p->text, $encoding);
                     }
                 }
             }
