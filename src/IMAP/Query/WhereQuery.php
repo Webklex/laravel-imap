@@ -99,6 +99,9 @@ class WhereQuery extends Query {
     protected function validate_criteria($criteria) {
         $criteria = strtoupper($criteria);
 
+        if (substr($criteria, 0, 6) === "CUSTOM") {
+            return substr($criteria, 6);
+        }
         if(in_array($criteria, $this->available_criteria) === false) {
             throw new InvalidWhereQueryCriteriaException();
         }
@@ -389,16 +392,6 @@ class WhereQuery extends Query {
      */
     public function whereUnseen() {
         return $this->where('UNSEEN');
-    }
-
-    /**
-     * @param $msg_id
-     *
-     * @return WhereQuery
-     * @throws InvalidWhereQueryCriteriaException
-     */
-    public function whereMessageId($msg_id) {
-        return $this->where("Message-ID <$msg_id>");
     }
 
     /**

@@ -276,6 +276,11 @@ $aMessage = $oFolder->query()
 $aMessage = $oFolder->query()->notText('hello world')->get();
 $aMessage = $oFolder->query()->not_text('hello world')->get();
 $aMessage = $oFolder->query()->not()->text('hello world')->get();
+
+//Get all messages by custom search criteria
+/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
+$aMessage = $oFolder->query()->where(["CUSTOM_FOOBAR" => "fooBar"]])->get();
+
 ```
 
 Available search aliases for a better code reading:
