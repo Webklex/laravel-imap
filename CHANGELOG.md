@@ -6,17 +6,29 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
+- NaN
+
+### Added
+- NaN
+
+### Affected Classes
+- NaN
+
+### Breaking changes
+- NaN
+
+## [1.4.5] - 2019-01-23
+### Fixed
 - Convert encoding of personal data struct #272
+- Test & implement fix for #203 #270 #235
 
 ### Added
 - Attachment size handling added #276
+- Find messages by custom search criteria #268
 
 ### Affected Classes
 - [Message::class](src/IMAP/Message.php)
 - [Attachment::class](src/IMAP/Attachment.php)
-
-### Breaking changes
-- NaN
 
 ## [1.4.4] - 2019-11-29
 ### Fixed
