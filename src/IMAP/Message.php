@@ -667,9 +667,7 @@ class Message {
         $this->client->openFolder($this->folder_path);
 
         if ($structure->type == IMAP::MESSAGE_TYPE_TEXT &&
-            ($structure->ifdisposition == 0 ||
-                ($structure->ifdisposition == 1 && !isset($structure->parts) && $partNumber != null)
-            )
+            (empty($structure->disposition) || strtolower($structure->disposition) != 'attachment')
         ) {
             if (strtolower($structure->subtype) == "plain" || strtolower($structure->subtype) == "csv") {
                 if (!$partNumber) {
