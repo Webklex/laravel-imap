@@ -217,7 +217,7 @@ class Message {
         $this->client = $client;
 
         $this->uid =  ($this->fetch_options == IMAP::FT_UID) ? $uid : $uid;
-        $this->msgn = ($this->fetch_options == IMAP::FT_UID) ? imap_msgno($this->client->getConnection(), $uid) : $uid;
+        $this->msgn = ($this->fetch_options == IMAP::FT_UID) ? \imap_msgno($this->client->getConnection(), $uid) : $uid;
 
         $this->parseHeader();
 
@@ -296,7 +296,7 @@ class Message {
      */
     public function copy($mailbox, $options = 0) {
         $this->client->openFolder($this->folder_path);
-        return imap_mail_copy($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
+        return \imap_mail_copy($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
     }
 
     /**
@@ -310,7 +310,7 @@ class Message {
      */
     public function move($mailbox, $options = 0) {
         $this->client->openFolder($this->folder_path);
-        return imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
+        return \imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
     }
 
     /**
@@ -388,17 +388,17 @@ class Message {
      */
     private function parseHeader() {
         $this->client->openFolder($this->folder_path);
-        $this->header = $header = imap_fetchheader($this->client->getConnection(), $this->uid, IMAP::FT_UID);
+        $this->header = $header = \imap_fetchheader($this->client->getConnection(), $this->uid, IMAP::FT_UID);
 
         $this->priority = $this->extractPriority($this->header);
 
         if ($this->header) {
-            $header = imap_rfc822_parse_headers($this->header);
+            $header = \imap_rfc822_parse_headers($this->header);
         }
 
         if (property_exists($header, 'subject')) {
             if($this->config['decoder']['message']['subject'] === 'utf-8') {
-                $this->subject = imap_utf8($header->subject);
+                $this->subject = \imap_utf8($header->subject);
             }else{
                 $this->subject = mb_decode_mimeheader($header->subject);
             }
@@ -419,9 +419,9 @@ class Message {
         }
         if (property_exists($header, 'Msgno')) {
             $messageNo = (int) trim($header->Msgno);
-            $this->message_no = ($this->fetch_options == IMAP::FT_UID) ? $messageNo : imap_msgno($this->client->getConnection(), $messageNo);
+            $this->message_no = ($this->fetch_options == IMAP::FT_UID) ? $messageNo : \imap_msgno($this->client->getConnection(), $messageNo);
         } else {
-            $this->message_no = imap_msgno($this->client->getConnection(), $this->getUid());
+            $this->message_no = \imap_msgno($this->client->getConnection(), $this->getUid());
         }
 
         $this->date = $this->parseDate($header);
@@ -531,7 +531,7 @@ class Message {
         $this->flags = FlagCollection::make([]);
 
         $this->client->openFolder($this->folder_path);
-        $flags = imap_fetch_overview($this->client->getConnection(), $this->uid, IMAP::FT_UID);
+        $flags = \imap_fetch_overview($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if (is_array($flags) && isset($flags[0])) {
             foreach($this->available_flags as $flag) {
                 $this->parseFlag($flags, $flag);
@@ -565,7 +565,7 @@ class Message {
     public function getHeaderInfo() {
         if ($this->header_info == null) {
             $this->client->openFolder($this->folder_path);
-            $this->header_info = imap_headerinfo($this->client->getConnection(), $this->getMessageNo());
+            $this->header_info = \imap_headerinfo($this->client->getConnection(), $this->getMessageNo());
         }
 
         return $this->header_info;
@@ -603,7 +603,7 @@ class Message {
             if (!property_exists($address, 'personal')) {
                 $address->personal = false;
             } else {
-                $personalParts = imap_mime_header_decode($address->personal);
+                $personalParts = \imap_mime_header_decode($address->personal);
 
                 if(is_array($personalParts)) {
                     $address->personal = '';
@@ -631,7 +631,7 @@ class Message {
      */
     public function parseBody() {
         $this->client->openFolder($this->folder_path);
-        $this->structure = imap_fetchstructure($this->client->getConnection(), $this->uid, IMAP::FT_UID);
+        $this->structure = \imap_fetchstructure($this->client->getConnection(), $this->uid, IMAP::FT_UID);
 
         if(property_exists($this->structure, 'parts')){
             $parts = $this->structure->parts;
@@ -676,7 +676,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
+                $content = \imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
                 $content = $this->decodeString($content, $structure->encoding);
 
                 // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
@@ -709,7 +709,7 @@ class Message {
 
                 $encoding = $this->getEncoding($structure);
 
-                $content = imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
+                $content = \imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
                 $content = $this->decodeString($content, $structure->encoding);
                 if ($encoding != 'us-ascii') {
                     $content = $this->convertEncoding($content, $encoding);
@@ -846,11 +846,11 @@ class Message {
             case IMAP::MESSAGE_ENC_7BIT:
                 return $string;
             case IMAP::MESSAGE_ENC_8BIT:
-                return quoted_printable_decode(imap_8bit($string));
+                return quoted_printable_decode(\imap_8bit($string));
             case IMAP::MESSAGE_ENC_BINARY:
-                return imap_binary($string);
+                return \imap_binary($string);
             case IMAP::MESSAGE_ENC_BASE64:
-                return imap_base64($string);
+                return \imap_base64($string);
             case IMAP::MESSAGE_ENC_QUOTED_PRINTABLE:
                 return quoted_printable_decode($string);
             case IMAP::MESSAGE_ENC_OTHER:
@@ -941,13 +941,13 @@ class Message {
         // Try finding the message by uid in the current folder
         $client = new Client;
         $client->openFolder($folder->path);
-        $uidMatches = imap_fetch_overview($client->getConnection(), $this->uid, IMAP::FT_UID);
+        $uidMatches = \imap_fetch_overview($client->getConnection(), $this->uid, IMAP::FT_UID);
         $uidMatch = count($uidMatches)
             ? new Message($uidMatches[0]->uid, $uidMatches[0]->msgno, $client)
             : null;
         $client->disconnect();
 
-        // imap_fetch_overview() on a parent folder will return the matching message
+        // \imap_fetch_overview() on a parent folder will return the matching message
         // even when the message is in a child folder so we need to recursively
         // search the children
         foreach ($folder->children as $child) {
@@ -989,7 +989,7 @@ class Message {
         $target_status = $target_folder->getStatus(IMAP::SA_ALL);
 
         $this->client->openFolder($this->folder_path);
-        $status = imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
+        $status = \imap_mail_move($this->client->getConnection(), $this->uid, $mailbox, IMAP::CP_UID);
 
         if($status === true){
             if($expunge) $this->client->expunge();
@@ -1011,7 +1011,7 @@ class Message {
     public function delete($expunge = true) {
         $this->client->openFolder($this->folder_path);
 
-        $status = imap_delete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
+        $status = \imap_delete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if($expunge) $this->client->expunge();
 
         return $status;
@@ -1027,7 +1027,7 @@ class Message {
     public function restore($expunge = true) {
         $this->client->openFolder($this->folder_path);
 
-        $status = imap_undelete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
+        $status = \imap_undelete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if($expunge) $this->client->expunge();
 
         return $status;
@@ -1062,7 +1062,7 @@ class Message {
         $this->client->openFolder($this->folder_path);
 
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
-        $status = imap_setflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
+        $status = \imap_setflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
         $this->parseFlags();
 
         return $status;
@@ -1079,7 +1079,7 @@ class Message {
         $this->client->openFolder($this->folder_path);
 
         $flag = "\\".trim(is_array($flag) ? implode(" \\", $flag) : $flag);
-        $status = imap_clearflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
+        $status = \imap_clearflag_full($this->client->getConnection(), $this->getUid(), $flag, SE_UID);
         $this->parseFlags();
 
         return $status;
@@ -1093,7 +1093,7 @@ class Message {
         if ($this->raw_body === null) {
             $this->client->openFolder($this->folder_path);
 
-            $this->raw_body = imap_fetchbody($this->client->getConnection(), $this->getUid(), '', $this->fetch_options | IMAP::FT_UID);
+            $this->raw_body = \imap_fetchbody($this->client->getConnection(), $this->getUid(), '', $this->fetch_options | IMAP::FT_UID);
         }
 
         return $this->raw_body;

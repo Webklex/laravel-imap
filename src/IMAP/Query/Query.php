@@ -153,9 +153,9 @@ class Query {
          * @see https://github.com/Webklex/laravel-imap/issues/100
          */
         if($this->getCharset() === null){
-            $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID);
+            $available_messages = \imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID);
         }else{
-            $available_messages = imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID, $this->getCharset());
+            $available_messages = \imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID, $this->getCharset());
         }
 
         if ($available_messages !== false) {

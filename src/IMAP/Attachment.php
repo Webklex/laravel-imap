@@ -201,7 +201,7 @@ class Attachment {
      */
     protected function fetch() {
 
-        $content = imap_fetchbody($this->oMessage->getClient()->getConnection(), $this->oMessage->getUid(), $this->part_number, $this->oMessage->getFetchOptions() | FT_UID);
+        $content = \imap_fetchbody($this->oMessage->getClient()->getConnection(), $this->oMessage->getUid(), $this->part_number, $this->oMessage->getFetchOptions() | FT_UID);
 
         $this->content_type = $this->type.'/'.strtolower($this->structure->subtype);
         $this->content = $this->oMessage->decodeString($content, $this->structure->encoding);
@@ -265,7 +265,7 @@ class Attachment {
      */
     public function setName($name) {
         if($this->config['decoder']['message']['subject'] === 'utf-8') {
-            $this->name = imap_utf8($name);
+            $this->name = \imap_utf8($name);
         }else{
             $this->name = mb_decode_mimeheader($name);
         }

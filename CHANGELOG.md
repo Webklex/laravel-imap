@@ -6,16 +6,20 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN
+- Point to root namespace if handling native functions #279
 
 ### Added
 - NaN
 
-### Affected Classes
-- NaN
-
 ### Breaking changes
 - NaN
+
+### Affected Classes
+- [Query::class](src/Query/WhereQuery.php)
+- [Attachment::class](src/Attachment.php)
+- [Client::class](src/Client.php)
+- [Folder::class](src/Folder.php)
+- [Message::class](src/Message.php)
 
 ## [1.4.5] - 2019-01-23
 ### Fixed

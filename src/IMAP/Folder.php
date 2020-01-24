@@ -193,7 +193,7 @@ class Folder {
      */
     public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = true) {
         $this->client->openFolder($this->path);
-        if (imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
+        if (\imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
             return new Message($uid, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
         }
 
@@ -279,7 +279,7 @@ class Folder {
      * @throws GetMessagesFailedException
      *
      * @doc http://php.net/manual/en/function.imap-search.php
-     *      imap_search() only supports IMAP2 search criterias, because the function mail_criteria() (from c-client lib)
+     *      \imap_search() only supports IMAP2 search criterias, because the function mail_criteria() (from c-client lib)
      *      is used in ext/imap/php_imap.c for parsing the search string.
      *      IMAP2 search criteria is defined in RFC 1176, section "tag SEARCH search_criteria".
      *
@@ -374,7 +374,7 @@ class Folder {
      * @throws Exceptions\ConnectionFailedException
      */
     public function delete($expunge = true) {
-        $status = imap_deletemailbox($this->client->getConnection(), $this->path);
+        $status = \imap_deletemailbox($this->client->getConnection(), $this->path);
         if($expunge) $this->client->expunge();
 
         return $status;
@@ -391,7 +391,7 @@ class Folder {
      * @throws Exceptions\ConnectionFailedException
      */
     public function move($target_mailbox, $expunge = true) {
-        $status = imap_renamemailbox($this->client->getConnection(), $this->path, $target_mailbox);
+        $status = \imap_renamemailbox($this->client->getConnection(), $this->path, $target_mailbox);
         if($expunge) $this->client->expunge();
 
         return $status;
@@ -412,7 +412,7 @@ class Folder {
      * @throws Exceptions\ConnectionFailedException
      */
     public function getStatus($options) {
-        return imap_status($this->client->getConnection(), $this->path, $options);
+        return \imap_status($this->client->getConnection(), $this->path, $options);
     }
 
     /**
@@ -436,10 +436,10 @@ class Folder {
             if ($internal_date instanceof \Carbon\Carbon){
                 $internal_date = $internal_date->format('d-M-Y H:i:s O');
             }
-            return imap_append($this->client->getConnection(), $this->path, $message, $options, $internal_date);
+            return \imap_append($this->client->getConnection(), $this->path, $message, $options, $internal_date);
         }
 
-        return imap_append($this->client->getConnection(), $this->path, $message, $options);
+        return \imap_append($this->client->getConnection(), $this->path, $message, $options);
     }
 
     /**

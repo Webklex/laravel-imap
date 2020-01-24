@@ -283,7 +283,7 @@ class Client {
         $this->disconnect();
 
         try {
-            $this->connection = imap_open(
+            $this->connection = \imap_open(
                 $this->getAddress(),
                 $this->username,
                 $this->password,
@@ -293,7 +293,7 @@ class Client {
             );
             $this->connected = !!$this->connection;
         } catch (\ErrorException $e) {
-            $errors = imap_errors();
+            $errors = \imap_errors();
             $message = $e->getMessage().'. '.implode("; ", (is_array($errors) ? $errors : array()));
 
             throw new ConnectionFailedException($message);
@@ -309,8 +309,8 @@ class Client {
      */
     public function disconnect() {
         if ($this->isConnected() && $this->connection !== false && is_integer($this->connection) === false) {
-            $this->errors = array_merge($this->errors, imap_errors() ?: []);
-            $this->connected = !imap_close($this->connection, IMAP::CL_EXPUNGE);
+            $this->errors = array_merge($this->errors, \imap_errors() ?: []);
+            $this->connected = !\imap_close($this->connection, IMAP::CL_EXPUNGE);
         }
 
         return $this;
@@ -360,7 +360,7 @@ class Client {
 
         $pattern = $parent_folder.($hierarchical ? '%' : '*');
 
-        $items = imap_getmailboxes($this->connection, $this->getAddress(), $pattern);
+        $items = \imap_getmailboxes($this->connection, $this->getAddress(), $pattern);
         if(is_array($items)){
             foreach ($items as $item) {
                 $folder = new Folder($this, $item);
@@ -399,7 +399,7 @@ class Client {
         if ($this->active_folder !== $folder_path) {
             $this->active_folder = $folder_path;
 
-            imap_reopen($this->getConnection(), $folder_path, $this->getOptions(), $attempts);
+            \imap_reopen($this->getConnection(), $folder_path, $this->getOptions(), $attempts);
         }
     }
 
@@ -413,7 +413,7 @@ class Client {
      */
     public function createFolder($name, $expunge = true) {
         $this->checkConnection();
-        $status = imap_createmailbox($this->getConnection(), $this->getAddress() . imap_utf7_encode($name));
+        $status = \imap_createmailbox($this->getConnection(), $this->getAddress() . \imap_utf7_encode($name));
         if($expunge) $this->expunge();
 
         return $status;
@@ -430,7 +430,7 @@ class Client {
      */
     public function renameFolder($old_name, $new_name, $expunge = true) {
         $this->checkConnection();
-        $status = imap_renamemailbox($this->getConnection(), $this->getAddress() . imap_utf7_encode($old_name), $this->getAddress() . imap_utf7_encode($new_name));
+        $status = \imap_renamemailbox($this->getConnection(), $this->getAddress() . \imap_utf7_encode($old_name), $this->getAddress() . \imap_utf7_encode($new_name));
         if($expunge) $this->expunge();
 
         return $status;
@@ -446,7 +446,7 @@ class Client {
      */
     public function deleteFolder($name, $expunge = true) {
         $this->checkConnection();
-        $status = imap_deletemailbox($this->getConnection(), $this->getAddress() . imap_utf7_encode($name));
+        $status = \imap_deletemailbox($this->getConnection(), $this->getAddress() . \imap_utf7_encode($name));
         if($expunge) $this->expunge();
 
         return $status;
@@ -522,7 +522,7 @@ class Client {
     }
 
     /**
-     * Get option for imap_open and imap_reopen.
+     * Get option for \imap_open and \imap_reopen.
      * It supports only isReadOnly feature.
      *
      * @return int
@@ -560,7 +560,7 @@ class Client {
      */
     public function getQuota() {
         $this->checkConnection();
-        return imap_get_quota($this->getConnection(), 'user.'.$this->username);
+        return \imap_get_quota($this->getConnection(), 'user.'.$this->username);
     }
 
     /**
@@ -573,7 +573,7 @@ class Client {
      */
     public function getQuotaRoot($quota_root = 'INBOX') {
         $this->checkConnection();
-        return imap_get_quotaroot($this->getConnection(), $quota_root);
+        return \imap_get_quotaroot($this->getConnection(), $quota_root);
     }
 
     /**
@@ -584,7 +584,7 @@ class Client {
      */
     public function countMessages() {
         $this->checkConnection();
-        return imap_num_msg($this->connection);
+        return \imap_num_msg($this->connection);
     }
 
     /**
@@ -595,7 +595,7 @@ class Client {
      */
     public function countRecentMessages() {
         $this->checkConnection();
-        return imap_num_recent($this->connection);
+        return \imap_num_recent($this->connection);
     }
 
     /**
@@ -604,7 +604,7 @@ class Client {
      * @return array
      */
     public function getAlerts() {
-        return imap_alerts();
+        return \imap_alerts();
     }
 
     /**
@@ -613,7 +613,7 @@ class Client {
      * @return array
      */
     public function getErrors() {
-        $this->errors = array_merge($this->errors, imap_errors() ?: []);
+        $this->errors = array_merge($this->errors, \imap_errors() ?: []);
 
         return $this->errors;
     }
@@ -624,7 +624,7 @@ class Client {
      * @return string
      */
     public function getLastError() {
-        return imap_last_error();
+        return \imap_last_error();
     }
 
     /**
@@ -635,7 +635,7 @@ class Client {
      */
     public function expunge() {
         $this->checkConnection();
-        return imap_expunge($this->connection);
+        return \imap_expunge($this->connection);
     }
 
     /**
@@ -652,7 +652,7 @@ class Client {
      */
     public function checkCurrentMailbox() {
         $this->checkConnection();
-        return imap_check($this->connection);
+        return \imap_check($this->connection);
     }
 
     /**
@@ -665,7 +665,7 @@ class Client {
      */
     public function setTimeout($type, $timeout) {
         if(0 <= $type && $type <= 4) {
-            return imap_timeout($type, $timeout);
+            return \imap_timeout($type, $timeout);
         }
 
         throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
@@ -680,7 +680,7 @@ class Client {
      */
     public function getTimeout($type){
         if(0 <= $type && $type <= 4) {
-            return imap_timeout($type);
+            return \imap_timeout($type);
         }
 
         throw new InvalidImapTimeoutTypeException("Invalid imap timeout type provided.");
