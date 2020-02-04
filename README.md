@@ -751,7 +751,7 @@ if you're just wishing a feature ;)
 | getName        |                                | string or null | Get attachment name                                    |        
 | getPartNumber  |                                | int or null    | Get attachment part number                             |        
 | getContent     |                                | string or null | Get attachment content                                 |        
-| setSize        |                                | int or null    | Get attachment size                                    |        
+| getSize        |                                | int or null    | Get attachment size                                    |        
 | getType        |                                | string or null | Get attachment type                                    |        
 | getDisposition |                                | string or null | Get attachment disposition                             | 
 | getContentType |                                | string or null | Get attachment content type                            | 
