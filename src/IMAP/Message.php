@@ -608,7 +608,7 @@ class Message {
                 if(is_array($personalParts)) {
                     $address->personal = '';
                     foreach ($personalParts as $p) {
-                        $encoding = $this->getEncoding($p->text);
+                        $encoding = (property_exists($p, 'charset')) ? $p->charset : $this->getEncoding($p->text);
                         $address->personal .= $this->convertEncoding($p->text, $encoding);
                     }
                 }
