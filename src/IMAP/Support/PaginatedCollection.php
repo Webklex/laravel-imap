@@ -40,7 +40,7 @@ class PaginatedCollection extends Collection {
 
         $total = $this->total ? $this->total : $this->count();
 
-        $results = $total ? $this->forPage($page, $per_page) : $this->all();
+        $results = $this->all();
 
         return $this->paginator($results, $total, $per_page, $page, [
             'path'      => Paginator::resolveCurrentPath(),
