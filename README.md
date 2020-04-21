@@ -279,7 +279,7 @@ $aMessage = $oFolder->query()->not()->text('hello world')->get();
 
 //Get all messages by custom search criteria
 /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-$aMessage = $oFolder->query()->where(["CUSTOM_FOOBAR" => "fooBar"]])->get();
+$aMessage = $oFolder->query()->where(["CUSTOM_FOOBAR" => "fooBar"])->get();
 
 ```
 
@@ -650,7 +650,6 @@ if you're just wishing a feature ;)
 | getMsglist      |                               | integer              | Get the current message list           |
 | getHeaderInfo   |                               | object               | Get the current header_info object     |
 | getHeader       |                               | string               | Get the current raw header             |
-| getMessageId    |                               | string               | Get the current message ID             |
 | getMessageNo    |                               | integer              | Get the current message number         |
 | getPriority     |                               | integer              | Get the current message priority       |
 | getSubject      |                               | string               | Get the current subject                |
