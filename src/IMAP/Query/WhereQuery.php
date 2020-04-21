@@ -118,12 +118,11 @@ class WhereQuery extends Query {
      */
     public function where($criteria, $value = null) {
         if(is_array($criteria)){
-            foreach($criteria as $arguments){
-                if(count($arguments) == 1){
-                    $this->where($arguments[0]);
-                }elseif(count($arguments) == 2){
-                    $this->where($arguments[0], $arguments[1]);
+            foreach($criteria as $key => $value){
+                if(is_numeric($key)){
+                    return $this->where($value);
                 }
+                return $this->where($key, $value);
             }
         }else{
             $criteria = $this->validate_criteria($criteria);
