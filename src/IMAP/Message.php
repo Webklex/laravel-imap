@@ -398,7 +398,7 @@ class Message {
 
         if (property_exists($header, 'subject')) {
             if($this->config['decoder']['message']['subject'] === 'utf-8') {
-                $this->subject = \imap_utf8($header->subject);
+                $this->subject = iconv_mime_decode($header->subject, 2, "UTF-8");
             }else{
                 $this->subject = mb_decode_mimeheader($header->subject);
             }
