@@ -749,7 +749,6 @@ if you're just wishing a feature ;)
 | getId          |                                | string or null | Get attachment id                                      |        
 | getName        |                                | string or null | Get attachment name                                    |        
 | getPartNumber  |                                | int or null    | Get attachment part number                             |        
-| getContent     |                                | string or null | Get attachment content                                 |        
 | getSize        |                                | int or null    | Get attachment size                                    |        
 | getType        |                                | string or null | Get attachment type                                    |        
 | getDisposition |                                | string or null | Get attachment disposition                             | 
