@@ -6,11 +6,12 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Point to root namespace if handling native functions #279
-- Use address charset from header information if set #286
+- Point to root namespace if handling native functions (#279)
+- Use address charset from header information if set (#286)
+- Fix Attachment::getExtension() under Laravel 7.x (#290)
 
 ### Added
-- NaN
+- Prevent double where condition strings
 
 ### Breaking changes
 - NaN
