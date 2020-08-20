@@ -81,7 +81,12 @@ class WhereQuery extends Query {
             $name = substr($name, 3);
         }
 
-        $method = 'where'.ucfirst($name);
+        if (strpos(strtolower($name), "where") === false){
+            $method = 'where'.ucfirst($name);
+        }else{
+            $method = lcfirst($name);
+        }
+
         if(method_exists($this, $method) === true){
             return call_user_func_array([$that, $method], $arguments);
         }
