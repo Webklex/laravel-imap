@@ -103,9 +103,8 @@ class WhereQuery extends Query {
      */
     protected function validate_criteria($criteria) {
         $criteria = strtoupper($criteria);
-
-        if (substr($criteria, 0, 6) === "CUSTOM") {
-            return substr($criteria, 6);
+        if (substr($criteria, 0, 7) === "CUSTOM ") {
+            return substr($criteria, 7);
         }
         if(in_array($criteria, $this->available_criteria) === false) {
             throw new InvalidWhereQueryCriteriaException();
@@ -403,7 +402,7 @@ class WhereQuery extends Query {
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereNoXSpam(){
-        return $this->where("X-Spam-Flag NO");
+        return $this->where("CUSTOM X-Spam-Flag NO");
     }
 
     /**
@@ -411,7 +410,7 @@ class WhereQuery extends Query {
      * @throws InvalidWhereQueryCriteriaException
      */
     public function whereIsXSpam(){
-        return $this->where("X-Spam-Flag YES");
+        return $this->where("CUSTOM X-Spam-Flag YES");
     }
 
     /**
