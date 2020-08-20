@@ -6,15 +6,30 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
+- NaN 
+
+### Added
+- NaN 
+
+### Breaking changes
+- NaN 
+
+### Affected Classes
+- NaN 
+
+## [1.5.0] - 2020-08-20
+### Fixed
 - Point to root namespace if handling native functions (#279)
 - Use address charset from header information if set (#286)
 - Fix Attachment::getExtension() under Laravel 7.x (#290)
+- Custom and X-Spam search criteria fixed (#296)
 
 ### Added
 - Prevent double where condition strings
+- Optional iconv_mime_decode() support added (#295)
 
 ### Breaking changes
-- NaN
+- Custom search conditions have to begin with `CUSTOM `
 
 ### Affected Classes
 - [Query::class](src/Query/WhereQuery.php)
@@ -23,7 +38,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - [Folder::class](src/Folder.php)
 - [Message::class](src/Message.php)
 
-## [1.4.5] - 2019-01-23
+## [1.4.5] - 2020-01-23
 ### Fixed
 - Convert encoding of personal data struct #272
 - Test & implement fix for #203 #270 #235
