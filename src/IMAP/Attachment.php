@@ -263,8 +263,10 @@ class Attachment {
      * @param $name
      */
     public function setName($name) {
-        if($this->config['decoder']['message']['subject'] === 'utf-8') {
+        if($this->config['decoder']['attachment']['name'] === 'utf-8') {
             $this->name = \imap_utf8($name);
+        }elseif($this->config['decoder']['attachment']['name'] === 'iconv') {
+            $this->name = iconv_mime_decode($name);
         }else{
             $this->name = mb_decode_mimeheader($name);
         }
