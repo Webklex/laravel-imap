@@ -30,6 +30,7 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
     - [Advanced fetching](#advanced-fetching)
     - [Masking](#masking)
     - [Specials](#specials)
+    - [Events](#events)
 - [Support](#support)
 - [Documentation](#documentation)
   - [Client::class](#clientclass)
@@ -556,6 +557,17 @@ Find the folder containing a message:
 ``` php
 $oFolder = $aMessage->getContainingFolder();
 ```
+
+#### Events
+The following events are available:
+- `Webklex\IMAP\Events\MessageDeletedEvent($message)` &mdash; triggered by `Message::delete`
+- `Webklex\IMAP\Events\MessageRestoredEvent($message)` &mdash; triggered by `Message::restore`
+- `Webklex\IMAP\Events\MessageMovedEvent($old_message, $new_message)` &mdash; triggered by `Message::move`
+- `Webklex\IMAP\Events\MessageNewEvent($message)` &mdash; not triggered
+
+Additional integration information:
+- https://laravel.com/docs/7.x/events#event-subscribers
+- https://laravel.com/docs/5.2/events#event-subscribers
 
 ## Support
 If you encounter any problems or if you find a bug, please don't hesitate to create a new [issue](https://github.com/Webklex/laravel-imap/issues).
