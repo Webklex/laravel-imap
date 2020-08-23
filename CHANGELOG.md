@@ -9,13 +9,20 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Added
-- NaN 
+- NaN
 
 ### Breaking changes
 - NaN 
 
 ### Affected Classes
 - NaN 
+
+## [1.5.1] - 2020-08-23
+### Added
+- Message events added (deleted, restored, moved, new*) 
+
+### Affected Classes
+- [Message::class](src/Message.php)
 
 ## [1.5.0] - 2020-08-20
 ### Fixed
