@@ -14,6 +14,9 @@ namespace Webklex\IMAP;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Webklex\IMAP\Events\MessageDeletedEvent;
+use Webklex\IMAP\Events\MessageMovedEvent;
+use Webklex\IMAP\Events\MessageRestoredEvent;
 use Webklex\IMAP\Exceptions\InvalidMessageDateException;
 use Webklex\IMAP\Exceptions\MaskNotFoundException;
 use Webklex\IMAP\Exceptions\MethodNotFoundException;
@@ -997,7 +1000,9 @@ class Message {
             if($expunge) $this->client->expunge();
             $this->client->openFolder($target_folder->path);
 
-            return $target_folder->getMessage($target_status->uidnext, null, $this->fetch_options, $this->fetch_body, $this->fetch_attachment, $this->fetch_flags);
+            $message = $target_folder->getMessage($target_status->uidnext, null, $this->fetch_options, $this->fetch_body, $this->fetch_attachment, $this->fetch_flags);
+            MessageMovedEvent::dispatch($this, $message);
+            return $message;
         }
 
         return null;
@@ -1015,6 +1020,7 @@ class Message {
 
         $status = \imap_delete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if($expunge) $this->client->expunge();
+        MessageDeletedEvent::dispatch($this);
 
         return $status;
     }
@@ -1031,6 +1037,7 @@ class Message {
 
         $status = \imap_undelete($this->client->getConnection(), $this->uid, IMAP::FT_UID);
         if($expunge) $this->client->expunge();
+        MessageRestoredEvent::dispatch($this);
 
         return $status;
     }
