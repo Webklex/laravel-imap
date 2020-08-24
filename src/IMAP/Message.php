@@ -1109,6 +1109,15 @@ class Message {
     }
 
     /**
+     * Get an almost unique message token
+     * @return string
+     * @throws Exceptions\ConnectionFailedException
+     */
+    public function getToken(){
+        return base64_encode(implode('-', [$this->message_id, $this->subject, strlen($this->getRawBody())]));
+    }
+
+    /**
      * @return string
      */
     public function getHeader() {
