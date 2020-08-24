@@ -17,6 +17,10 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Affected Classes
 - NaN 
 
+## [1.5.3] - 2020-08-24
+### Fixed
+- Event parameter handling fixed (#322)
+
 ## [1.5.2] - 2020-08-24
 ### Added
 - IDLE like support added (#185)

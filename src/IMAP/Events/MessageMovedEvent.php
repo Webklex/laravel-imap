@@ -13,12 +13,11 @@ class MessageMovedEvent extends Event {
 
     /**
      * Create a new event instance.
-     * @var Message $old_message
-     * @var Message $new_message
+     * @var Message[] $messages
      * @return void
      */
-    public function __construct($old_message, $new_message) {
-        $this->old_message = $old_message;
-        $this->new_message = $new_message;
+    public function __construct($messages) {
+        $this->old_message = $messages[0];
+        $this->new_message = $messages[1];
     }
 }

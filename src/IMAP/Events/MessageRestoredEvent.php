@@ -11,10 +11,10 @@ class MessageRestoredEvent extends Event {
 
     /**
      * Create a new event instance.
-     * @var Message $message
+     * @var Message[] $messages
      * @return void
      */
-    public function __construct($message) {
-        $this->message = $message;
+    public function __construct($messages) {
+        $this->message = $messages[0];
     }
 }
