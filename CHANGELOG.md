@@ -9,13 +9,20 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Added
-- NaN
+- NaN 
 
 ### Breaking changes
 - NaN 
 
 ### Affected Classes
 - NaN 
+
+## [1.5.2] - 2020-08-24
+### Added
+- IDLE like support added (#185)
+
+### Affected Classes
+- [Query::class](src/Query/Query.php)
 
 ## [1.5.1] - 2020-08-23
 ### Added
