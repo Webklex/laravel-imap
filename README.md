@@ -29,8 +29,9 @@ Laravel IMAP is an easy way to integrate the native php imap library into your *
     - [Attachments](#attachments)
     - [Advanced fetching](#advanced-fetching)
     - [Masking](#masking)
-    - [Specials](#specials)
+    - [Idle](#idle)
     - [Events](#events)
+    - [Specials](#specials)
 - [Support](#support)
 - [Documentation](#documentation)
   - [Client::class](#clientclass)
@@ -552,10 +553,16 @@ Additional examples can be found here:
 - [Custom attachment mask](https://github.com/Webklex/laravel-imap/blob/master/examples/custom_attachment_mask.php)
 
 
-#### Specials
-Find the folder containing a message:
+#### Idle
+Use the `Query::idle()` function to have an instance running which behaves like an idle imap connection.
+The callback and `Webklex\IMAP\Events\MessageNewEvent($message)` event get fired by every new incoming email.
 ``` php
-$oFolder = $aMessage->getContainingFolder();
+$timeout = 10;
+/** @var \Webklex\IMAP\Folder $folder */
+$folder->query()->subject('test')->idle(function($message){
+    /** @var \Webklex\IMAP\Message $message */
+    dump("new message", $message->subject);
+}, $timeout);
 ```
 
 #### Events
@@ -563,11 +570,17 @@ The following events are available:
 - `Webklex\IMAP\Events\MessageDeletedEvent($message)` &mdash; triggered by `Message::delete`
 - `Webklex\IMAP\Events\MessageRestoredEvent($message)` &mdash; triggered by `Message::restore`
 - `Webklex\IMAP\Events\MessageMovedEvent($old_message, $new_message)` &mdash; triggered by `Message::move`
-- `Webklex\IMAP\Events\MessageNewEvent($message)` &mdash; not triggered
+- `Webklex\IMAP\Events\MessageNewEvent($message)` &mdash; can get triggered by `Query::idle()`
 
 Additional integration information:
 - https://laravel.com/docs/7.x/events#event-subscribers
 - https://laravel.com/docs/5.2/events#event-subscribers
+
+#### Specials
+Find the folder containing a message:
+``` php
+$oFolder = $aMessage->getContainingFolder();
+```
 
 ## Support
 If you encounter any problems or if you find a bug, please don't hesitate to create a new [issue](https://github.com/Webklex/laravel-imap/issues).
@@ -676,6 +689,7 @@ if you're just wishing a feature ;)
 | getSender       |                               | array                | Get the current sender information     |
 | getBodies       |                               | mixed                | Get the current bodies                 |
 | getRawBody      |                               | mixed                | Get the current raw message body       |
+| getToken        |                               | string               | Get a base64 encoded message token     |
 | getFlags        |                               | FlagCollection       | Get the current message flags          |
 | is              |                               | boolean              | Does this message match another one?   |
 | getStructure    |                               | object               | The raw message structure              |
@@ -741,6 +755,7 @@ if you're just wishing a feature ;)
 | bcc                | string $value                     | WhereQuery        | Select messages matching a given receiver (BCC:) |
 | count              |                                   | integer           | Count all available messages matching the current search criteria |
 | get                |                                   | MessageCollection | Fetch messages with the current query |
+| idle               | mixed $callback($message), int $timeout = 10 |        | Simulate an idle connection to receive new messages "live" |
 | limit              | integer $limit, integer $page = 1 | WhereQuery        | Limit the amount of messages being fetched |
 | setFetchOptions    | boolean $fetch_options            | WhereQuery        | Set the fetch options |
 | setFetchBody       | boolean $fetch_body               | WhereQuery        | Set the fetch body option |

@@ -14,6 +14,7 @@ namespace Webklex\IMAP\Query;
 
 use Carbon\Carbon;
 use Webklex\IMAP\Client;
+use Webklex\IMAP\Events\MessageNewEvent;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
 use Webklex\IMAP\Exceptions\MessageSearchValidationException;
 use Webklex\IMAP\IMAP;
@@ -238,6 +239,37 @@ class Query {
         $this->limit = $per_page;
 
         return $this->get()->paginate($per_page, $this->page, $page_name);
+    }
+
+    /**
+     * Create an idle like instance to catch incoming messages
+     * @param callable|null $callback
+     * @param int $timeout
+     * @throws GetMessagesFailedException
+     * @throws \Webklex\IMAP\Exceptions\ConnectionFailedException
+     */
+    public function idle(callable $callback = null, $timeout = 10){
+        $known_messages = [];
+        $this->get()->each(function($message) use(&$known_messages){
+            /** @var Message $message */
+            $known_messages[] = $message->getToken();
+        });
+        while ($this->getClient()->isConnected()){
+            $this->getClient()->expunge();
+            $this->get()->each(function($message) use(&$known_messages, $callback){
+                /** @var \Webklex\IMAP\Message $message */
+                $token = $message->getToken();
+                if(in_array($token, $known_messages)){
+                    return;
+                }
+                $known_messages[] = $token;
+                MessageNewEvent::dispatch($message);
+                if ($callback){
+                    $callback($message);
+                }
+            });
+            sleep($timeout);
+        }
     }
 
     /**
