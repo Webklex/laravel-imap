@@ -9,13 +9,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Added
-- NaN 
+- "BADCHARSET" exception will be used to determine the required charset (#100)
 
 ### Breaking changes
 - NaN 
 
 ### Affected Classes
-- NaN 
+- [Query::class](src/Query/Query.php)
 
 ## [1.5.3] - 2020-08-24
 ### Fixed

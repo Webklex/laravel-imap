@@ -148,15 +148,30 @@ class Query {
      */
     protected function search(){
         $this->generate_query();
+        $available_messages = [];
 
         /**
          * Don't set the charset if it isn't used - prevent strange outlook mail server errors
          * @see https://github.com/Webklex/laravel-imap/issues/100
+         *
+         * If a "BADCHARSET" error gets caught it will be used to determine the desired charset.
          */
-        if($this->getCharset() === null){
-            $available_messages = \imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID);
-        }else{
-            $available_messages = \imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID, $this->getCharset());
+        try {
+            if ($this->getCharset() == null) {
+                $available_messages = \imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID);
+            }else{
+                $available_messages = \imap_search($this->getClient()->getConnection(), $this->getRawQuery(), IMAP::SE_UID, $this->getCharset());
+            }
+        } catch (\Exception $e) {
+            if (strpos($e, ' [BADCHARSET (')) {
+                preg_match('/ \[BADCHARSET \((.*)\)\]/', $e, $matches);
+                if (isset($matches[1])) {
+                    if ($matches[1] !== $this->getCharset()){
+                        $this->setCharset($matches[1]);
+                        return $this->search();
+                    }
+                }
+            }
         }
 
         if ($available_messages !== false) {
