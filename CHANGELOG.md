@@ -11,12 +11,14 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Added
 - Read an overview of the information in the headers of a given message or sequence 
 - Folder name encoding added (#324)
+- Add a fallback when aliasing encodings for iconv (#325)
 
 ### Breaking changes
 - NaN 
 
 ### Affected Classes
 - [Client::class](src/Client.php)
+- [Message::class](src/Message.php)
 - [Query::class](src/Query/Query.php)
 
 ## [1.6.0] - 2020-09-04
