@@ -9,13 +9,30 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Added
-- "BADCHARSET" exception will be used to determine the required charset (#100)
+- NaN 
 
 ### Breaking changes
 - NaN 
 
 ### Affected Classes
+- NaN 
+
+## [1.6.0] - 2020-09-04
+### Fixed
+- Default fetch attributes set to `null` in order to use the config default value
+
+### Added
+- "BADCHARSET" exception will be used to determine the required charset (#100)
+
+### Breaking changes
+- Client::getMessages() default fetch parameter changed
+- Folder::getMessages() default fetch parameter changed
+- Folder::getMessage() default fetch parameter changed
+
+### Affected Classes
 - [Query::class](src/Query/Query.php)
+- [Client::class](src/Client.php)
+- [Folder::class](src/Folder.php)
 
 ## [1.5.3] - 2020-08-24
 ### Fixed
