@@ -339,6 +339,16 @@ class Folder {
     }
 
     /**
+     * Get the encoded name.
+     * It converts the UTF-8 encoded name into an UTF7-IMAP encoded string.
+     *
+     * @return mixed|string
+     */
+    public function getEncodedName() {
+        return mb_convert_encoding($this->full_name, "UTF7-IMAP", "UTF-8");
+    }
+
+    /**
      * Get simple name (without parent folders).
      *
      * @param $delimiter

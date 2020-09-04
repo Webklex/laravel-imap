@@ -717,6 +717,7 @@ if you're just wishing a feature ;)
 | query             | string $charset = 'UTF-8'                                                           | WhereQuery        | Get the current Client instance                |
 | messages          | string $charset = 'UTF-8'                                                           | WhereQuery        | Alias for Folder::query()                      |
 | search            | string $charset = 'UTF-8'                                                           | WhereQuery        | Alias for Folder::query()                      |
+| getEncodedName    |                                                                                     | string            | Get the encoded name                           |
       
 ### [Query::class](src/IMAP/Query/WhereQuery.php)
 
