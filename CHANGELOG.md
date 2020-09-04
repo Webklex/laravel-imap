@@ -7,6 +7,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ## [UNRELEASED]
 ### Fixed
 - Greatly increased IDLE performance
+- Message::fetchStructure() redundant code removed
 
 ### Added
 - Read an overview of the information in the headers of a given message or sequence 

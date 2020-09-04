@@ -226,7 +226,7 @@ class Message {
         $this->msglist = $msglist;
         $this->client = $client;
 
-        $this->uid =  ($this->fetch_options == IMAP::FT_UID) ? $uid : $uid;
+        $this->uid =  $uid;
         $this->msgn = ($this->fetch_options == IMAP::FT_UID) ? \imap_msgno($this->client->getConnection(), $uid) : $uid;
 
         $this->parseHeader();
@@ -619,25 +619,8 @@ class Message {
      */
     public function parseBody() {
         $this->client->openFolder($this->folder_path);
+
         $this->structure = \imap_fetchstructure($this->client->getConnection(), $this->uid, IMAP::FT_UID);
-
-        if(property_exists($this->structure, 'parts')){
-            $parts = $this->structure->parts;
-
-            foreach ($parts as $part)  {
-                foreach ($part->parameters as $parameter)  {
-                    if($parameter->attribute == "charset")  {
-                        $encoding = $parameter->value;
-
-                        $encoding = preg_replace('/Content-Transfer-Encoding/', '', $encoding);
-                        $encoding = preg_replace('/iso-8859-8-i/', 'iso-8859-8', $encoding);
-
-                        $parameter->value = $encoding;
-                    }
-                }
-            }
-        }
-
         $this->fetchStructure($this->structure);
 
         return $this;
@@ -658,56 +641,10 @@ class Message {
             (empty($structure->disposition) || strtolower($structure->disposition) != 'attachment')
         ) {
             if (strtolower($structure->subtype) == "plain" || strtolower($structure->subtype) == "csv") {
-                if (!$partNumber) {
-                    $partNumber = 1;
-                }
-
-                $encoding = $this->getEncoding($structure);
-
-                $content = \imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
-                $content = $this->decodeString($content, $structure->encoding);
-
-                // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
-                //     ASCII is a subset of UTF-8, so all ASCII files are already UTF-8 encoded
-                //     https://stackoverflow.com/a/11303410
-                //
-                // us-ascii is the same as ASCII:
-                //     ASCII is the traditional name for the encoding system; the Internet Assigned Numbers Authority (IANA)
-                //     prefers the updated name US-ASCII, which clarifies that this system was developed in the US and
-                //     based on the typographical symbols predominantly in use there.
-                //     https://en.wikipedia.org/wiki/ASCII
-                //
-                // convertEncoding() function basically means convertToUtf8(), so when we convert ASCII string into UTF-8 it gets broken.
-                if ($encoding != 'us-ascii') {
-                    $content = $this->convertEncoding($content, $encoding);
-                }
-
-                $body = new \stdClass;
-                $body->type = "text";
-                $body->content = $content;
-
-                $this->bodies['text'] = $body;
-
+                $this->bodies['text'] = $this->createBody("text", $structure, $partNumber);
                 $this->fetchAttachment($structure, $partNumber);
-
             } elseif (strtolower($structure->subtype) == "html") {
-                if (!$partNumber) {
-                    $partNumber = 1;
-                }
-
-                $encoding = $this->getEncoding($structure);
-
-                $content = \imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
-                $content = $this->decodeString($content, $structure->encoding);
-                if ($encoding != 'us-ascii') {
-                    $content = $this->convertEncoding($content, $encoding);
-                }
-
-                $body = new \stdClass;
-                $body->type = "html";
-                $body->content = $content;
-
-                $this->bodies['html'] = $body;
+                $this->bodies['html'] = $this->createBody("html", $structure, $partNumber);
             } elseif ($structure->ifdisposition == 1 && strtolower($structure->disposition) == 'attachment') {
                 if ($this->getFetchAttachmentOption() === true) {
                     $this->fetchAttachment($structure, $partNumber);
@@ -721,11 +658,57 @@ class Message {
                 }
                 $this->fetchStructure($subStruct, $prefix.($index + 1));
             }
-        } else {
-            if ($this->getFetchAttachmentOption() === true) {
-                $this->fetchAttachment($structure, $partNumber);
-            }
+        } else if ($this->getFetchAttachmentOption() === true) {
+            $this->fetchAttachment($structure, $partNumber);
         }
+    }
+
+    /**
+     * Create a new body object of a given type
+     * @param string $type
+     * @param object $structure
+     * @param mixed $partNumber
+     *
+     * @return object
+     * @throws Exceptions\ConnectionFailedException
+     */
+    private function createBody($type, $structure, $partNumber){
+        return (object) [
+            "type" => $type,
+            "content" => $this->fetchPart($structure, $partNumber),
+        ];
+    }
+
+    /**
+     * Fetch the content of a given part and message structure
+     * @param object $structure
+     * @param mixed $partNumber
+     *
+     * @return mixed|string
+     * @throws Exceptions\ConnectionFailedException
+     */
+    private function fetchPart($structure, $partNumber){
+        $encoding = $this->getEncoding($structure);
+
+        $content = \imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber | 1, $this->fetch_options | IMAP::FT_UID);
+        $content = $this->decodeString($content, $structure->encoding);
+
+        // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
+        //     ASCII is a subset of UTF-8, so all ASCII files are already UTF-8 encoded
+        //     https://stackoverflow.com/a/11303410
+        //
+        // us-ascii is the same as ASCII:
+        //     ASCII is the traditional name for the encoding system; the Internet Assigned Numbers Authority (IANA)
+        //     prefers the updated name US-ASCII, which clarifies that this system was developed in the US and
+        //     based on the typographical symbols predominantly in use there.
+        //     https://en.wikipedia.org/wiki/ASCII
+        //
+        // convertEncoding() function basically means convertToUtf8(), so when we convert ASCII string into UTF-8 it gets broken.
+        if ($encoding != 'us-ascii') {
+            $content = $this->convertEncoding($content, $encoding);
+        }
+
+        return $content;
     }
 
     /**
@@ -831,8 +814,6 @@ class Message {
      */
     public function decodeString($string, $encoding) {
         switch ($encoding) {
-            case IMAP::MESSAGE_ENC_7BIT:
-                return $string;
             case IMAP::MESSAGE_ENC_8BIT:
                 return quoted_printable_decode(\imap_8bit($string));
             case IMAP::MESSAGE_ENC_BINARY:
@@ -841,8 +822,8 @@ class Message {
                 return \imap_base64($string);
             case IMAP::MESSAGE_ENC_QUOTED_PRINTABLE:
                 return quoted_printable_decode($string);
+            case IMAP::MESSAGE_ENC_7BIT:
             case IMAP::MESSAGE_ENC_OTHER:
-                return $string;
             default:
                 return $string;
         }
@@ -911,7 +892,7 @@ class Message {
             return mb_detect_encoding($structure);
         }
 
-        return 'UTF-8';
+        return $this->fallback_encoding;
     }
 
     /**
@@ -1168,20 +1149,18 @@ class Message {
     /**
      * Does this message match another one?
      *
-     * A match means same uid, message id, subject and date/time.
+     * A match means same uid, message id, subject, body length and date/time.
      *
      * @param  null|Message $message
-     * @return boolean
+     * @return bool
+     * @throws Exceptions\ConnectionFailedException
      */
     public function is(Message $message = null) {
         if (is_null($message)) {
             return false;
         }
 
-        return $this->uid == $message->uid
-            && $this->message_id == $message->message_id
-            && $this->subject == $message->subject
-            && $this->date->eq($message->date);
+        return $this->getToken() == $message->getToken() && $this->date->eq($message->date);
     }
 
     /**
