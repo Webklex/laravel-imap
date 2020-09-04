@@ -191,7 +191,7 @@ class Folder {
      * @throws Exceptions\ConnectionFailedException
      * @throws Exceptions\InvalidMessageDateException
      */
-    public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = true) {
+    public function getMessage($uid, $msglist = null, $fetch_options = null, $fetch_body = null, $fetch_attachment = null, $fetch_flags = null) {
         $this->client->openFolder($this->path);
         if (\imap_msgno($this->getClient()->getConnection(), $uid) > 0) {
             return new Message($uid, $msglist, $this->getClient(), $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
@@ -217,7 +217,7 @@ class Folder {
      * @throws Exceptions\InvalidWhereQueryCriteriaException
      * @throws GetMessagesFailedException
      */
-    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = true, $limit = null, $page = 1, $charset = "UTF-8") {
+    public function getMessages($criteria = 'ALL', $fetch_options = null, $fetch_body = null, $fetch_attachment = null, $fetch_flags = null, $limit = null, $page = 1, $charset = "UTF-8") {
 
         return $this->query($charset)->where($criteria)->setFetchOptions($fetch_options)->setFetchBody($fetch_body)
             ->setFetchAttachment($fetch_attachment)->setFetchFlags($fetch_flags)

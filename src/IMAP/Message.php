@@ -197,7 +197,7 @@ class Message {
      * @throws Exceptions\ConnectionFailedException
      * @throws InvalidMessageDateException
      */
-    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = false, $fetch_attachment = false, $fetch_flags = false) {
+    public function __construct($uid, $msglist, Client $client, $fetch_options = null, $fetch_body = null, $fetch_attachment = null, $fetch_flags = null) {
 
         $default_mask = $client->getDefaultMessageMask();
         if($default_mask != null) {
@@ -349,37 +349,14 @@ class Message {
 
     /**
      * Get the Message html body
-     * If $replaceImages is callable it should expect string $body as first parameter, $oAttachment as second and return
-     * the resulting $body.
-     *
-     * @var bool|callable $replaceImages
      *
      * @return string|null
-     *
-     * @deprecated 1.4.0:2.0.0 No longer needed. Use AttachmentMask::getImageSrc() instead
      */
-    public function getHTMLBody($replaceImages = false) {
+    public function getHTMLBody() {
         if (!isset($this->bodies['html'])) {
             return null;
         }
-
-        $body = $this->bodies['html']->content;
-        if ($replaceImages !== false) {
-            $this->attachments->each(function($oAttachment) use(&$body, $replaceImages) {
-                /** @var Attachment $oAttachment */
-                if(is_callable($replaceImages)) {
-                    $body = $replaceImages($body, $oAttachment);
-                }elseif(is_string($replaceImages)) {
-                    call_user_func($replaceImages, [$body, $oAttachment]);
-                }else{
-                    if ($oAttachment->id && $oAttachment->getImgSrc() != null) {
-                        $body = str_replace('cid:'.$oAttachment->id, $oAttachment->getImgSrc(), $body);
-                    }
-                }
-            });
-        }
-
-        return $body;
+        return $this->bodies['html']->content;
     }
 
     /**

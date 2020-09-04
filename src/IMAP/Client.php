@@ -470,7 +470,7 @@ class Client {
      * @deprecated 1.0.5.2:2.0.0 No longer needed. Use Folder::getMessages() instead
      * @see Folder::getMessages()
      */
-    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null, $fetch_body = true, $fetch_attachment = true, $fetch_flags = false) {
+    public function getMessages(Folder $folder, $criteria = 'ALL', $fetch_options = null, $fetch_body = null, $fetch_attachment = null, $fetch_flags = null) {
         return $folder->getMessages($criteria, $fetch_options, $fetch_body, $fetch_attachment, $fetch_flags);
     }
 
