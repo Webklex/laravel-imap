@@ -6,17 +6,27 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
+- NaN 
+
+### Added
+- NaN 
+
+### Breaking changes
+- NaN 
+
+### Affected Classes
+- NaN 
+
+## [1.6.1] - 2020-09-04
+### Fixed
 - Greatly increased IDLE performance
 - Message::fetchStructure() redundant code removed
 
 ### Added
 - Read an overview of the information in the headers of a given message or sequence 
-- Folder name encoding added (#324)
-- Add a fallback when aliasing encodings for iconv (#325)
+- Folder name encoding added (#324) (@aperture-it) 
+- Add a fallback when aliasing encodings for iconv (#325) (@Hokan22) 
 - Method to receive the encoded folder name added
-
-### Breaking changes
-- NaN 
 
 ### Affected Classes
 - [Client::class](src/Client.php)
@@ -62,7 +72,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Fixed
 - Point to root namespace if handling native functions (#279)
 - Use address charset from header information if set (#286)
-- Fix Attachment::getExtension() under Laravel 7.x (#290)
+- Fix Attachment::getExtension() under Laravel 7.x (#290) (@ThanhSonITNIC)
 - Custom and X-Spam search criteria fixed (#296)
 
 ### Added
