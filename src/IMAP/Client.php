@@ -366,7 +366,7 @@ class Client {
                 $folder = new Folder($this, $item);
 
                 if ($hierarchical && $folder->hasChildren()) {
-                    $pattern = $folder->full_name.$folder->delimiter.'%';
+                    $pattern = mb_convert_encoding($folder->full_name, "UTF7-IMAP", "UTF-8").$folder->delimiter.'%';
 
                     $children = $this->getFolders(true, $pattern);
                     $folder->setChildren($children);
