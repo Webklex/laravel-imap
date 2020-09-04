@@ -45,6 +45,7 @@ use Webklex\IMAP\Support\Masks\MessageMask;
  * @property array reply_to
  * @property array in_reply_to
  * @property array sender
+ * @property string fallback_encoding
  *
  * @method integer getMsglist()
  * @method integer setMsglist(integer $msglist)
@@ -175,6 +176,12 @@ class Message {
     public $bodies = [];
     public $attachments = [];
     public $flags = [];
+
+    /**
+     * Fallback Encoding
+     * @var string
+     */
+    public $fallback_encoding = 'UTF-8';
 
     /**
      * A list of all available and supported flags
@@ -590,8 +597,7 @@ class Message {
                 if(is_array($personalParts)) {
                     $address->personal = '';
                     foreach ($personalParts as $p) {
-                        $encoding = (property_exists($p, 'charset')) ? $p->charset : $this->getEncoding($p->text);
-                        $address->personal .= $this->convertEncoding($p->text, $encoding);
+                        $address->personal .= $this->convertEncoding($p->text, $this->getEncoding($p));
                     }
                 }
             }
@@ -853,8 +859,8 @@ class Message {
      */
     public function convertEncoding($str, $from = "ISO-8859-2", $to = "UTF-8") {
 
-        $from = EncodingAliases::get($from);
-        $to = EncodingAliases::get($to);
+        $from = EncodingAliases::get($from, $this->fallback_encoding);
+        $to = EncodingAliases::get($to, $this->fallback_encoding);
 
         if ($from === $to) {
             return $str;
@@ -896,9 +902,11 @@ class Message {
         if (property_exists($structure, 'parameters')) {
             foreach ($structure->parameters as $parameter) {
                 if (strtolower($parameter->attribute) == "charset") {
-                    return EncodingAliases::get($parameter->value);
+                    return EncodingAliases::get($parameter->value, $this->fallback_encoding);
                 }
             }
+        }elseif (property_exists($structure, 'charset')) {
+            return EncodingAliases::get($structure->charset, $this->fallback_encoding);
         }elseif (is_string($structure) === true){
             return mb_detect_encoding($structure);
         }
