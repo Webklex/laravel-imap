@@ -260,29 +260,35 @@ class Query {
      * Create an idle like instance to catch incoming messages
      * @param callable|null $callback
      * @param int $timeout
-     * @throws GetMessagesFailedException
+     *
      * @throws \Webklex\IMAP\Exceptions\ConnectionFailedException
+     * @throws \Webklex\IMAP\Exceptions\InvalidMessageDateException
      */
     public function idle(callable $callback = null, $timeout = 10){
         $known_messages = [];
-        $this->get()->each(function($message) use(&$known_messages){
-            /** @var Message $message */
-            $known_messages[] = $message->getToken();
+        $this->getClient()->overview()->each(function($message) use(&$known_messages){
+            /** @var object $message */
+            $known_messages[] = $message->uid;
         });
         while ($this->getClient()->isConnected()){
             $this->getClient()->expunge();
-            $this->get()->each(function($message) use(&$known_messages, $callback){
-                /** @var \Webklex\IMAP\Message $message */
-                $token = $message->getToken();
-                if(in_array($token, $known_messages)){
-                    return;
+            $new_messages = [];
+            $this->getClient()->overview()->each(function($message) use(&$new_messages, &$known_messages){
+                /** @var object $message */
+                if (in_array($message->uid, $known_messages) == false) {
+                    $new_messages[] = $message;
+                    $known_messages[] = $message->uid;
                 }
-                $known_messages[] = $token;
+            });
+
+            foreach($new_messages as $msg) {
+                $message = new Message($msg->uid, $msg->msgno, $this->getClient());
                 MessageNewEvent::dispatch($message);
                 if ($callback){
                     $callback($message);
                 }
-            });
+            }
+
             sleep($timeout);
         }
     }

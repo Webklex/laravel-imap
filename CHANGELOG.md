@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN 
+- Greatly increased IDLE performance
 
 ### Added
 - Read an overview of the information in the headers of a given message or sequence 
@@ -16,6 +16,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ### Affected Classes
 - [Client::class](src/Client.php)
+- [Query::class](src/Query/Query.php)
 
 ## [1.6.0] - 2020-09-04
 ### Fixed
