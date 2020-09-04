@@ -9,13 +9,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Added
-- NaN 
+- Read an overview of the information in the headers of a given message or sequence 
 
 ### Breaking changes
 - NaN 
 
 ### Affected Classes
-- NaN 
+- [Client::class](src/Client.php)
 
 ## [1.6.0] - 2020-09-04
 ### Fixed

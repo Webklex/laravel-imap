@@ -599,6 +599,19 @@ class Client {
     }
 
     /**
+     * Read an overview of the information in the headers of a given message or sequence
+     * @param string $sequence
+     * @param int $option
+     *
+     * @return \Illuminate\Support\Collection
+     * @throws ConnectionFailedException
+     */
+    public function overview($sequence = "1:*", $option = IMAP::NIL) {
+        $this->checkConnection();
+        return collect(\imap_fetch_overview($this->connection, $sequence, $option));
+    }
+
+    /**
      * Returns all IMAP alert messages that have occurred
      *
      * @return array
