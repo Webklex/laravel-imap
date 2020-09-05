@@ -112,7 +112,7 @@ class Query {
         try {
             $date = Carbon::parse($date);
         } catch (\Exception $e) {
-            throw new MessageSearchValidationException();
+            throw new MessageSearchValidationException("Invalid date provided.", 1200, $e);
         }
 
         return $date;
@@ -236,7 +236,7 @@ class Query {
 
             return $messages;
         } catch (\Exception $e) {
-            throw new GetMessagesFailedException($e->getMessage());
+            throw new GetMessagesFailedException("Failed to fetch messages", 1201, $e);
         }
     }
 

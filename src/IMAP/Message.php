@@ -502,7 +502,7 @@ class Message {
                 try{
                     $parsed_date = Carbon::parse($date);
                 } catch (\Exception $_e) {
-                    throw new InvalidMessageDateException("Invalid message date. ID:".$this->getMessageId(), 1000, $e);
+                    throw new InvalidMessageDateException("Invalid message date. ID:".$this->getMessageId(), 1100, $e);
                 }
             }
         }

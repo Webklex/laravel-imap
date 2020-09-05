@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN 
+- Exception handling improved and missing child exception added (#326)
 
 ### Added
 - NaN 
@@ -15,7 +15,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Affected Classes
-- NaN 
+- [Message::class](src/Message.php)
+- [Query::class](src/Query/Query.php)
 
 ## [1.6.1] - 2020-09-04
 ### Fixed
