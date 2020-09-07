@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Exception handling improved and missing child exception added (#326)
+- NaN 
 
 ### Added
 - NaN 
@@ -15,8 +15,12 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Affected Classes
-- [Message::class](src/Message.php)
-- [Query::class](src/Query/Query.php)
+- NaN 
+
+## [1.6.2] - 2020-09-07
+### Fixed
+- Exception handling improved and missing child exception added (#326)
+- Fix 'A non well formed numeric value encountered' ErrorException (#327)
 
 ## [1.6.1] - 2020-09-04
 ### Fixed
