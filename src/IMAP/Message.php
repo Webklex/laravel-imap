@@ -690,7 +690,11 @@ class Message {
     private function fetchPart($structure, $partNumber){
         $encoding = $this->getEncoding($structure);
 
-        $content = \imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber | 1, $this->fetch_options | IMAP::FT_UID);
+        if (!$partNumber) {
+            $partNumber = 1;
+        }
+
+        $content = \imap_fetchbody($this->client->getConnection(), $this->uid, $partNumber, $this->fetch_options | IMAP::FT_UID);
         $content = $this->decodeString($content, $structure->encoding);
 
         // We don't need to do convertEncoding() if charset is ASCII (us-ascii):
