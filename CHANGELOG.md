@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN 
+- Encoding / Decoding improved and exception fallback added
 
 ### Added
 - NaN 
@@ -15,7 +15,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Affected Classes
-- NaN 
+- [Message::class](src/Message.php)
 
 ## [1.6.2] - 2020-09-07
 ### Fixed

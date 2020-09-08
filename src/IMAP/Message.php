@@ -386,6 +386,9 @@ class Message {
         if (property_exists($header, 'subject')) {
             if($this->config['decoder']['message']['subject'] === 'utf-8') {
                 $this->subject = \imap_utf8($header->subject);
+                if (Str::startsWith(mb_strtolower($this->subject), '=?utf-8?')) {
+                    $this->subject = mb_decode_mimeheader($header->subject);
+                }
             }elseif($this->config['decoder']['message']['subject'] === 'iconv') {
                 $this->subject = iconv_mime_decode($header->subject);
             }else{
@@ -866,13 +869,22 @@ class Message {
             return $str;
         }
 
-        if (function_exists('iconv') && $from != 'UTF-7' && $to != 'UTF-7') {
-            return @iconv($from, $to.'//IGNORE', $str);
-        } else {
-            if (!$from) {
-                return mb_convert_encoding($str, $to);
+        try {
+            if (function_exists('iconv') && $from != 'UTF-7' && $to != 'UTF-7') {
+                return iconv($from, $to, $str);
+            } else {
+                if (!$from) {
+                    return mb_convert_encoding($str, $to);
+                }
+                return mb_convert_encoding($str, $to, $from);
             }
-            return mb_convert_encoding($str, $to, $from);
+        } catch (\Exception $e) {
+            if (strstr($from, '-')) {
+                $from = str_replace('-', '', $from);
+                return $this->convertEncoding($str, $from, $to);
+            } else {
+                return $str;
+            }
         }
     }
 
