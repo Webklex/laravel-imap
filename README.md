@@ -4,6 +4,7 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
 [![Total Downloads][ico-downloads]][link-downloads]
+[![Hits][ico-hits]][link-hits]
 
 ## Description
 
@@ -882,8 +883,6 @@ A special thanks to Jetbrains for supporting this project through their [open so
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[![Hits][ico-hits]][link-downloads]
-
 [ico-version]: https://img.shields.io/packagist/v/webklex/laravel-imap.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/Webklex/laravel-imap/master.svg?style=flat-square
@@ -891,7 +890,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/Webklex/laravel-imap.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/Webklex/laravel-imap.svg?style=flat-square
 [ico-gittip]: http://img.shields.io/gittip/webklex.svg
-[ico-hits]: http://hits.dwyl.io/Webklex/laravel-imap.svg
+[ico-hits]: https://hits.webklex.com/svg/webklex/laravel-imap
 [png-jetbrains]: https://www.webklex.com/jetbrains.png
 
 [link-packagist]: https://packagist.org/packages/Webklex/laravel-imap
@@ -899,6 +898,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-scrutinizer]: https://scrutinizer-ci.com/g/Webklex/laravel-imap/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/Webklex/laravel-imap
 [link-downloads]: https://packagist.org/packages/Webklex/laravel-imap
+[link-hits]: https://hits.webklex.com
 [link-author]: https://github.com/webklex
 [link-contributors]: https://github.com/Webklex/laravel-imap/graphs/contributors
 [link-jetbrains]: https://www.jetbrains.com
