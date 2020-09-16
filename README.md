@@ -70,7 +70,7 @@ You might also want to check `phpinfo()` if the extension is enabled.
 composer require webklex/laravel-imap
 ```
 
-3) If you're running Laravel >= 5.5, package discovery will configure the service provider and `Client` alias out of the box.
+3) If you're using Laravel >= 5.5, package discovery will configure the service provider and `Client` alias out of the box.
 
     Otherwise, for Laravel <= 5.4, edit your `config/app.php` file and:
 
@@ -118,30 +118,30 @@ The following encryption methods are supported:
 - `notls` &mdash; Use NoTLS
 
 Detailed [config/imap.php](src/config/imap.php) configuration:
- - `default` &mdash; used default account. It will be used as default for any missing account parameters. If however the default account is missing a parameter the package default will be used. Set to `false` to disable this functionality.
+ - `default` &mdash; used default account. It will be used as default for any missing account parameters. If however the default account isn't set, the library defaults will be used instead. Set to `false` to disable this behavior.
  - `accounts` &mdash; all available accounts
-   - `default` &mdash; The account identifier (in this case `default` but could also be `fooBar` etc).
-     - `host` &mdash; imap host
-     - `port` &mdash; imap port
+   - `default` &mdash; account identifier (in this case `default` but could also be `fooBar` etc).
+     - `host` &mdash; server host
+     - `port` &mdash; server port
      - `encryption` &mdash; desired encryption method
      - `validate_cert` &mdash; decide weather you want to verify the certificate or not
-     - `username` &mdash; imap account username
-     - `password` &mdash; imap account password
- - `date_format` &mdash; The default date format is used to convert any given Carbon::class object into a valid date string. (`d-M-Y`, `d-M-y`, `d M y`)
+     - `username` &mdash; account username
+     - `password` &mdash; account password
+ - `date_format` &mdash; default date format. Used to convert any given Carbon::class object into a valid date string. (`d-M-Y`, `d-M-y`, `d M y`)
  - `options` &mdash; additional fetch options
-   - `delimiter` &mdash; you can use any supported char such as ".", "/", etc
+   - `delimiter` &mdash; folder / mailbox delimiter. You can use any supported char such as ".", "/", etc
    - `fetch` &mdash; `IMAP::FT_UID` (message marked as read by fetching the message) or `IMAP::FT_PEEK` (fetch the message without setting the "read" flag)
-   - `fetch_body` &mdash; If set to `false` all messages will be fetched without the body and any potential attachments
-   - `fetch_attachment` &mdash;  If set to `false` all messages will be fetched without any attachments
-   - `fetch_flags` &mdash;  If set to `false` all messages will be fetched without any flags
+   - `fetch_body` &mdash; if set to `false` all messages will be fetched without the body and any potential attachments
+   - `fetch_attachment` &mdash;  if set to `false` all messages will be fetched without any attachments
+   - `fetch_flags` &mdash;  if set to `false` all messages will be fetched without any flags
    - `message_key` &mdash; Message key identifier option
    - `fetch_order` &mdash; Message fetch order
    - `open` &mdash; special configuration for imap_open()
-     - `DISABLE_AUTHENTICATOR` &mdash; Disable authentication properties.
-   - `decoder` &mdash; Currently only the message subject and attachment name decoder can be set
-   - `masks` &mdash; Default [masking](#masking) config
-     - `message` &mdash; Default message mask
-     - `attachment` &mdash; Default attachment mask
+     - `DISABLE_AUTHENTICATOR` &mdash; disable authentication properties.
+   - `decoder` &mdash; currently only the message subject and attachment name decoder can be set
+   - `masks` &mdash; default [masking](#masking) config
+     - `message` &mdash; default message mask
+     - `attachment` &mdash; default attachment mask
 
 ## Usage
 #### Basic usage example
@@ -208,8 +208,8 @@ $oClient->connect();
 
 #### Folder / Mailbox
 There is an experimental function available to get a Folder instance by name. 
-For an easier access please take a look at the new config option `imap.options.delimiter` however the `getFolder` 
-method takes three options: the required (string) $folder_name and two optional variables. An integer $attributes which 
+For an easier access please take a look at the new config option `imap.options.delimiter`. The `Client::getFolder` 
+method takes three arguments: the required (string) $folder_name and two optional variables. An integer $attributes which 
 seems to be sometimes 32 or 64 (I honestly have no clue what this number does, so feel free to enlighten me and anyone 
 else) and a delimiter which if it isn't set will use the default option configured inside the [config/imap.php](src/config/imap.php) file.
 > If you are using Exchange you might want to set all parameter and the last `$prefix_address` to `false` e.g. `$oClient->getFolder('name', 32, null, false)` #234
@@ -413,7 +413,7 @@ $paginator = $oFolder->search()
 > You can also paginate a Folder-, Attachment- or FlagCollection instance.
 
 #### View examples
-You can find a few blade examples under [/examples](https://github.com/Webklex/laravel-imap/tree/master/examples).
+You can find a few blade examples under [examples](examples).
 
 #### Fetch a specific message
 Get a specific message by uid (Please note that the uid is not unique and can change):
@@ -550,8 +550,8 @@ echo $mask->token().'@'.$mask->uid;
 ```
 
 Additional examples can be found here:
-- [Custom message mask](https://github.com/Webklex/laravel-imap/blob/master/examples/custom_message_mask.php)
-- [Custom attachment mask](https://github.com/Webklex/laravel-imap/blob/master/examples/custom_attachment_mask.php)
+- [Custom message mask](examples/custom_message_mask.php)
+- [Custom attachment mask](examples/custom_attachment_mask.php)
 
 
 #### Idle
@@ -886,17 +886,12 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-version]: https://img.shields.io/packagist/v/webklex/laravel-imap.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/Webklex/laravel-imap/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/Webklex/laravel-imap.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/Webklex/laravel-imap.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/Webklex/laravel-imap.svg?style=flat-square
-[ico-gittip]: http://img.shields.io/gittip/webklex.svg
 [ico-hits]: https://hits.webklex.com/svg/webklex/laravel-imap?
 [png-jetbrains]: https://www.webklex.com/jetbrains.png
 
 [link-packagist]: https://packagist.org/packages/Webklex/laravel-imap
 [link-travis]: https://travis-ci.org/Webklex/laravel-imap
-[link-scrutinizer]: https://scrutinizer-ci.com/g/Webklex/laravel-imap/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/Webklex/laravel-imap
 [link-downloads]: https://packagist.org/packages/Webklex/laravel-imap
 [link-hits]: https://hits.webklex.com
 [link-author]: https://github.com/webklex
