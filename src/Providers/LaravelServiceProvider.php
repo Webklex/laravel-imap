@@ -61,7 +61,7 @@ class LaravelServiceProvider extends ServiceProvider {
     private function setVendorConfig(){
 
         $config_key = 'imap';
-        $path = __DIR__.'/../../config/'.$config_key.'.php';
+        $path = __DIR__.'/../config/'.$config_key.'.php';
 
         $vendor_config = require $path;
         $config = $this->app['config']->get($config_key, []);
