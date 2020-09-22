@@ -41,7 +41,7 @@ class ClientManager {
     /**
      * Create a new client manager instance.
      *
-     * @param  Application  $app
+     * @param Application $app
      */
     public function __construct($app) {
         $this->app = $app;
@@ -50,7 +50,7 @@ class ClientManager {
 
     /**
      * Resolve a account instance.
-     * @param  string  $name
+     * @param string $name
      *
      * @return Client
      * @throws MaskNotFoundException
@@ -70,7 +70,7 @@ class ClientManager {
 
     /**
      * Resolve a account.
-     * @param  string  $name
+     * @param string $name
      *
      * @return Client
      * @throws MaskNotFoundException
@@ -84,7 +84,7 @@ class ClientManager {
     /**
      * Get the account configuration.
      *
-     * @param  string  $name
+     * @param string $name
      *
      * @return array
      */
@@ -108,7 +108,7 @@ class ClientManager {
     /**
      * Set the name of the default account.
      *
-     * @param  string  $name
+     * @param string $name
      *
      * @return void
      */

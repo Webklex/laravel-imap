@@ -30,8 +30,8 @@ class LaravelServiceProvider extends ServiceProvider {
      */
     public function boot() {
         $this->publishes([
-            __DIR__.'/../config/imap.php' => config_path('imap.php'),
-        ]);
+                             __DIR__ . '/../config/imap.php' => config_path('imap.php'),
+                         ]);
     }
 
     /**
@@ -58,10 +58,10 @@ class LaravelServiceProvider extends ServiceProvider {
      * If however the default account is missing a parameter the package default account parameter will be used.
      * This can be disabled by setting imap.default in your config file to 'false'
      */
-    private function setVendorConfig(){
+    private function setVendorConfig() {
 
         $config_key = 'imap';
-        $path = __DIR__.'/../config/'.$config_key.'.php';
+        $path = __DIR__ . '/../config/' . $config_key . '.php';
 
         $vendor_config = require $path;
         $config = $this->app['config']->get($config_key, []);
@@ -70,17 +70,17 @@ class LaravelServiceProvider extends ServiceProvider {
 
         $config = $this->app['config']->get($config_key);
 
-        if(is_array($config)){
-            if(isset($config['default'])){
-                if(isset($config['accounts']) && $config['default'] != false){
+        if (is_array($config)) {
+            if (isset($config['default'])) {
+                if (isset($config['accounts']) && $config['default'] != false) {
 
                     $default_config = $vendor_config['accounts']['default'];
-                    if(isset($config['accounts'][$config['default']])){
+                    if (isset($config['accounts'][$config['default']])) {
                         $default_config = array_merge($default_config, $config['accounts'][$config['default']]);
                     }
 
-                    if(is_array($config['accounts'])){
-                        foreach($config['accounts'] as $account_key => $account){
+                    if (is_array($config['accounts'])) {
+                        foreach ($config['accounts'] as $account_key => $account) {
                             $config['accounts'][$account_key] = array_merge($default_config, $account);
                         }
                     }
@@ -101,8 +101,8 @@ class LaravelServiceProvider extends ServiceProvider {
      * Numeric entries are appended, not replaced, but only if they are
      * unique
      *
-     * @param  array $array1 Initial array to merge.
-     * @param  array ...     Variable list of arrays to recursively merge.
+     * @param array $array1 Initial array to merge.
+     * @param array ...     Variable list of arrays to recursively merge.
      *
      * @return array|mixed
      *
@@ -114,23 +114,23 @@ class LaravelServiceProvider extends ServiceProvider {
         $arrays = func_get_args();
         $base = array_shift($arrays);
 
-        if(!is_array($base)) $base = empty($base) ? array() : array($base);
+        if (!is_array($base)) $base = empty($base) ? array() : array($base);
 
-        foreach($arrays as $append) {
+        foreach ($arrays as $append) {
 
-            if(!is_array($append)) $append = array($append);
+            if (!is_array($append)) $append = array($append);
 
-            foreach($append as $key => $value) {
+            foreach ($append as $key => $value) {
 
-                if(!array_key_exists($key, $base) and !is_numeric($key)) {
+                if (!array_key_exists($key, $base) and !is_numeric($key)) {
                     $base[$key] = $append[$key];
                     continue;
                 }
 
-                if(is_array($value) or is_array($base[$key])) {
+                if (is_array($value) or is_array($base[$key])) {
                     $base[$key] = $this->array_merge_recursive_distinct($base[$key], $append[$key]);
-                } else if(is_numeric($key)) {
-                    if(!in_array($value, $base)) $base[] = $value;
+                } else if (is_numeric($key)) {
+                    if (!in_array($value, $base)) $base[] = $value;
                 } else {
                     $base[$key] = $value;
                 }
@@ -141,5 +141,5 @@ class LaravelServiceProvider extends ServiceProvider {
 
         return $base;
     }
-    
+
 }
