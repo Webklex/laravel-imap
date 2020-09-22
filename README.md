@@ -7,8 +7,7 @@
 [![Hits][ico-hits]][link-hits]
 
 ## Description
-
-Laravel IMAP is an easy way to integrate the native php-imap module and an extended custom imap protocol implementation 
+Laravel IMAP is an easy way to integrate both the native php-imap module and an extended custom imap protocol 
 into your **Laravel** app. 
 
 > If you want to use this library outside of Laravel, please head over to [webklex/php-imap](https://github.com/Webklex/php-imap)
@@ -35,7 +34,6 @@ Documentation < v2.0.0: [legacy documentation](https://github.com/Webklex/larave
 Additional information can be found here: [webklex/php-imap](https://github.com/Webklex/php-imap).
 
 ## Installation
-
 1. Install the Laravel IMAP package by running the following command:
 ```shell
 composer require webklex/laravel-imap
@@ -187,7 +185,7 @@ $oClient = new Client([
     'validate_cert' => true,
     'username' => 'example@gmail.com',
     'password' => 'PASSWORD',
-    'authentication' => "oath",
+    'authentication' => "oauth",
     'protocol' => 'imap'
 ]);
 
