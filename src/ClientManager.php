@@ -12,6 +12,11 @@
 
 namespace Webklex\IMAP;
 
+use Illuminate\Foundation\Application;
+use Webklex\PHPIMAP\Client;
+use Webklex\PHPIMAP\ClientManager as CM;
+use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
+
 /**
  * Class ClientManager
  *
@@ -24,7 +29,7 @@ class ClientManager {
     /**
      * The application instance.
      *
-     * @var \Illuminate\Foundation\Application
+     * @var Application
      */
     protected $app;
 
@@ -36,19 +41,19 @@ class ClientManager {
     /**
      * Create a new client manager instance.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      */
     public function __construct($app) {
         $this->app = $app;
+        CM::$config = $this->app['config']["imap"];
     }
 
     /**
      * Resolve a account instance.
-     *
      * @param  string  $name
      *
      * @return Client
-     * @throws Exceptions\MaskNotFoundException
+     * @throws MaskNotFoundException
      */
     public function account($name = null) {
         $name = $name ?: $this->getDefaultAccount();
@@ -68,7 +73,7 @@ class ClientManager {
      * @param  string  $name
      *
      * @return Client
-     * @throws Exceptions\MaskNotFoundException
+     * @throws MaskNotFoundException
      */
     protected function resolve($name) {
         $config = $this->getConfig($name);
@@ -109,16 +114,17 @@ class ClientManager {
      */
     public function setDefaultAccount($name) {
         $this->app['config']['imap.default'] = $name;
+        CM::$config['config']['default'] = $name;
     }
 
     /**
      * Dynamically pass calls to the default account.
      *
-     * @param  string  $method
-     * @param  array   $parameters
+     * @param string $method
+     * @param array $parameters
      *
      * @return mixed
-     * @throws Exceptions\MaskNotFoundException
+     * @throws MaskNotFoundException
      */
     public function __call($method, $parameters) {
         $callable = [$this->account(), $method];

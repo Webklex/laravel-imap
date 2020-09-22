@@ -11,8 +11,8 @@
  */
 
 /**
- * @var \Webklex\IMAP\Support\MessageCollection $paginator
- * @var \Webklex\IMAP\Message $oMessage
+ * @var \Webklex\PHPIMAP\Support\MessageCollection $paginator
+ * @var \Webklex\PHPIMAP\Message $oMessage
  */
 
 ?>

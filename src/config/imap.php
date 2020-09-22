@@ -64,6 +64,7 @@ return [
             'validate_cert' => true,
             'username' => 'example@gmail.com',
             'password' => 'PASSWORD',
+            'authentication' => 'oauth',
         ],
 
         'another' => [ // account identifier
@@ -86,12 +87,7 @@ return [
     |   -Delimiter (optional):
     |       This option is only used when calling $oClient->
     |       You can use any supported char such as ".", "/", (...)
-    |   -Fetch option:
-    |       IMAP::FT_UID  - Message marked as read by fetching the message
-    |       IMAP::FT_PEEK - Fetch the message without setting the "read" flag
     |   -Body download option
-    |       Default TRUE
-    |   -Attachment download option
     |       Default TRUE
     |   -Flag download option
     |       Default TRUE
@@ -112,27 +108,20 @@ return [
     |   -Decoder options (currently only the message subject and attachment name decoder can be set)
     |       'utf-8' - Uses imap_utf8($string) to decode a string
     |       'mimeheader' - Uses mb_decode_mimeheader($string) to decode a string
-    |       'iconv' - Uses iconv_mime_decode($string) to decode a string
     |
     */
     'options' => [
         'delimiter' => '/',
-        'fetch' => \Webklex\IMAP\IMAP::FT_UID,
         'fetch_body' => true,
-        'fetch_attachment' => true,
         'fetch_flags' => true,
-        'message_key' => 'id',
+        'message_key' => 'list',
         'fetch_order' => 'asc',
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ],
         'decoder' => [
-            'message' => [
-                'subject' => 'utf-8'
-            ],
-            'attachment' => [
-                'name' => 'utf-8'
-            ]
+            'message' => 'utf-8', // mimeheader
+            'attachment' => 'utf-8' // mimeheader
         ]
     ],
 
@@ -148,9 +137,9 @@ return [
     | for a quick start.
     |
     | The provided masks below are used as the default masks.
-     */
+    */
     'masks' => [
-        'message' => \Webklex\IMAP\Support\Masks\MessageMask::class,
-        'attachment' => \Webklex\IMAP\Support\Masks\AttachmentMask::class
+        'message' => \Webklex\PHPIMAP\Support\Masks\MessageMask::class,
+        'attachment' => \Webklex\PHPIMAP\Support\Masks\AttachmentMask::class
     ]
 ];

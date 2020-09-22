@@ -13,8 +13,8 @@
 namespace Webklex\IMAP\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Webklex\IMAP\Client;
 use Webklex\IMAP\ClientManager;
+use Webklex\PHPIMAP\Client;
 
 /**
  * Class LaravelServiceProvider

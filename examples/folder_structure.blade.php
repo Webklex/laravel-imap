@@ -11,8 +11,8 @@
  */
 
 /**
- * @var \Webklex\IMAP\Support\FolderCollection $paginator
- * @var \Webklex\IMAP\Folder $oFolder
+ * @var \Webklex\PHPIMAP\Support\FolderCollection $paginator
+ * @var \Webklex\PHPIMAP\Folder $oFolder
  */
 
 ?>
