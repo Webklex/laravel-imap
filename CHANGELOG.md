@@ -14,6 +14,10 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Breaking changes
 - NaN 
 
+## [2.0.2] - 2020-09-23
+### Fixed
+- Missing default config parameter added (#337)
+
 ## [2.0.1] - 2020-09-22
 ### Fixed
 - Wrong path to config directory (#336)

@@ -54,6 +54,7 @@ return [
             'validate_cert' => env('IMAP_VALIDATE_CERT', true),
             'username' => env('IMAP_USERNAME', 'root@example.com'),
             'password' => env('IMAP_PASSWORD', ''),
+            'authentication' => null,
         ],
 
         /*
@@ -74,6 +75,7 @@ return [
             'validate_cert' => true,
             'username' => '',
             'password' => '',
+            'authentication' => null,
         ]
         */
     ],
