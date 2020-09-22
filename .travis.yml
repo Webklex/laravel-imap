@@ -19,10 +19,10 @@ matrix:
 sudo: false
 
 before-install:
- - composer install --prefer-source --no-interaction --dev
+ - COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-source --no-interaction --dev
 
 install: 
- - composer install --no-interaction
+ - COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction
 
 script:
  - phpunit
