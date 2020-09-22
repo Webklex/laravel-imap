@@ -14,6 +14,10 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Breaking changes
 - NaN 
 
+## [2.0.1] - 2020-09-22
+### Fixed
+- Wrong path to config directory (#336)
+
 ## [2.0.0] - 2020-09-22
 ### Fixed
 - Encoding / Decoding improved and exception fallback added
