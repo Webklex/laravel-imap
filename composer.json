@@ -6,6 +6,9 @@
         "webklex",
         "laravel",
         "imap",
+        "pop3",
+        "oauth",
+        "idle",
         "laravel-imap",
         "mail"
     ],
