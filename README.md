@@ -16,6 +16,9 @@ into your **Laravel** app.
 
 Documentation < v2.0.0: [legacy documentation](https://github.com/Webklex/laravel-imap/tree/1.6.2#table-of-contents)
 
+Core documentation and wiki: [core documentation](https://github.com/Webklex/php-imap),
+[wiki](https://github.com/Webklex/php-imap/wiki)
+
 ## Table of Contents
 - [Installation](#installation)
 - [Configuration](#configuration)
