@@ -7,6 +7,7 @@
 [![Hits][ico-hits]][link-hits]
 
 ## Description
+
 Laravel IMAP is an easy way to integrate both the native php-imap module and an extended custom imap protocol 
 into your **Laravel** app. 
 
