@@ -10,7 +10,7 @@
 *  -
 */
 
-class CustomMessageMask extends \Webklex\IMAP\Support\Masks\MessageMask {
+class CustomMessageMask extends \Webklex\PHPIMAP\Support\Masks\MessageMask {
 
     /**
      * New custom method which can be called through a mask
@@ -30,14 +30,14 @@ class CustomMessageMask extends \Webklex\IMAP\Support\Masks\MessageMask {
 
 }
 
-/** @var \Webklex\IMAP\Client $oClient */
+/** @var \Webklex\PHPIMAP\Client $oClient */
 $oClient = \Webklex\IMAP\Facades\Client::account('default');
 $oClient->connect();
 
-/** @var \Webklex\IMAP\Folder $folder */
+/** @var \Webklex\PHPIMAP\Folder $folder */
 $folder = $oClient->getFolder('INBOX');
 
-/** @var \Webklex\IMAP\Message $message */
+/** @var \Webklex\PHPIMAP\Message $message */
 $message = $folder->query()->limit(1)->get()->first();
 
 /** @var CustomMessageMask $masked_message */

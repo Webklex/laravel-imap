@@ -2,7 +2,6 @@
 
 namespace Webklex\IMAP\Events;
 
-use Webklex\IMAP\Message;
 
 abstract class Event {
 

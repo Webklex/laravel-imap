@@ -6,6 +6,9 @@
         "webklex",
         "laravel",
         "imap",
+        "pop3",
+        "oauth",
+        "idle",
         "laravel-imap",
         "mail"
     ],
@@ -20,15 +23,15 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "ext-imap": "*",
         "ext-mbstring": "*",
         "ext-iconv": "*",
         "ext-fileinfo": "*",
+        "webklex/php-imap": "^2.1",
         "laravel/framework": ">=5.0.0"
     },
     "autoload": {
         "psr-4": {
-            "Webklex\\IMAP\\": "src/IMAP"
+            "Webklex\\IMAP\\": "src"
         }
     },
     "scripts": {

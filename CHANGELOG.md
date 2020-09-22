@@ -6,13 +6,30 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Encoding / Decoding improved and exception fallback added
+- NaN 
 
 ### Added
 - NaN 
 
 ### Breaking changes
 - NaN 
+
+## [2.0.0] - 2020-09-22
+### Fixed
+- Encoding / Decoding improved and exception fallback added
+
+### Added 
+- php-imap module replaced by direct socket communication
+- Package core moved to `webklex/php-imap`
+- Legacy support added
+- True IDLE support added
+- oAuth support added
+- Dynamic and customizable events added
+
+### Breaking changes
+- Class namespaces have changed from `IMAP` to `PHPIMAP`
+- Method response structure has changed in most classes
+- Deprecated methods removed
 
 ### Affected Classes
 - [Message::class](src/Message.php)

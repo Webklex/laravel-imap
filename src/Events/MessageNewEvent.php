@@ -2,9 +2,9 @@
 
 namespace Webklex\IMAP\Events;
 
-use Webklex\IMAP\Message;
+use Webklex\PHPIMAP\Message;
 
-class MessageRestoredEvent extends Event {
+class MessageNewEvent extends Event {
 
     /** @var Message $message */
     public $message;

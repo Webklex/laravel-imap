@@ -2,7 +2,7 @@
 
 namespace Webklex\IMAP\Events;
 
-use Webklex\IMAP\Message;
+use Webklex\PHPIMAP\Message;
 
 class MessageMovedEvent extends Event {
 
