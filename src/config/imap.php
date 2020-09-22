@@ -127,6 +127,31 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Available events
+    |--------------------------------------------------------------------------
+    |
+    */
+    'events' => [
+        "message" => [
+            'new' => \Webklex\IMAP\Events\MessageNewEvent::class,
+            'moved' => \Webklex\IMAP\Events\MessageMovedEvent::class,
+            'copied' => \Webklex\IMAP\Events\MessageCopiedEvent::class,
+            'deleted' => \Webklex\IMAP\Events\MessageDeletedEvent::class,
+            'restored' => \Webklex\IMAP\Events\MessageRestoredEvent::class,
+        ],
+        "folder" => [
+            'new' => \Webklex\IMAP\Events\FolderNewEvent::class,
+            'moved' => \Webklex\IMAP\Events\FolderMovedEvent::class,
+            'deleted' => \Webklex\IMAP\Events\FolderDeletedEvent::class,
+        ],
+        "flag" => [
+            'new' => \Webklex\IMAP\Events\FlagNewEvent::class,
+            'deleted' => \Webklex\IMAP\Events\FlagDeletedEvent::class,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Available masking options
     |--------------------------------------------------------------------------
     |
