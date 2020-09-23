@@ -114,7 +114,7 @@ class ClientManager {
      */
     public function setDefaultAccount($name) {
         $this->app['config']['imap.default'] = $name;
-        CM::$config['config']['default'] = $name;
+        CM::$config['default'] = $name;
     }
 
     /**

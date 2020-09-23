@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN 
+- Default account might not be set correctly if set manually. 
 
 ### Added
 - NaN 
