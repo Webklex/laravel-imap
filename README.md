@@ -1,25 +1,24 @@
 # IMAP Library for Laravel
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
-[![Software License][ico-license]](LICENSE.md)
+[![Software License][ico-license]][link-license]
 [![Build Status][ico-build]][link-scrutinizer] 
 [![Code quality][ico-quality]][link-scrutinizer] 
 [![Total Downloads][ico-downloads]][link-downloads]
 [![Hits][ico-hits]][link-hits]
 
-## Description
 
+## Description
 Laravel IMAP is an easy way to integrate both the native php-imap module and an extended custom imap protocol 
-into your **Laravel** app. 
+into your **Laravel** app. This enables your app to not only respond to new emails but also allows it to 
+read and parse existing mails and much more. 
 
 > If you want to use this library outside of Laravel, please head over to [webklex/php-imap](https://github.com/Webklex/php-imap)
+> for a standalone version.
 
-Documentation < v2.0.0: [legacy documentation](https://github.com/Webklex/laravel-imap/tree/1.6.2#table-of-contents)
-
-Core documentation and wiki: [core documentation](https://github.com/Webklex/php-imap),
-[wiki](https://github.com/Webklex/php-imap/wiki)
 
 ## Table of Contents
+- [Documentations](#documentations)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
@@ -36,42 +35,48 @@ Core documentation and wiki: [core documentation](https://github.com/Webklex/php
 - [Supporters](#supporters)
 - [License](#license)
 
-Additional information can be found here: [webklex/php-imap](https://github.com/Webklex/php-imap).
+
+## Documentations
+- Legacy (< v2.0.0): [legacy documentation](https://github.com/Webklex/laravel-imap/tree/1.6.2#table-of-contents)
+- Core documentation: [webklex/php-imap](https://github.com/Webklex/php-imap)
+- Wiki: [php-imap wiki](https://github.com/Webklex/php-imap/wiki)
+
 
 ## Installation
-1. Install the Laravel IMAP package by running the following command:
+1.) Install the Laravel IMAP package by running the following command:
 ```shell
 composer require webklex/laravel-imap
 ```
 
-1.1 If you are getting errors or having some other issue, please follow step 1. - 1.1 under 
-[webklex/php-imap > Installation](https://github.com/Webklex/php-imap#installation).
+1.1.) If you are getting errors or having some other issue, please follow step 1. - 1.1 
+[here](https://github.com/Webklex/php-imap#installation).
 
-1.2 If you are having trouble with v2.0.0, please go ahead and create a new issue and perhaps try the latest v1.6.2 version:
+1.2.) If you are having trouble with v2.0.0, please go ahead and create a new issue and perhaps 
+try the latest v1.6.2 version:
 ```shell
 composer require webklex/laravel-imap:1.6.2
 ```
 
-2. If you're using Laravel >= 5.5, package discovery will configure the service provider and `Client` alias out of the box.
-    Otherwise, for Laravel <= 5.4, edit your `config/app.php` file and:
-    - add the following to the `providers` array:
-        ```php
-        Webklex\IMAP\Providers\LaravelServiceProvider::class,
-        ```
-    - add the following to the `aliases` array: 
-        ```php
-        'Client' => Webklex\IMAP\Facades\Client::class,
-        ```
+2.) If you're using Laravel >= 5.5, package discovery will configure the service provider and `Client` alias out of the box.
+Otherwise, for Laravel <= 5.4, edit your `config/app.php` file and:
+- add the following to the `providers` array:
+```php
+Webklex\IMAP\Providers\LaravelServiceProvider::class,
+```
+- add the following to the `aliases` array: 
+```php
+'Client' => Webklex\IMAP\Facades\Client::class,
+```
 
-3. Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
+3.) Run the command below to publish the package config file [config/imap.php](src/config/imap.php):
 ```shell
 php artisan vendor:publish --provider="Webklex\IMAP\Providers\LaravelServiceProvider"
 ```
 
+
 ## Configuration
 If you are planning to use a single account, you might want to add the following to
 your `.env` file.
-
 ```
 IMAP_HOST=somehost.com
 IMAP_PORT=993
@@ -83,19 +88,20 @@ IMAP_DEFAULT_ACCOUNT=default
 IMAP_PROTOCOL=imap
 ```
 
-Please see [webklex/php-imap > Configuration](https://github.com/Webklex/php-imap#configuration) for a detailed list of
-all available config options.
+Please see [webklex/php-imap#Configuration](https://github.com/Webklex/php-imap#configuration) and 
+[config/imap.php](src/config/imap.php) for a detailed list of all available config options.
+
 
 ## Usage
 #### Basic usage example
 This is a basic example, which will echo out all Mails within all imap folders
 and will move every message into INBOX.read. Please be aware that this should not be
-tested in real live but it gives an impression on how things work.
+tested in real life and is only meant to gives an impression on how things work.
 
 ```php
 use Webklex\PHPIMAP\Client;
 
-$oClient = new Client([
+$client = new Client([
     'host'          => 'somehost.com',
     'port'          => 993,
     'encryption'    => 'ssl',
@@ -105,32 +111,32 @@ $oClient = new Client([
     'protocol'      => 'imap'
 ]);
 /* Alternative by using the Facade
-$oClient = Webklex\IMAP\Facades\Client::account('default');
+$client = Webklex\IMAP\Facades\Client::account('default');
 */
 
 //Connect to the IMAP Server
-$oClient->connect();
+$client->connect();
 
 //Get all Mailboxes
-/** @var \Webklex\PHPIMAP\Support\FolderCollection $aFolder */
-$aFolder = $oClient->getFolders();
+/** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
+$folders = $oClient->getFolders();
 
 //Loop through every Mailbox
-/** @var \Webklex\PHPIMAP\Folder $oFolder */
-foreach($aFolder as $oFolder){
+/** @var \Webklex\PHPIMAP\Folder $folder */
+foreach($folders as $folder){
 
     //Get all Messages of the current Mailbox $oFolder
-    /** @var \Webklex\PHPIMAP\Support\MessageCollection $aMessage */
-    $aMessage = $oFolder->messages()->all()->get();
+    /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
+    $messages = $folder->messages()->all()->get();
     
-    /** @var \Webklex\PHPIMAP\Message $oMessage */
-    foreach($aMessage as $oMessage){
-        echo $oMessage->getSubject().'<br />';
-        echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
-        echo $oMessage->getHTMLBody();
+    /** @var \Webklex\PHPIMAP\Message $message */
+    foreach($messages as $message){
+        echo $message->getSubject().'<br />';
+        echo 'Attachments: '.$message->getAttachments()->count().'<br />';
+        echo $message->getHTMLBody();
         
         //Move the current Message to 'INBOX.read'
-        if($oMessage->moveToFolder('INBOX.read') == true){
+        if($message->moveToFolder('INBOX.read') == true){
             echo 'Message has ben moved';
         }else{
             echo 'Message could not be moved';
@@ -138,31 +144,26 @@ foreach($aFolder as $oFolder){
     }
 }
 ```
-Please see [webklex/php-imap > Table of Contents](https://github.com/Webklex/php-imap#table-of-contents) for more detail.
+Please see [webklex/php-imap#Table of Contents](https://github.com/Webklex/php-imap#table-of-contents) for more detail
+and further examples.
+
 
 #### Facade
-If you use the Facade [\Webklex\IMAP\Facades\Client::class](src/IMAP/Facades/Client.php) please select an account first:
+If you use the Facade [\Webklex\IMAP\Facades\Client::class](src/IMAP/Facades/Client.php),
+please start by selecting an in [config/imap.php](src/config/imap.php) defined account first followed by 
+`Client::connect()` to establish an authenticated connection:
 
 ```php
 use Webklex\IMAP\Facades\Client;
 
-/** @var \Webklex\PHPIMAP\Client $oClient */
-$oClient = Client::account('default');
-$oClient->connect();
+/** @var \Webklex\PHPIMAP\Client $client */
+$client = Client::account('default');
+$client->connect();
 ```
 
 #### View examples
-You can find a few blade examples under [examples](examples).
+You can find a few blade and [mask](https://github.com/Webklex/php-imap#masking) examples under [/examples](examples).
 
-#### Fetch a specific message
-Get a specific message by uid (Please note that the uid is not unique and can change):
-
-```php
-/** @var \Webklex\PHPIMAP\Folder $oFolder */
-
-/** @var \Webklex\PHPIMAP\Message $oMessage */
-$oMessage = $oFolder->query()->getMessage($uid = 1);
-```
 
 #### Idle
 Every time a new message is received, the server will notify the client and return the new message.
@@ -179,11 +180,13 @@ $folder->idle(function($message){
 ```
 
 #### oAuth
-If you are using google mail or something similar, you might want to use oauth instead:
+If you are using google mail or something similar, you might have to use oauth instead:
 
 ```php
-/** @var \Webklex\PHPIMAP\Client $oClient */
-$oClient = new Client([
+use Webklex\PHPIMAP\Client;
+
+/** @var \Webklex\PHPIMAP\Client $client */
+$client = new Client([
     'host' => 'imap.gmail.com',
     'port' => 993,
     'encryption' => 'ssl',
@@ -217,8 +220,11 @@ Additional integration information:
 - https://github.com/Webklex/php-imap#events
 
 ## Support
-If you encounter any problems or if you find a bug, please don't hesitate to create a new [issue](https://github.com/Webklex/laravel-imap/issues).
+If you encounter any problems or if you find a bug, please don't hesitate to create a new 
+[issue](https://github.com/Webklex/laravel-imap/issues).
 However please be aware that it might take some time to get an answer.
+
+Off topic, rude or abusive issues will be deleted without any notice.
 
 If you need **immediate** or **commercial** support, feel free to send me a mail at github@webklex.com. 
 
@@ -243,15 +249,13 @@ To prevent unnecessary work, please consider to create a [feature issue](https:/
 first, if you're planning to do bigger changes. Of course you can also create a new [feature issue](https://github.com/Webklex/laravel-imap/issues/new?template=feature_request.md)
 if you're just wishing a feature ;)
 
->Off topic, rude or abusive issues will be deleted without any notice.
-
 ### Known issues
 | Error                                                                     | Solution                                                   |
 | ------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | Kerberos error: No credentials cache file found (try running kinit) (...) | Uncomment "DISABLE_AUTHENTICATOR" inside and use the `legacy-imap` protocol `config/imap.php` | 
 
 ## Change log
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+Please see [CHANGELOG][link-changelog] for more information what has changed recently.
 
 ## Security
 If you discover any security related issues, please email github@webklex.com instead of using the issue tracker.
@@ -266,13 +270,13 @@ A special thanks to Jetbrains for supporting this project through their [open so
 [![Jetbrains][png-jetbrains]][link-jetbrains]
 
 ## License
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File][link-license] for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/webklex/laravel-imap.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/Webklex/laravel-imap/master.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/Webklex/laravel-imap.svg?style=flat-square
-[ico-hits]: https://hits.webklex.com/svg/webklex/laravel-imap?
+[ico-hits]: https://hits.webklex.com/svg/webklex/laravel-imap
 [ico-build]: https://img.shields.io/scrutinizer/build/g/Webklex/laravel-imap/master?style=flat-square
 [ico-quality]: https://img.shields.io/scrutinizer/quality/g/Webklex/laravel-imap/master?style=flat-square
 [png-jetbrains]: https://www.webklex.com/jetbrains.png
@@ -284,4 +288,6 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-hits]: https://hits.webklex.com
 [link-author]: https://github.com/webklex
 [link-contributors]: https://github.com/Webklex/laravel-imap/graphs/contributors
+[link-license]: https://github.com/Webklex/laravel-imap/blob/master/LICENSE
+[link-changelog]: https://github.com/Webklex/laravel-imap/blob/master/CHANGELOG.md
 [link-jetbrains]: https://www.jetbrains.com

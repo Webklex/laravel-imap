@@ -19,6 +19,8 @@ use Webklex\IMAP\ClientManager;
  * Class Client
  *
  * @package Webklex\IMAP\Facades
+ *
+ * @method \Webklex\PHPIMAP\Client account($name = null)
  */
 class Client extends Facade {
 
