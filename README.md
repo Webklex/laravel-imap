@@ -125,7 +125,7 @@ $folders = $oClient->getFolders();
 /** @var \Webklex\PHPIMAP\Folder $folder */
 foreach($folders as $folder){
 
-    //Get all Messages of the current Mailbox $oFolder
+    //Get all Messages of the current Mailbox $folder
     /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
     $messages = $folder->messages()->all()->get();
     
