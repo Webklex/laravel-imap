@@ -276,7 +276,7 @@ The MIT License (MIT). Please see [License File][link-license] for more informat
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/Webklex/laravel-imap/master.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/Webklex/laravel-imap.svg?style=flat-square
-[ico-hits]: https://hits.webklex.com/svg/webklex/laravel-imap
+[ico-hits]: https://hits.webklex.com/svg/webklex/laravel-imap?
 [ico-build]: https://img.shields.io/scrutinizer/build/g/Webklex/laravel-imap/master?style=flat-square
 [ico-quality]: https://img.shields.io/scrutinizer/quality/g/Webklex/laravel-imap/master?style=flat-square
 [png-jetbrains]: https://www.webklex.com/jetbrains.png
