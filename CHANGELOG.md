@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Default account might not be set correctly if set manually. 
+- Missing default config parameter added #346
 
 ### Added
 - NaN 

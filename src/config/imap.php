@@ -89,6 +89,9 @@ return [
     |   -Delimiter (optional):
     |       This option is only used when calling $oClient->
     |       You can use any supported char such as ".", "/", (...)
+    |   -Fetch option:
+    |       IMAP::FT_UID  - Message marked as read by fetching the message body
+    |       IMAP::FT_PEEK - Fetch the message without setting the "seen" flag
     |   -Body download option
     |       Default TRUE
     |   -Flag download option
@@ -114,6 +117,7 @@ return [
     */
     'options' => [
         'delimiter' => '/',
+        'fetch' => \Webklex\PHPIMAP\IMAP::FT_UID,
         'fetch_body' => true,
         'fetch_flags' => true,
         'message_key' => 'list',
