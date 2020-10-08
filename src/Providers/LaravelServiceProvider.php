@@ -13,7 +13,7 @@
 namespace Webklex\IMAP\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Webklex\IMAP\ClientManager;
+use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Client;
 
 /**
@@ -40,15 +40,15 @@ class LaravelServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
+        $this->setVendorConfig();
+
         $this->app->singleton(ClientManager::class, function($app) {
-            return new ClientManager($app);
+            return new ClientManager($app['config']["imap"]);
         });
 
         $this->app->singleton(Client::class, function($app) {
             return $app[ClientManager::class]->account();
         });
-
-        $this->setVendorConfig();
     }
 
     /**

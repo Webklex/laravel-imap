@@ -13,7 +13,7 @@
 namespace Webklex\IMAP\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Webklex\IMAP\ClientManager;
+use Webklex\PHPIMAP\ClientManager;
 
 /**
  * Class Client

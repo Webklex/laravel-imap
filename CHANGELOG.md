@@ -14,6 +14,13 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Breaking changes
 - NaN 
 
+## [2.1.0] - 2020-10-08
+### Fixed
+- Redundant class `ClientManager::class` removed and config handling moved to depending library "webklex/php-imap" #345 #344
+
+### Breaking changes
+- `\Webklex\IMAP\ClientManager::class` no longer exists. Please use the `\Webklex\IMAP\Facades\Client::class` facade or `\Webklex\PHPIMAP\ClientManager::class` instead. 
+
 ## [2.0.2] - 2020-09-23
 ### Fixed
 - Missing default config parameter added (#337)
