@@ -99,7 +99,7 @@ tested in real life and is only meant to gives an impression on how things work.
 
 ```php
 /** @var \Webklex\PHPIMAP\Client $client */
-$client = Webklex\IMAP\Facades\Client::make([
+$client = \Webklex\IMAP\Facades\Client::make([
     'host'          => 'somehost.com',
     'port'          => 993,
     'encryption'    => 'ssl',
@@ -182,7 +182,7 @@ If you are using google mail or something similar, you might have to use oauth i
 
 ```php
 /** @var \Webklex\PHPIMAP\Client $client */
-$client = Webklex\IMAP\Facades\Client::make([
+$client = \Webklex\IMAP\Facades\Client::make([
     'host'          => 'somehost.com',
     'port'          => 993,
     'encryption'    => 'ssl',
