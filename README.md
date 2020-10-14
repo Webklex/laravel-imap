@@ -73,7 +73,6 @@ Webklex\IMAP\Providers\LaravelServiceProvider::class,
 php artisan vendor:publish --provider="Webklex\IMAP\Providers\LaravelServiceProvider"
 ```
 
-
 ## Configuration
 If you are planning to use a single account, you might want to add the following to
 your `.env` file.
@@ -99,9 +98,8 @@ and will move every message into INBOX.read. Please be aware that this should no
 tested in real life and is only meant to gives an impression on how things work.
 
 ```php
-use Webklex\PHPIMAP\Client;
-
-$client = new Client([
+/** @var \Webklex\PHPIMAP\Client $client */
+$client = Webklex\IMAP\Facades\Client::make([
     'host'          => 'somehost.com',
     'port'          => 993,
     'encryption'    => 'ssl',
@@ -183,18 +181,16 @@ $folder->idle(function($message){
 If you are using google mail or something similar, you might have to use oauth instead:
 
 ```php
-use Webklex\PHPIMAP\Client;
-
 /** @var \Webklex\PHPIMAP\Client $client */
-$client = new Client([
-    'host' => 'imap.gmail.com',
-    'port' => 993,
-    'encryption' => 'ssl',
+$client = Webklex\IMAP\Facades\Client::make([
+    'host'          => 'somehost.com',
+    'port'          => 993,
+    'encryption'    => 'ssl',
     'validate_cert' => true,
-    'username' => 'example@gmail.com',
-    'password' => 'PASSWORD',
+    'username'      => 'example@gmail.com',
+    'password'      => 'password',
     'authentication' => "oauth",
-    'protocol' => 'imap'
+    'protocol'      => 'imap'
 ]);
 
 //Connect to the IMAP Server
