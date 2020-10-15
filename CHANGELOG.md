@@ -6,13 +6,20 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Missing default config parameter added #346
+- NaN 
 
 ### Added
 - NaN 
 
 ### Breaking changes
 - NaN 
+
+## [2.1.1] - 2020-10-15
+### Fixed
+- Missing default config parameter added #346
+
+### Added
+- Imap idle command added
 
 ## [2.1.0] - 2020-10-08
 ### Fixed
