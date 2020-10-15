@@ -21,6 +21,7 @@ use Webklex\PHPIMAP\ClientManager;
  * @package Webklex\IMAP\Facades
  *
  * @method \Webklex\PHPIMAP\Client account($name = null)
+ * @method \Webklex\PHPIMAP\Client make($options = [])
  */
 class Client extends Facade {
 
