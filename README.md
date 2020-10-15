@@ -178,8 +178,9 @@ $folder->idle(function($message){
 ```
 
 #### oAuth
-If you are using google mail or something similar, you might have to use oauth instead:
+Please take a look at [the wiki article](https://github.com/Webklex/php-imap/wiki/Google-Mail---Gmail) for gmail / google mail setup.
 
+Basic oAuth example:
 ```php
 /** @var \Webklex\PHPIMAP\Client $client */
 $client = \Webklex\IMAP\Facades\Client::make([
@@ -188,7 +189,7 @@ $client = \Webklex\IMAP\Facades\Client::make([
     'encryption'    => 'ssl',
     'validate_cert' => true,
     'username'      => 'example@gmail.com',
-    'password'      => 'password',
+    'password'      => 'ACCESS-TOKEN',
     'authentication' => "oauth",
     'protocol'      => 'imap'
 ]);
