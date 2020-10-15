@@ -234,7 +234,7 @@ protected $commands = [
     \Webklex\IMAP\Commands\ImapIdleCommand::class,
 ];
 ```
-Now register an event listener as described by [here](https://laravel.com/docs/7.x/events#event-subscribers).
+Now register an event listener as described by [the laravel docs](https://laravel.com/docs/7.x/events#event-subscribers).
 If you don't use the default account, or if you want to add some of your own magic, you'll need to create a 
 custom command (see next section).
 
