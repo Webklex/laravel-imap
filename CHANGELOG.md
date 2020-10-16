@@ -14,6 +14,51 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Breaking changes
 - NaN 
 
+## [2.2.0] - 2020-10-16
+### Fixed
+- Prevent text bodies from being fetched as attachment
+- Missing variable check added to prevent exception while parsing an address #356
+- Missing variable check added to prevent exception while parsing a part subtype
+- Missing variable check added to prevent exception while parsing a part content-type #356
+- Mixed message header attribute `in_reply_to` "unified" to be always an array
+- Potential message moving / copying problem fixed
+- Move messages by using `Protocol::moveMessage()` instead of `Protocol::copyMessage()` and `Message::delete()`
+- Boundary detection problem fixed ([@DasTobbel](https://github.com/DasTobbel))
+- Content-Type detection problem fixed ([@DasTobbel](https://github.com/DasTobbel))
+- If content disposition is multiline, implode the array to a simple string ([@DasTobbel](https://github.com/DasTobbel))
+- Potential problematic prefixed white-spaces removed from header attributes
+- Fix inline attachments and embedded images ([@dwalczyk](https://github.com/dwalczyk))
+- Possible error during address decoding fixed ([@Slauta](https://github.com/Slauta))
+- Flag event dispatching fixed
+- Fixed `Query::paginate()` ([@Max13](https://github.com/Max13))
+- `Message::getAttributes()` hasn't returned all parameters
+- Wrong message content property reference fixed
+- Fix header extension values
+- Part header detection method changed
+- Possible decoding problem fixed
+- `Str::class` dependency removed from `Header::class`
+- Dependency problem in `Attachement::getExtension()` fixed
+- Quota handling fixed
+
+### Added
+- `Protocol::moveMessage()` method added
+- Expended `Client::getFolder($name, $deleimiter = null)` to accept either a folder name or path ([@DasTobbel](https://github.com/DasTobbel))
+- Special MS-Exchange header decoding support added
+- `ClientManager::make()` method added to support undefined accounts
+- Alternative attachment names support added ([@oneFoldSoftware](https://github.com/oneFoldSoftware))
+- Fetch message content without leaving a "Seen" flag behind
+- Support multiple boundaries ([@dwalczyk](https://github.com/dwalczyk))
+- Part number added to attachment
+- `Client::getFolderByPath()` added ([@Max13](https://github.com/Max13))
+- `Client::getFolderByName()` added ([@Max13](https://github.com/Max13))
+- Throws exceptions if the authentication fails  ([@Max13](https://github.com/Max13))
+- Default account config fallback added
+
+### Breaking changes
+- Text bodies might no longer get fetched as attachment
+- `Message::$in_reply_to` type changed from mixed to array
+
+
 ## [2.1.1] - 2020-10-15
 ### Fixed
 - Missing default config parameter added #346
