@@ -6,7 +6,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN 
+- Missing env variable `IMAP_AUTHENTICATION` added
 
 ### Added
 - Default folder locations added
