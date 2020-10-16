@@ -104,6 +104,8 @@ return [
     |   -Fetch order
     |       'asc'  - Order all messages ascending (probably results in oldest first)
     |       'desc' - Order all messages descending (probably results in newest first)
+    |   -Common folders
+    |       Default folder locations and paths assumed if none is provided
     |   -Open IMAP options:
     |       DISABLE_AUTHENTICATOR - Disable authentication properties.
     |                               Use 'GSSAPI' if you encounter the following
@@ -122,6 +124,13 @@ return [
         'fetch_flags' => true,
         'message_key' => 'list',
         'fetch_order' => 'asc',
+        'common_folders' => [
+            "root" => "INBOX",
+            "junk" => "INBOX/Junk",
+            "draft" => "INBOX/Drafts",
+            "sent" => "INBOX/Sent",
+            "trash" => "INBOX/Trash",
+        ],
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ],

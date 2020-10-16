@@ -9,7 +9,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 ### Added
-- NaN 
+- Default folder locations added
 
 ### Breaking changes
 - NaN 
