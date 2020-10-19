@@ -121,7 +121,7 @@ $client->connect();
 
 //Get all Mailboxes
 /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
-$folders = $oClient->getFolders();
+$folders = $client->getFolders();
 
 //Loop through every Mailbox
 /** @var \Webklex\PHPIMAP\Folder $folder */
@@ -199,7 +199,7 @@ $client = \Webklex\IMAP\Facades\Client::make([
 ]);
 
 //Connect to the IMAP Server
-$oClient->connect();
+$client->connect();
 ```
 
 #### Events
