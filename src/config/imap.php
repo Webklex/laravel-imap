@@ -55,6 +55,12 @@ return [
             'username' => env('IMAP_USERNAME', 'root@example.com'),
             'password' => env('IMAP_PASSWORD', ''),
             'authentication' => env('IMAP_AUTHENTICATION', null),
+            'proxy' => [
+                'socket' => null,
+                'request_fulluri' => false,
+                'username' => null,
+                'password' => null,
+            ]
         ],
 
         /*
@@ -92,6 +98,9 @@ return [
     |   -Fetch option:
     |       IMAP::FT_UID  - Message marked as read by fetching the message body
     |       IMAP::FT_PEEK - Fetch the message without setting the "seen" flag
+    |   -Fetch sequence id:
+    |       IMAP::ST_UID  - Fetch message components using the message uid
+    |       IMAP::ST_MSGN - Fetch message components using the message number
     |   -Body download option
     |       Default TRUE
     |   -Flag download option
@@ -101,9 +110,12 @@ return [
     |       'id'     - Use the MessageID as array key (default, might cause hickups with yahoo mail)
     |       'number' - Use the message number as array key (isn't always unique and can cause some interesting behavior)
     |       'list'   - Use the message list number as array key (incrementing integer (does not always start at 0 or 1)
+    |       'uid'    - Use the message uid as array key (isn't always unique and can cause some interesting behavior)
     |   -Fetch order
     |       'asc'  - Order all messages ascending (probably results in oldest first)
     |       'desc' - Order all messages descending (probably results in newest first)
+    |   -Disposition types potentially considered an attachment
+    |       Default ['attachment', 'inline']
     |   -Common folders
     |       Default folder locations and paths assumed if none is provided
     |   -Open IMAP options:
@@ -119,11 +131,13 @@ return [
     */
     'options' => [
         'delimiter' => '/',
-        'fetch' => \Webklex\PHPIMAP\IMAP::FT_UID,
+        'fetch' => \Webklex\PHPIMAP\IMAP::FT_PEEK,
+        'sequence' => \Webklex\PHPIMAP\IMAP::ST_MSGN,
         'fetch_body' => true,
         'fetch_flags' => true,
         'message_key' => 'list',
         'fetch_order' => 'asc',
+        'dispositions' => ['attachment', 'inline'],
         'common_folders' => [
             "root" => "INBOX",
             "junk" => "INBOX/Junk",

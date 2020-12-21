@@ -6,13 +6,62 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- Missing env variable `IMAP_AUTHENTICATION` added
+- NaN 
 
 ### Added
-- Default folder locations added
+- NaN 
 
 ### Breaking changes
 - NaN 
+
+
+## [2.3.0] - 2020-12-21
+### Fixed
+- Missing env variable `IMAP_AUTHENTICATION` added
+- Header decoding problem fixed
+- IMAP::FT_PEEK removing "Seen" flag issue fixed
+- Text/Html body fetched as attachment if subtype is null
+- Potential header overwriting through header extensions
+- Prevent empty attachments
+- Search performance increased by fetching all headers, bodies and flags at once
+- Legacy protocol support updated
+- Fix Query pagination. (thanks [@mikemiller891](https://github.com/mikemiller891))
+- Missing array decoder method added (thanks [@lutchin](https://github.com/lutchin))
+- Additional checks added to prevent message from getting marked as seen
+- Boundary parsing improved (thanks [@AntonioDiPassio-AppSys](https://github.com/AntonioDiPassio-AppSys))
+- Idle operation updated
+- Cert validation issue fixed
+- Allow boundaries ending with a space or semicolon (thanks [@smartilabs](https://github.com/smartilabs))
+- Ignore IMAP DONE command response
+- Default `options.fetch` set to `IMAP::FT_PEEK`
+- Address parsing fixed
+- Alternative rfc822 header parsing fixed
+- Parse more than one header key
+- Fetch folder overview fixed
+- `Message::getTextBody()` fallback value fixed
+
+### Added
+- Default folder locations added
+- Search for messages by message-Id
+- Search for messages by In-Reply-To
+- Message threading added `Message::thread()`
+- Default folder locations added
+- Set fetch order during query [@Max13](https://github.com/Max13)
+- Missing message setter methods added
+- `Folder::overview()` method added to fetch all headers of all messages in the current folder
+- Force a folder to be opened
+- Proxy support added 
+- Flexible disposition support added
+- New `options.message_key` option `uid` added
+- Protocol UID support added
+- Flexible sequence type support added
+
+### Breaking changes
+- Depending on your configuration, your certificates actually get checked. Which can cause an aborted connection if the certificate can not be validated.
+- Messages don't get flagged as read unless you are using your own custom config.
+- All `Header::class` attribute keys are now in a snake_format and no longer minus-separated.
+- `Message::getTextBody()` no longer returns false if no text body is present. `null` is returned instead.
+
 
 ## [2.2.0] - 2020-10-16
 ### Fixed
