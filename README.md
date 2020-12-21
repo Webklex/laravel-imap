@@ -80,15 +80,13 @@ foreach($folders as $folder){
 
 
 ## Support 
-If you encounter any problems or if you find a bug, please don't hesitate to create a new  
-[issue](https://github.com/Webklex/laravel-imap/issues). 
+If you encounter any problems or if you find a bug, please don't hesitate to create a new [issue](https://github.com/Webklex/laravel-imap/issues). 
 However please be aware that it might take some time to get an answer. 
  
 Off topic, rude or abusive issues will be deleted without any notice. 
  
 If you need **immediate** or **commercial** support, feel free to send me a mail at github@webklex.com.  
  
-+
 ##### A little notice 
 If you write source code in your issue, please consider to format it correctly. This makes it so much nicer to read  
 and people are more likely to comment and help :) 
