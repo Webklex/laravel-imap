@@ -15,6 +15,47 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 
+## [2.4.0] - 2021-01-09
+### Fixed
+- Attachment::save() return error 'A facade root has not been set'
+- Unused dependencies removed
+- Fix PHP 8 error that changes null back in to an empty string. (thanks @mennovanhout)
+- Fix regex to be case insensitive (thanks @mennovanhout)
+- Debug line position fixed
+- Handle incomplete address to string conversion
+- Configured message key gets overwritten by the first fetched message
+- Get partial overview when `IMAP::ST_UID` is set
+- Unnecessary "'" removed from address names
+- Folder referral typo fixed
+- Legacy protocol fixed
+- Treat message collection keys always as strings
+- Missing RFC attributes added 
+- Set the message sequence when idling
+- Missing UID commands added
+
+### Added
+- Configurable supported default flags added
+- Message attribute class added to unify value handling
+- Address class added and integrated
+- Alias `Message::attachments()` for `Message::getAttachments()` added
+- Alias `Message::addFlag()` for `Message::setFlag()` added
+- Alias `Message::removeFlag()` for `Message::unsetFlag()` added
+- Alias `Message::flags()` for `Message::getFlags()` added
+- New Exception `MessageFlagException::class` added
+- New method `Message::setSequenceId($id)` added 
+- Optional Header attributizion option added
+- Get a message by its message number 
+- Get a message by its uid
+
+### Breaking changes
+- Stringified message headers are now separated by ", " instead of " ". 
+- All message header values such as subject, message_id, from, to, etc now consists of an `Àttribute::class` instance (should behave the same way as before, but might cause some problem in certain edge cases)
+- The formal address object "from", "to", etc now consists of an `Address::class` instance  (should behave the same way as before, but might cause some problem in certain edge cases)
+- When fetching or manipulating message flags a `MessageFlagException::class` exception can be thrown if a runtime error occurs
+- Learn more about the new `Attribute` class here: [www.php-imap.com/api/attribute](https://www.php-imap.com/api/attribute)
+- Learn more about the new `Address` class here: [www.php-imap.com/api/address](https://www.php-imap.com/api/address)
+- Folder attribute "referal" is now called "referral"
+
 ## [2.3.0] - 2020-12-21
 ### Fixed
 - Missing env variable `IMAP_AUTHENTICATION` added
