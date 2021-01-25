@@ -85,8 +85,6 @@ However please be aware that it might take some time to get an answer.
  
 Off topic, rude or abusive issues will be deleted without any notice. 
  
-If you need **immediate** or **commercial** support, feel free to send me a mail at github@webklex.com.  
- 
 ##### A little notice 
 If you write source code in your issue, please consider to format it correctly. This makes it so much nicer to read  
 and people are more likely to comment and help :) 
@@ -99,7 +97,7 @@ echo 'your php code...';
  
 will turn into: 
 ```php 
-echo 'your php code...'; 
+echo 'some comment...'; 
 ``` 
  
 ### Features & pull requests 
