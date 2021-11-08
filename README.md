@@ -15,6 +15,7 @@ read and parse existing mails and much more.
 
 Official documentation: [php-imap.com/frameworks/laravel](https://www.php-imap.com/frameworks/laravel/installation)
 
+Discord: https://discord.gg/vUHrbfbDr9
 
 ## Table of Contents
 - [Documentations](#documentations)
