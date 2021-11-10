@@ -15,6 +15,79 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN 
 
 
+## [3.0.0-alpha] - 2021-11-10
+### Fixed
+- Debug line position fixed
+- Handle incomplete address to string conversion
+- Configured message key gets overwritten by the first fetched message
+- Attachment::save() return error 'A facade root has not been set'
+- Unused dependencies removed
+- Fix PHP 8 error that changes null back in to an empty string. (thanks @mennovanhout)
+- Fix regex to be case insensitive (thanks @mennovanhout)
+- Attachment detection updated
+- Timeout handling improved
+- Additional utf-8 checks added to prevent decoding of unencoded values
+- Boundary detection simplified
+- Prevent potential body overwriting
+- CSV files are no longer regarded as plain body
+- Boundary detection overhauled to support "related" and "alternative" multipart messages
+- Attachment saving filename fixed
+- Unnecessary parameter removed from `Client::getTimeout()`
+- Missing encryption variable added - could have caused problems with unencrypted communications
+- Prefer attachment filename attribute over name attribute
+- Missing connection settings added to `Folder:idle()` auto mode
+- Message move / copy expect a folder path
+- `Client::getFolder()` updated to circumvent special edge cases
+- Missing connection status checks added to various methods
+- Unused default attribute `message_no` removed from `Message::class`
+- Fix setting default mask from config (thanks @shacky)
+- Chunked fetch fails in case of less available mails than page size
+- Protocol::createStream() exception information fixed
+- Legacy methods (headers, content, flags) fixed
+- Legacy connection cycle fixed (thanks @zssarkany)
+- Several POP3 fixes (thanks @Korko)
+- Fixes handling of long header lines which are seperated by `\r\n\t` (thanks @Oliver-Holz)
+- Fixes to line parsing with multiple addresses (thanks @Oliver-Holz)
+- Fixed problem with skipping last line of the response. (thanks @szymekjanaczek)
+- Extend date parsing error message
+- Fixed 'Where' method replaces the content with uppercase
+- Don't surround numeric search values with quotes
+- Context added to `InvalidWhereQueryCriteriaException`
+- Redundant `stream_set_timeout()` removed
+
+### Added
+- Auto reconnect option added to `Folder::idle()`
+- Dynamic Attribute access support added (e.g `$message->from[0]`)
+- Message not found exception added
+- Chunked fetching support added `Query::chunked()`. Just in case you can't fetch all messages at once
+- "Soft fail" support added
+- Count method added to `Attribute:class`
+- Convert an Attribute instance into a Carbon date object
+- Disable rfc822 header parsing via config option
+- Added imap 4 handling. (thanks @szymekjanaczek)
+- Added laravel's conditionable methods. (thanks @szymekjanaczek)
+- Expose message folder path (thanks @Magiczne)
+- Adds mailparse_rfc822_parse_addresses integration (thanks @Oliver-Holz)
+- Added moveManyMessages method (thanks @Magiczne)
+- Added copyManyMessages method (thanks @Magiczne)
+- Added `UID` as available search criteria (thanks @szymekjanaczek)
+- Make boundary regex configurable (thanks @EthraZa)
+- IMAP ID support added
+- Enable debug mode via config
+- Custom UID alternative support added
+- Fetch additional extensions using `Folder::query(["FEATURE_NAME"])`
+- Optionally move a message during "deletion" instead of just "flagging" it (thanks @EthraZa)
+- `WhereQuery::where()` accepts now a wide range of criteria / values.
+
+### Breaking changes
+- A new exception can occur if a message can't be fetched (`\Webklex\PHPIMAP\Exceptions\MessageNotFoundException::class`)
+- `Message::move()` and `Message::copy()` no longer accept folder names as folder path
+- A `Message::class` instance might no longer have a `message_no` attribute
+- All protocol methods which had a `boolean` `$uid` option no longer support a boolean. Use `IMAP::ST_UID` or `IMAP::NIL` instead. If you want to use an alternative to `UID` just use the string instead.
+- Default config option `options.sequence` changed from `IMAP::ST_MSGN` to `IMAP::ST_UID`.
+- `Folder::query()` no longer accepts a charset string. It has been replaced by an extension array, which provides the ability to automatically fetch additional features.
+
+
 ## [2.4.0] - 2021-01-09
 ### Fixed
 - Attachment::save() return error 'A facade root has not been set'

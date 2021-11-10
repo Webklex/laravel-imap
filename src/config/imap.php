@@ -60,7 +60,9 @@ return [
                 'request_fulluri' => false,
                 'username' => null,
                 'password' => null,
-            ]
+            ],
+            "timeout" => 30,
+            "extensions" => []
         ],
 
         /*
@@ -96,7 +98,7 @@ return [
     |       This option is only used when calling $oClient->
     |       You can use any supported char such as ".", "/", (...)
     |   -Fetch option:
-    |       IMAP::FT_UID  - Message marked as read by fetching the message body
+    |       IMAP::FT_UID  - Message marked as read by fetching the body message
     |       IMAP::FT_PEEK - Fetch the message without setting the "seen" flag
     |   -Fetch sequence id:
     |       IMAP::ST_UID  - Fetch message components using the message uid
@@ -105,8 +107,16 @@ return [
     |       Default TRUE
     |   -Flag download option
     |       Default TRUE
+    |   -Soft fail
+    |       Default FALSE - Set to TRUE if you want to ignore certain exception while fetching bulk messages
+    |   -RFC822
+    |       Default TRUE - Set to FALSE to prevent the usage of \imap_rfc822_parse_headers().
+    |                      See https://github.com/Webklex/php-imap/issues/115 for more information.
+    |   -Debug enable to trace communication traffic
+    |   -Boundary regex used to detect message boundaries. If you are having problems with empty messages, missing
+    |       attachments or anything like this. Be advised that it likes to break which causes new problems..
     |   -Message key identifier option
-    |       You can choose between 'id', 'number' or 'list'
+    |       You can choose between the following:
     |       'id'     - Use the MessageID as array key (default, might cause hickups with yahoo mail)
     |       'number' - Use the message number as array key (isn't always unique and can cause some interesting behavior)
     |       'list'   - Use the message list number as array key (incrementing integer (does not always start at 0 or 1)
@@ -132,9 +142,13 @@ return [
     'options' => [
         'delimiter' => '/',
         'fetch' => \Webklex\PHPIMAP\IMAP::FT_PEEK,
-        'sequence' => \Webklex\PHPIMAP\IMAP::ST_MSGN,
+        'sequence' => \Webklex\PHPIMAP\IMAP::ST_UID,
         'fetch_body' => true,
         'fetch_flags' => true,
+        'soft_fail' => false,
+        'rfc822' => true,
+        'debug' => false,
+        'boundary' => '/boundary=(.*?(?=;)|(.*))/i',
         'message_key' => 'list',
         'fetch_order' => 'asc',
         'dispositions' => ['attachment', 'inline'],
@@ -145,12 +159,12 @@ return [
             "sent" => "INBOX/Sent",
             "trash" => "INBOX/Trash",
         ],
-        'open' => [
-            // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
-        ],
         'decoder' => [
             'message' => 'utf-8', // mimeheader
             'attachment' => 'utf-8' // mimeheader
+        ],
+        'open' => [
+            // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ]
     ],
 
