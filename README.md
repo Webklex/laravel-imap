@@ -139,12 +139,6 @@ If you discover any security related issues, please email github@webklex.com ins
 - [Webklex][link-author]
 - [All Contributors][link-contributors]
 
-## Supporters
-A special thanks to Jetbrains for supporting this project through their 
-[open source license program](https://www.jetbrains.com/buy/opensource/).
-
-[![Jetbrains][png-jetbrains]][link-jetbrains]
-
 ## License
 The MIT License (MIT). Please see [License File][link-license] for more information.
 
@@ -156,7 +150,6 @@ The MIT License (MIT). Please see [License File][link-license] for more informat
 [ico-hits]: https://hits.webklex.com/svg/webklex/laravel-imap?
 [ico-build]: https://img.shields.io/scrutinizer/build/g/Webklex/laravel-imap/master?style=flat-square
 [ico-quality]: https://img.shields.io/scrutinizer/quality/g/Webklex/laravel-imap/master?style=flat-square
-[png-jetbrains]: https://www.webklex.com/jetbrains.png
 [ico-snyk]: https://snyk-widget.herokuapp.com/badge/composer/webklex/laravel-imap/badge.svg
 [ico-discord]: https://img.shields.io/static/v1?label=discord&message=open&color=5865f2&style=flat-square
 
@@ -169,6 +162,5 @@ The MIT License (MIT). Please see [License File][link-license] for more informat
 [link-contributors]: https://github.com/Webklex/laravel-imap/graphs/contributors
 [link-license]: https://github.com/Webklex/laravel-imap/blob/master/LICENSE
 [link-changelog]: https://github.com/Webklex/laravel-imap/blob/master/CHANGELOG.md
-[link-jetbrains]: https://www.jetbrains.com
 [link-snyk]: https://snyk.io/vuln/composer:webklex%2Flaravel-imap
 [link-discord]: https://discord.gg/jCcZWCSq
