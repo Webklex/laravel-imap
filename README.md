@@ -142,6 +142,7 @@ If you discover any security related issues, please email github@webklex.com ins
 ## License
 The MIT License (MIT). Please see [License File][link-license] for more information.
 
+
 [ico-release]: https://img.shields.io/packagist/v/webklex/laravel-imap.svg?style=flat-square&label=version
 [ico-prerelease]: https://img.shields.io/github/v/release/webklex/laravel-imap?include_prereleases&style=flat-square&label=pre-release
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
