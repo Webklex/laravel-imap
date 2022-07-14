@@ -1,6 +1,6 @@
 <?php
 
-namespace Webklex\IMAP\Events;
+namespace Grkztd\IMAP\Events;
 
 
 class MessageDeletedEvent extends MessageNewEvent {

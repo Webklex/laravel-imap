@@ -1,8 +1,8 @@
 <?php
 
-namespace Webklex\IMAP\Events;
+namespace Grkztd\IMAP\Events;
 
-use Webklex\PHPIMAP\Folder;
+use Grkztd\PHPIMAP\Folder;
 
 class FolderMovedEvent extends Event {
 

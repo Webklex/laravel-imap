@@ -10,16 +10,16 @@
 *  -
 */
 
-namespace Webklex\IMAP\Providers;
+namespace Grkztd\IMAP\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Webklex\PHPIMAP\ClientManager;
-use Webklex\PHPIMAP\Client;
+use Grkztd\PHPIMAP\ClientManager;
+use Grkztd\PHPIMAP\Client;
 
 /**
  * Class LaravelServiceProvider
  *
- * @package Webklex\IMAP\Providers
+ * @package Grkztd\IMAP\Providers
  */
 class LaravelServiceProvider extends ServiceProvider {
 

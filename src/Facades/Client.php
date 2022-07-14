@@ -10,18 +10,18 @@
 *  -
 */
 
-namespace Webklex\IMAP\Facades;
+namespace Grkztd\IMAP\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Webklex\PHPIMAP\ClientManager;
+use Grkztd\PHPIMAP\ClientManager;
 
 /**
  * Class Client
  *
- * @package Webklex\IMAP\Facades
+ * @package Grkztd\IMAP\Facades
  *
- * @method \Webklex\PHPIMAP\Client account($name = null)
- * @method \Webklex\PHPIMAP\Client make($options = [])
+ * @method \Grkztd\PHPIMAP\Client account($name = null)
+ * @method \Grkztd\PHPIMAP\Client make($options = [])
  */
 class Client extends Facade {
 

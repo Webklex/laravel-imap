@@ -1,8 +1,8 @@
 <?php
 
-namespace Webklex\IMAP\Events;
+namespace Grkztd\IMAP\Events;
 
-use Webklex\PHPIMAP\Message;
+use Grkztd\PHPIMAP\Message;
 
 class MessageCopiedEvent extends MessageMovedEvent {
 
