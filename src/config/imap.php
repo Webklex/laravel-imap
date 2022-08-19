@@ -113,6 +113,8 @@ return [
     |       Default TRUE - Set to FALSE to prevent the usage of \imap_rfc822_parse_headers().
     |                      See https://github.com/Webklex/php-imap/issues/115 for more information.
     |   -Debug enable to trace communication traffic
+    |   -UID cache enable the UID cache
+    |   -Fallback date is used if the given message date could not be parsed
     |   -Boundary regex used to detect message boundaries. If you are having problems with empty messages, missing
     |       attachments or anything like this. Be advised that it likes to break which causes new problems..
     |   -Message key identifier option
@@ -148,6 +150,8 @@ return [
         'soft_fail' => false,
         'rfc822' => true,
         'debug' => false,
+        'uid_cache' => true,
+        // 'fallback_date' => "01.01.1970 00:00:00",
         'boundary' => '/boundary=(.*?(?=;)|(.*))/i',
         'message_key' => 'list',
         'fetch_order' => 'asc',
@@ -167,6 +171,15 @@ return [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ]
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available flags
+    |--------------------------------------------------------------------------
+    |
+    | List all available / supported flags. Set to null to accept all given flags.
+     */
+    'flags' => ['recent', 'flagged', 'answered', 'deleted', 'seen', 'draft'],
 
     /*
     |--------------------------------------------------------------------------
