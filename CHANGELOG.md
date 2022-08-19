@@ -6,13 +6,25 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 
 ## [UNRELEASED]
 ### Fixed
-- NaN 
+- PHP dependency updated to support php v8.0 (thanks @freescout-helpdesk)
+- Method return and argument types added
+- Imap `DONE` method refactored
+- UID cache loop fixed
+- `HasEvent::getEvent` return value set to mixed to allow multiple event types
+- Protocol line reader changed to `fread` (stream_context timeout issue fixed)
+- Issue setting the client timeout fixed
+- IMAP Connection debugging improved
+- `Folder::idle()` method reworked and several issues fixed
+- Datetime conversion rules extended
 
 ### Added
 - NaN 
 
 ### Breaking changes
-- NaN 
+- No longer supports php >=5.5.9 but instead requires at least php v7.0.0.
+- `HasEvent::getEvent` returns a mixed result. Either an `Event` or a class string representing the event class.
+- The error message, if the connection fails to read the next line, is now `empty response` instead of `failed to read - connection closed?`.
+- The `$auto_reconnect` used with `Folder::indle()` is deprecated and doesn't serve any purpose anymore.
 
 
 ## [3.0.0-alpha] - 2021-11-10
