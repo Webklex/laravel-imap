@@ -36,7 +36,7 @@ Discord: [discord.gg/jCcZWCSq][link-discord]
 ## Documentations
 - Legacy (< v2.0.0): [legacy documentation](https://github.com/Webklex/laravel-imap/tree/1.6.2#table-of-contents)
 - Core documentation: [php-imap.com](https://www.php-imap.com/)
-
+- Example Laravel Integration: [Example Application](https://github.com/Webklex/laravel_imap_example#laravael-imap-example-application)
 
 ## Installation
 This library requires the `mbstring` and `mcrypt` php module. Make sure to install or enable them if they arn't available.
