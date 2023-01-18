@@ -15,6 +15,34 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN
 
 
+## [4.1.2] - 2023-01-18
+### Fixed
+- Type casting added to several ImapProtocol return values
+- Remove IMAP::OP_READONLY flag from imap_reopen if POP3 or NNTP protocol is selected (thanks @xianzhe18)
+- Several statements optimized and redundant checks removed
+- Check if the Protocol supports the fetch method if extensions are present
+- Detect `NONEXISTENT` errors while selecting or examining a folder
+- Missing type cast added to `PaginatedCollection::paginate` (thanks @rogerb87)
+- Fix multiline header unfolding (thanks @sulgie-eitea)
+- Fix problem with illegal offset error (thanks @szymekjanaczek)
+- Typos fixed
+- RFC 822 3.1.1. long header fields regular expression fixed (thanks @hbraehne)
+- Fix assumedNextTaggedLine bug (thanks @Blear)
+- Fix empty response error for blank lines (thanks @bierpub)
+- Fix empty body (thanks @latypoff)
+- Fix imap_reopen folder argument (thanks @latypoff)
+- Fix for extension recognition (thanks @pwoszczyk)
+- Missing null check added (thanks @spanjeta)
+- Leading white-space in response causes an infinite loop (thanks @thin-k-design)
+- Fix error when creating folders with special chars (thanks @thin-k-design)
+- `Client::getFoldersWithStatus()` recursive loading fixed (thanks @szymekjanaczek)
+- Fix Folder name encoding error in `Folder::appendMessage()` (thanks @rskrzypczak)
+- Attachment ID can return an empty value
+- Additional message date format added (thanks @amorebietakoUdala)
+
+### Added
+- Added possibility of loading a Folder status (thanks @szymekjanaczek)
+
 ## [4.0.0] - 2022-08-19
 ### Fixed
 - PHP dependency updated to support php v8.0 (thanks @freescout-helpdesk)
