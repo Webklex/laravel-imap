@@ -39,9 +39,9 @@ Discord: [discord.gg/jCcZWCSq][link-discord]
 - Example Laravel Integration: [Example Application](https://github.com/Webklex/laravel_imap_example#laravael-imap-example-application)
 
 ## Installation
-This library requires the `mbstring` and `mcrypt` php module. Make sure to install or enable them if they arn't available.
+This library requires the `mbstring` php module. Make sure to install or enable it if it isn't available.
 ```bash
-sudo apt-get install php*-mbstring php*-mcrypt
+sudo apt-get install php*-mbstring
 ```
 Installation via composer:
 ```bash
