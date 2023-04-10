@@ -3,7 +3,6 @@
 [![Latest release on Packagist][ico-release]][link-packagist]
 [![Latest prerelease on Packagist][ico-prerelease]][link-packagist]
 [![Software License][ico-license]][link-license]
-[![Build Status][ico-travis]][link-travis]
 [![Code quality][ico-quality]][link-scrutinizer]
 [![Total Downloads][ico-downloads]][link-downloads]
 [![Hits][ico-hits]][link-hits]
@@ -22,8 +21,10 @@ Discord: [discord.gg/jCcZWCSq][link-discord]
 
 ## Table of Contents
 - [Documentations](#documentations)
+- [Compatibility](#compatibility)
 - [Installation](#installation)
 - [Basic usage example](#basic-usage-example)
+- [Sponsors](#sponsors)
 - [Known issues](#known-issues)
 - [Support](#support)
 - [Features & pull requests](#features--pull-requests)
@@ -37,6 +38,17 @@ Discord: [discord.gg/jCcZWCSq][link-discord]
 - Legacy (< v2.0.0): [legacy documentation](https://github.com/Webklex/laravel-imap/tree/1.6.2#table-of-contents)
 - Core documentation: [php-imap.com](https://www.php-imap.com/)
 - Example Laravel Integration: [Example Application](https://github.com/Webklex/laravel_imap_example#laravael-imap-example-application)
+
+
+## Compatibility
+| Version | PHP 5.6 | PHP 7 | PHP 8 |
+|:--------|:-------:|:-----:|:-----:|
+| v5.x    |    /    |   /   |   X   |
+| v4.x    |    /    |   X   |   X   |
+| v3.x    |    /    |   X   |   /   |
+| v2.x    |    X    |   X   |   /   |
+| v1.x    |    X    |   /   |   /   |
+
 
 ## Installation
 This library requires the `mbstring` php module. Make sure to install or enable it if it isn't available.
@@ -90,9 +102,14 @@ foreach($folders as $folder){
 }
 ```
 
+
+## Sponsors
+[![Feline][ico-sponsor-feline]][link-sponsor-feline]
+
+
 ### Known issues
-| Error                                                                     | Solution                                                   |
-| ------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Error                                                                     | Solution                                                                                      |
+|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | Kerberos error: No credentials cache file found (try running kinit) (...) | Uncomment "DISABLE_AUTHENTICATOR" inside and use the `legacy-imap` protocol `config/imap.php` | 
 
 
@@ -165,3 +182,7 @@ The MIT License (MIT). Please see [License File][link-license] for more informat
 [link-changelog]: https://github.com/Webklex/laravel-imap/blob/master/CHANGELOG.md
 [link-snyk]: https://snyk.io/vuln/composer:webklex%2Flaravel-imap
 [link-discord]: https://discord.gg/jCcZWCSq
+
+
+[ico-sponsor-feline]: https://cdn.feline.dk/public/feline.png
+[link-sponsor-feline]: https://www.feline.dk
