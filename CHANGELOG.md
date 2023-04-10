@@ -15,6 +15,90 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN
 
 
+## [5.2.0] - 2023-04-11
+### Fixed
+- The message uid and message number will only be fetched if accessed and wasn't previously set (thanks @szymekjanaczek)
+- Fix undefined attachment name when headers use "filename*=" format (thanks @JulienChavee)
+- Fixed `ImapProtocol::logout` always throws 'not connected' Exception after upgraded to 4.1.2
+- Protocol interface and methods unified
+- Strict attribute and return types introduced where ever possible
+- Parallel messages during idle
+- Idle timeout / stale resource stream issue fixed
+- Syntax updated to support php 8 features
+- Get the attachment file extension from the filename if no mimetype detection library is available
+- Prevent the structure parsing from parsing an empty part
+- Convert all header keys to their lower case representation
+- Restructure the decode function (thanks @istid)
+- More unique ID generation to prevent multiple attachments with same ID (thanks @Guite)
+- Not all attachments are pushed to the collection (thanks @AdrianKuriata)
+- Allow search response to be empty
+- Unsafe usage of switch case. (thanks @shuergab)
+- Fix use of ST_MSGN as sequence method (thanks @gioid)
+- Prevent infinite loop in ImapProtocol (thanks @thin-k-design)
+- IMAP Quota root command fixed
+- Prevent line-breaks in folder path caused by special chars
+- Partial fix for (allow overview response to be empty)
+- `Message::setConfig()` config parameter type set to array
+- Reset the protocol uid cache if the session gets expunged
+- Set the "seen" flag only if the flag isn't set and the fetch option isn't `IMAP::FT_PEEK`
+- `Message::is()` date comparison fixed
+- `Message::$client` could not be set to null
+- `in_reply_to` and `references` parsing fixed
+- Prevent message body parser from injecting empty lines
+- Don't parse regular inline message parts without name or filename as attachment
+- `Message::hasTextBody()` and `Message::hasHtmlBody()` should return `false` if the body is empty
+- Imap-Protocol "empty response" detection extended to catch an empty response caused by a broken resource stream
+- `iconv_mime_decode()` is now used with `ICONV_MIME_DECODE_CONTINUE_ON_ERROR` to prevent the decoding from failing
+- Date decoding rules extended to support more date formats
+- Unset the currently active folder if it gets deleted (prevent infinite loop)
+- Attachment name and filename parsing fixed and improved to support more formats
+- Check if the next uid is available (after copying or moving a message) before fetching it
+- Default pagination `$total` attribute value set to 0 (thanks @hhniao)
+- Use attachment ID as fallback filename for saving an attachment
+- Address decoding error detection added
+- Use all available methods to detect the attachment extension instead of just one
+- Allow the `LIST` command response to be empty
+- Initialize folder children attributes on class initialization
+
+### Added
+- Unit tests added (thanks @sergiy-petrov, @boekkooi-lengoo)
+- `Client::clone()` method added to clone a client instance
+- Save an entire message (including its headers) `Message::save()`
+- Restore a message from a local or remote file `Message::fromFile()`
+- Protocol resource stream accessor added `Protocol::getStream()`
+- Protocol resource stream meta data accessor added `Protocol::meta()`
+- ImapProtocol resource stream reset method added `ImapProtocol::reset()`
+- Protocol `Response::class` introduced to handle and unify all protocol requests
+- Static mask config accessor added `ClientManager::getMask()` added
+- An `Attribute::class`  instance can be treated as array
+- Get the current client account configuration via `Client::getConfig()`
+- Delete a folder via `Client::deleteFolder()`
+- Extended UTF-7 support added (RFC2060)
+- `Protocol::sizes()` support added (fetch the message byte size via RFC822.SIZE). Accessible through `Message::getSize()` (thanks @didi1357)
+- `Message::hasFlag()` method added to check if a message has a specific flag
+- `Message::getConfig()` method added to get the current message configuration
+- `Folder::select()` method added to select a folder
+- `Message::getAvailableFlags()` method added to get all available flags
+- Live mailbox and fixture tests added
+- `Attribute::map()` method added to map all attribute values
+- `Header::has()` method added to check if a header attribute / value exist
+- All part attributes are now accessible via linked attribute
+- Restore a message from string `Message::fromString()`
+- Soft fail option added to all folder fetching methods. If soft fail is enabled, the method will return an empty collection instead of throwing an exception if the folder doesn't exist
+
+
+### Breaking changes
+- PHP ^8.0.2 required
+- `nesbot/carbon` version bumped to ^2.62.1
+- `phpunit/phpunit` version bumped to ^9.5.10
+- `Header::get()` always returns an `Attribute::class` instance
+- `Attribute::class` accessor methods renamed to shorten their names and improve the readability
+- All protocol methods that used to return `array|bool` will now always return a `Response::class` instance.
+- `ResponseException::class` gets thrown if a response is empty or contains errors
+- Message client is optional and can be null (e.g. if used in combination with `Message::fromFile()`)
+- The message text or html body is now "" if its empty and not `null`
+
+
 ## [4.1.2] - 2023-01-18
 ### Fixed
 - Type casting added to several ImapProtocol return values
