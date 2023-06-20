@@ -15,6 +15,25 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - NaN
 
 
+## [5.3.0] - Security patch - 2023-06-20
+### Fixed
+- Potential RCE through path traversal fixed [#414](https://github.com/Webklex/php-imap/pull/414) (special thanks @angelej)
+
+### Security Impact and Mitigation
+Impacted are all versions below v5.3.0.
+If possible, update to >= v5.3.0 as soon as possible. Impacted was the `Attachment::save`
+method which could be used to write files to the local filesystem. The path was not
+properly sanitized and could be used to write files to arbitrary locations.
+
+However, the `Attachment::save` method is not used by default and has to be called
+manually. If you are using this method without providing a sanitized path, you are
+affected by this vulnerability.
+If you are not using this method or are providing a sanitized path, you are not affected
+by this vulnerability and no immediate action is required.
+
+If you have any questions, please feel to join this issue: https://github.com/Webklex/php-imap/issues/416
+
+
 ## [5.2.0] - 2023-04-11
 ### Fixed
 - The message uid and message number will only be fetched if accessed and wasn't previously set (thanks @szymekjanaczek)
