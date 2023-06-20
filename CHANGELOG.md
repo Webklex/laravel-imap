@@ -31,8 +31,7 @@ affected by this vulnerability.
 If you are not using this method or are providing a sanitized path, you are not affected
 by this vulnerability and no immediate action is required.
 
-If you have any questions, please feel to join this issue: https://github.com/Webklex/php-imap/issues/416
-
+If you have any questions, please feel welcome to join this issue: https://github.com/Webklex/php-imap/issues/416
 
 ## [5.2.0] - 2023-04-11
 ### Fixed
