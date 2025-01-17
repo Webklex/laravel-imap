@@ -104,6 +104,7 @@ foreach($folders as $folder){
 
 
 ## Sponsors
+[![elb-BIT][ico-sponsor-elb-bit]][link-sponsor-elb-bit]
 [![Feline][ico-sponsor-feline]][link-sponsor-feline]
 
 
@@ -181,8 +182,10 @@ The MIT License (MIT). Please see [License File][link-license] for more informat
 [link-license]: https://github.com/Webklex/laravel-imap/blob/master/LICENSE
 [link-changelog]: https://github.com/Webklex/laravel-imap/blob/master/CHANGELOG.md
 [link-snyk]: https://snyk.io/vuln/composer:webklex%2Flaravel-imap
-[link-discord]: https://discord.gg/jCcZWCSq
+[link-discord]: https://discord.gg/vUHrbfbDr9
 
 
 [ico-sponsor-feline]: https://cdn.feline.dk/public/feline.png
 [link-sponsor-feline]: https://www.feline.dk
+[ico-sponsor-elb-bit]: https://www.elb-bit.de/user/themes/deliver/images/logo_small.png
+[link-sponsor-elb-bit]: https://www.elb-bit.de?ref=webklex/php-imap
