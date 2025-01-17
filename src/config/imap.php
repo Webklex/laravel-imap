@@ -136,9 +136,6 @@ return [
     |                               error: "Kerberos error: No credentials cache
     |                               file found (try running kinit) (...)"
     |                               or ['GSSAPI','PLAIN'] if you are using outlook mail
-    |   -Decoder options (currently only the message subject and attachment name decoder can be set)
-    |       'utf-8' - Uses imap_utf8($string) to decode a string
-    |       'mimeheader' - Uses mb_decode_mimeheader($string) to decode a string
     |
     */
     'options' => [
@@ -163,12 +160,35 @@ return [
             "sent" => "INBOX/Sent",
             "trash" => "INBOX/Trash",
         ],
-        'decoder' => [
+        'open' => [
+            // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
+        ]
+    ],
+
+    /**
+     * |--------------------------------------------------------------------------
+     * | Available decoding options
+     * |--------------------------------------------------------------------------
+     * |
+     * | Available php imap config parameters are listed below
+     * |   -options: Decoder options (currently only the message subject and attachment name decoder can be set)
+     * |       'utf-8' - Uses imap_utf8($string) to decode a string
+     * |       'mimeheader' - Uses mb_decode_mimeheader($string) to decode a string
+     * |   -decoder: Decoder to be used. Can be replaced by custom decoders if needed.
+     * |       'header' - HeaderDecoder
+     * |       'message' - MessageDecoder
+     * |       'attachment' - AttachmentDecoder
+     */
+    'decoding' => [
+        'options' => [
+            'header' => 'utf-8', // mimeheader
             'message' => 'utf-8', // mimeheader
             'attachment' => 'utf-8' // mimeheader
         ],
-        'open' => [
-            // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
+        'decoder' => [
+            'header' => \Webklex\PHPIMAP\Decoder\HeaderDecoder::class,
+            'message' => \Webklex\PHPIMAP\Decoder\MessageDecoder::class,
+            'attachment' => \Webklex\PHPIMAP\Decoder\AttachmentDecoder::class
         ]
     ],
 
