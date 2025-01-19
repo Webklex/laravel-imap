@@ -14,6 +14,22 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Breaking changes
 - NaN
 
+## [6.1.0] - 2025-01-19
+### Fixed
+- Filename sanitization is now optional (enabled via default)
+- Address parsing improved and extended to include more cases
+- Boundary parsing fixed and improved to support more formats
+- Decode partially encoded address names
+- Enforce RFC822 parsing if enabled
+
+### Added
+- Security configuration options added
+- Spoofing detection added
+- RFC4315 MOVE fallback added (thanks @freescout-help-desk)
+- Content fetching RFC standard support added (thanks @ybizeul)
+- Support unescaped dates inside the search conditions
+- `Client::clone()` looses account configuration (thanks @netpok)
+
 ## [6.0.0] - 2025-01-17
 ### Fixed
 - Legacy protocol support fixed (object to array conversion)
