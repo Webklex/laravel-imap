@@ -94,7 +94,7 @@ foreach($folders as $folder){
         
         //Move the current Message to 'INBOX.read'
         if($message->move('INBOX.read') == true){
-            echo 'Message has ben moved';
+            echo 'Message has been moved';
         }else{
             echo 'Message could not be moved';
         }
