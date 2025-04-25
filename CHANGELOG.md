@@ -14,6 +14,20 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ### Breaking changes
 - NaN
 
+## [6.2.0] - 2025-04-25
+### Fixed
+- When using the chunk function, some messages do not have an element with index 0 (thanks @zeddmaster)
+- Get folders list in hierarchical order (thanks @rskrzypczak)
+- Fix remaining implicit marking of parameters as nullable (PHP 8.4) (thanks @steffenweber)
+- Fix case sensitivity of folder attribute parsing (\NoSelect, \NoInferiors) (thanks @smajti1)
+- Fix error on getUid(null) with 0 results (thanks @pierement)
+- Fix Date parsing on non-standard format from Aqua Mail (thanks @lm-cmxkonzepte)
+
+### Added
+- SSL stream context options added (thanks @llemoine)
+- Support copy/move Message with utf7 folder path (thanks @loc4l)
+- Public `Query::search()` method (Thanks @madbob)
+
 ## [6.1.0] - 2025-01-19
 ### Fixed
 - Filename sanitization is now optional (enabled via default)

@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": "^8.0.2",
-        "webklex/php-imap": "^6.1.0",
+        "webklex/php-imap": "^6.2.0",
         "laravel/framework": ">=6.0.0"
     },
     "autoload": {
